@@ -95,19 +95,16 @@ import Layout from "../layouts/Layout.astro";
                     With Pulsar, you can use the apps of your Android phone as
                     desktop apps, you can run a fully MacOS desktop from
                     official servers and execute Windows apps as native apps
-                    WITHOUT WINE, WITH REAL WINDOWS.
+                    without Wine, eith a real Windows instance
                     <!-- Diseñado sobre bases de Linux modernas, no adaptado a posteriori. Estable, seguro y listo para el día a día. -->
                 </p>
             </div>
 
             <!-- Feature Card 2 -->
             <div class="feature-card">
-                <h3 class="feature-title">100% Usable</h3>
+                <h3 class="feature-title">Usability first</h3>
                 <p class="feature-desc">
-                    Unlike other distributions that try to replicate the look
-                    and feel, Pulsar OS is 100% functional in both of its
-                    flavors. You'll have the same experience as in a normal
-                    Linux environment.
+                    A fully functional environment, which does not simply focus on replicating the MacOS or Windows experience, but rather focuses on the user experience. Without replicating patterns that are already difficult in MacOS or Windows, improving it.
                     <!-- Un entorno de escritorio completamente funcional y estable configurado de fábrica para trabajar y jugar. -->
                 </p>
             </div>
@@ -116,9 +113,7 @@ import Layout from "../layouts/Layout.astro";
             <div class="feature-card">
                 <h3 class="feature-title">Rock-solid base</h3>
                 <p class="feature-desc">
-                    Unlike other customized distributions, we are not based on
-                    Ubuntu or Arch. Pulsar OS is based on the mother of them
-                    all: Debian.
+                    Unlike other custom distributions, we offer versions based on Arch Linux and Debian. In this way, we give the user the option to choose between more modern or more stable.
                     <!-- Construido usando los repositorios de Debian Trixie. Misma estabilidad y paquetes del sistema core. -->
                 </p>
             </div>
@@ -130,6 +125,7 @@ import Layout from "../layouts/Layout.astro";
                     Everything is built on GitHub Actions, whose workflow and
                     source code are auditable. We are the first Linux
                     distribution that is 100% replicable from source code.
+                    You can contribute to all the code.
                     <!-- Sin telemetría oculta ni restricciones de licencia. Verifica el código, audita y compila componentes. -->
                 </p>
             </div>
@@ -190,39 +186,23 @@ import Layout from "../layouts/Layout.astro";
     <!-- Release Channels Section (Stable, Forky, Rolling) -->
     <section id="releases" class="releases-section">
         <div class="container">
-            <h2 class="section-title">Three release channels for each flavour</h2>
+            <h2 class="section-title">Two release channel for every flavour</h2>
             <p class="section-subtitle">
-                Every Pulsar OS flavour is available in three tracks so you can
-                choose the stability level that fits your needs.
+                You may prefer the simplicity of Debian or the constant updating of Arch. Well, you can choose which one you prefer.
             </p>
             <div class="releases-grid">
                 <div class="release-card">
                     <div class="release-badge stable">Stable</div>
-                    <h3 class="release-title">Trixie</h3>
+                    <h3 class="release-title">Debian Base</h3>
                     <p class="release-desc">
-                        Based on the current Debian stable release (13 Trixie).
-                        The most tested and reliable version, recommended for
-                        production, daily use, and medium-range PCs.
+                        The most stable and simple distribution. Perfect for older or modern computers without new graphics.
                     </p>
                 </div>
                 <div class="release-card">
-                    <div class="release-badge forky">Forky</div>
-                    <h3 class="release-title">Forky</h3>
+                    <div class="release-badge rolling">Rolling Release</div>
+                    <h3 class="release-title">Arch Linux Base</h3>
                     <p class="release-desc">
-                        Based on Debian testing. When the next Debian stable
-                        arrives, Forky stops being rolling and becomes the new
-                        stable. Ideal for users who want fresher software
-                        without full bleeding edge.
-                    </p>
-                </div>
-                <div class="release-card">
-                    <div class="release-badge rolling">Rolling</div>
-                    <h3 class="release-title">Rolling Release</h3>
-                    <p class="release-desc">
-                        Continuously updated from Debian testing. Always ships
-                        the latest packages and kernels. Designed for
-                        enthusiasts and advanced users who want cutting-edge
-                        software.
+                       Do you want to be up to date or does your computer need newer drivers? This is the best decision!
                     </p>
                 </div>
             </div>
@@ -233,10 +213,9 @@ import Layout from "../layouts/Layout.astro";
     <!-- Sección de Integraciones de Pulsar (Macboat, Winboat, Droidtux) -->
     <section id="integrations" class="integrations-section">
         <div class="container">
-            <h2 class="section-title">Seamless Integrations</h2>
+            <h2 class="section-title">Multi-os app compatibility</h2>
             <p class="section-subtitle">
-                Access your other environments directly from Pulsar OS with
-                native system integrations.
+               What many operating systems have failed to implement, we achieve. You can use everything from MacOS to Windows apps as native or even integrate your phone as if it were an iPhone in the Mac ecosystem.
                 <!-- Accede a tus otros entornos directamente desde Pulsar OS con integraciones nativas de sistema. -->
             </p>
 
@@ -250,9 +229,7 @@ import Layout from "../layouts/Layout.astro";
                     />
                     <h3 class="integration-title">Macboat</h3>
                     <p class="integration-desc">
-                        Run a fully featured macOS desktop environment directly
-                        from official servers. Enjoy perfect Visual alignment
-                        and software compatibility.
+                        Run ANY MacOS (AMD or ARM arch) on Pulsar OS with a complete desktop. Run from Big Sur to Sonoma and upgrade to Tahoe with one click. Opencore integration, no hassle, downloaded from Apple official servers
                         <!-- Ejecuta un escritorio macOS completo desde servidores oficiales. Compatibilidad visual y de software perfecta. -->
                     </p>
                 </div>
@@ -267,9 +244,7 @@ import Layout from "../layouts/Layout.astro";
                     <span class="integration-meta">Third Party</span>
                     <h3 class="integration-title">Winboat</h3>
                     <p class="integration-desc">
-                        Execute native Windows applications directly on Pulsar
-                        OS. Runs on top of a real Windows instance for absolute
-                        compatibility without WINE bottlenecks.
+                        Execute Windows apps as normal apps on Pulsar OS. Under the hood, they're running on a Windows VM. No activation needed, downloaded from Microsoft official servers.
                         <!-- Ejecuta aplicaciones nativas de Windows directamente en Pulsar OS sobre una instancia de Windows real sin cuellos de botella de WINE. -->
                     </p>
                 </div>
@@ -283,9 +258,8 @@ import Layout from "../layouts/Layout.astro";
                     />
                     <h3 class="integration-title">Droidtux</h3>
                     <p class="integration-desc">
-                        Run the applications of your Android phone as floating
-                        desktop windows. The apps remain executed on your phone
-                        rather than your PC, ensuring maximum portability.
+                        Integrate your Android phone's apps as native apps, but they run on your phone. 
+                        Use your phone as virtual camera
                         <!-- Ejecuta aplicaciones de tu teléfono Android en ventanas de escritorio. Las apps se ejecutan en tu teléfono para mayor portabilidad. -->
                     </p>
                 </div>
@@ -299,9 +273,7 @@ import Layout from "../layouts/Layout.astro";
                     />
                     <h3 class="integration-title">GSConnect</h3>
                     <p class="integration-desc">
-                        Seamlessly integrate your Android phone with Pulsar OS.
-                        Receive notifications, send and receive messages, share
-                        files, and control your phone from your desktop.
+                       Share notifications, control your desktop and many more with GSConnect
                         <!-- Integra tu teléfono Android con Pulsar OS. Notificaciones, mensajes, archivos y control desde el escritorio. -->
                     </p>
                 </div>
@@ -337,27 +309,21 @@ import Layout from "../layouts/Layout.astro";
                         Sovereign and European
                     </h3>
                     <p class="enterprise-card-desc">
-                        Developed entirely in Europe, with no dependency on
-                        foreign big-tech technologies or services. Real digital
-                        sovereignty.
+                        Developed in Europe, with applications audited by the European Linux community. No foreign interference.
                     </p>
                 </div>
 
                 <div class="enterprise-card">
                     <h3 class="enterprise-card-title">Community-driven</h3>
                     <p class="enterprise-card-desc">
-                        Built by and for the community. Decisions are made
-                        openly and transparently, with no hidden corporate
-                        interests.
+                        We do not want to be a one-person distro, we are growing and we are going to delegate to the community.
                     </p>
                 </div>
 
                 <div class="enterprise-card">
                     <h3 class="enterprise-card-title">Familiar for everyone</h3>
                     <p class="enterprise-card-desc">
-                        Perfectly replicates the designs of mainstream operating
-                        systems. Both individual users and company employees
-                        will feel right at home.
+                        Replicates familiar user experience flows on Mac and Windows. Stable and secure.
                     </p>
                 </div>
             </div>
@@ -391,7 +357,8 @@ import Layout from "../layouts/Layout.astro";
                 <p class="community-desc">
                     We want to grow by delegating responsibility, not by
                     concentrating decisions in a handful of people. If you want
-                    to become a contributor, get in touch.
+                    to become a contributor, get in touch. <br>
+                    We will soon publish a list of contributing positions we need (we are open to any type, but this way we can reach specific people)
                 </p>
                 <div class="community-actions">
                     <a
