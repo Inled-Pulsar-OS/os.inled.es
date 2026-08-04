@@ -1,17 +1,28 @@
 ---
-// Base Layout for Pulsar OS Web (Landing Only)
-// Layout Base para la Web de Pulsar OS (Solo Landing)
 import "../styles/global.css";
+import { SEO, type PageKey } from "@/utils/seo";
 
 interface Props {
-    title: string;
+    title?: string;
     description?: string;
+    pageKey?: PageKey;
 }
 
 const {
     title,
-    description = "Pulsar OS is a community-driven, 100% auditable operating system designed to replicate macOS (Pear) and Windows (Wintux) workflows.",
+    description,
+    pageKey = "index",
 } = Astro.props;
+
+const pageSeo = SEO.pages[pageKey];
+const siteUrl = SEO.site.url;
+
+const pageTitle = title || pageSeo.title;
+const pageDesc = description || pageSeo.description;
+const pageOg = pageSeo.og;
+
+const pathname = Astro.url.pathname;
+const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
 ---
 
 <!doctype html>
@@ -19,18 +30,63 @@ const {
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content={description} />
 
-        <!-- Favicon using remote logo link / Favicon usando enlace de logo remoto -->
+        <!-- SEO basics -->
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDesc} />
+        <meta name="keywords" content={pageSeo.keywords} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={canonicalUrl} />
+
+        <!-- Open Graph -->
+        <meta property="og:title" content={pageOg.title} />
+        <meta property="og:description" content={pageOg.description} />
+        <meta property="og:image" content={SEO.site.image} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={pageTitle} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SEO.site.name} />
+
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageOg.title} />
+        <meta name="twitter:description" content={pageOg.description} />
+        <meta name="twitter:image" content={SEO.site.image} />
+
+        <!-- Favicon -->
         <link
             rel="icon"
             type="image/svg+xml"
             href="https://hosted.inled.es/pulsar-logo-simple-sf.png"
         />
 
-        <title>{title} — Pulsar OS</title>
+        <!-- Sitemap -->
+        <link rel="sitemap" href="/sitemap-index.xml" />
 
-        <!-- Google Fonts: Space Grotesk and Inter / Fuentes de Google Fonts -->
+        <!-- Hreflang -->
+        <link rel="alternate" hreflang="en" href={canonicalUrl} />
+
+        <!-- JSON-LD -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SEO.site.name,
+            url: SEO.site.url,
+            description: pageDesc,
+            publisher: {
+                "@type": "Organization",
+                name: SEO.site.name,
+                url: SEO.site.url,
+                logo: {
+                    "@type": "ImageObject",
+                    url: SEO.site.logo,
+                },
+            },
+        })} />
+
+        <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -38,16 +94,15 @@ const {
             rel="stylesheet"
         />
 
-        <!-- Font Awesome 6 (for Discord icon) -->
+        <!-- Font Awesome 6 -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             crossorigin="anonymous"
         />
 
-        <!-- Theme prevention script: defaults to light (warm cream) / Script de prevención de tema: por defecto claro (crema cálido) -->
+        <!-- Theme prevention script -->
         <script is:inline>
-            // Run immediately before DOM rendering / Ejecutar inmediatamente antes de que el DOM se renderice
             (function () {
                 const savedTheme = localStorage.getItem("theme");
                 const prefersDark = window.matchMedia(
@@ -62,11 +117,13 @@ const {
         </script>
     </head>
     <body>
-        <!-- Floating Header / Cabecera Flotante (Inspired by Star Labs navigation layout) -->
+        <!-- Skip to content link for keyboard users -->
+        <a href="#main-content" class="skip-link">Skip to content</a>
+
+        <!-- Floating Header -->
         <header class="floating-header">
             <div class="container header-container">
                 <a href="/" class="logo-container">
-                    <!-- Logo points to the remote URL as requested / El logo apunta a la URL remota requerida -->
                     <img
                         src="https://hosted.inled.es/pulsar-logo-simple-sf.png"
                         alt="Pulsar OS Logo"
@@ -85,13 +142,11 @@ const {
                 </nav>
 
                 <div class="header-actions">
-                    <!-- Theme Toggle Button / Botón de cambio de tema -->
                     <button
                         id="theme-toggle"
                         class="theme-toggle-btn"
                         aria-label="Toggle light or dark theme"
                     >
-                        <!-- Sun Icon (shown in dark mode) / Icono de Sol (se muestra en modo oscuro) -->
                         <svg
                             class="sun-icon"
                             width="20"
@@ -117,7 +172,6 @@ const {
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"
                             ></line>
                         </svg>
-                        <!-- Moon Icon (shown in light mode) / Icono de Luna (se muestra en modo claro) -->
                         <svg
                             class="moon-icon"
                             width="20"
@@ -169,7 +223,6 @@ const {
                         >Download (coming soon)</a
                     >
 
-                    <!-- Hamburger Menu Button / Botón de menú hamburguesa -->
                     <button
                         id="menu-toggle"
                         class="menu-toggle-btn"
@@ -208,7 +261,6 @@ const {
                 </div>
             </div>
 
-            <!-- Mobile Navigation Menu / Menú de navegación móvil -->
             <nav id="mobile-nav" class="mobile-nav">
                 <a href="#hero" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a>
                 <a href="#flavours" class="mobile-nav-link" onclick="closeMobileMenu()">Flavours</a>
@@ -221,12 +273,10 @@ const {
             </nav>
         </header>
 
-        <!-- Page Content Slot / Contenedor principal de contenido -->
-        <main class="main-content">
+        <main id="main-content" class="main-content">
             <slot />
         </main>
 
-        <!-- Footer / Pie de Página -->
         <footer class="site-footer">
             <div class="container footer-container">
                 <div class="footer-left">
@@ -238,27 +288,19 @@ const {
                         />
                         <span>Pulsar OS</span>
                     </a>
-                    <!-- <p class="footer-copy">
-                        Pulsar OS is made by <a href="https://inled.es"
-                            >Inled Group</a
-                        >, founded by <a href="https://jaimegh.com">JaimeGH</a>
-                    </p> -->
                 </div>
-                <div class="footer-right">
+                <nav class="footer-right" aria-label="Footer navigation">
                     <a
                         href="https://github.com/Inled-Pulsar-OS"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="footer-link">GitHub</a
-                    >
-                    <div></div>
+                        class="footer-link">GitHub</a>
                     <a
                         href="https://github.com/orgs/Inled-Pulsar-OS/projects/1"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="footer-link">Projects</a
-                    >
-                </div>
+                        class="footer-link">Projects</a>
+                </nav>
             </div>
             <div class="container">
                 <p class="footer-disclaimer">
@@ -268,7 +310,6 @@ const {
             </div>
         </footer>
 
-        <!-- Theme handler + mobile menu logic / Lógica de control de temas y menú móvil -->
         <script>
             const themeToggle = document.getElementById("theme-toggle");
 
@@ -295,8 +336,6 @@ const {
 </html>
 
 <style>
-    /* Header styling / Estilos de cabecera */
-
     .floating-header {
         position: fixed;
         top: 20px;
@@ -305,7 +344,7 @@ const {
         width: calc(100% - 40px);
         max-width: var(--max-width);
         height: 70px;
-        background: rgba(246, 244, 238, 0.75); /* Warm light blur */
+        background: rgba(246, 244, 238, 0.75);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid var(--border-color);
@@ -315,7 +354,7 @@ const {
     }
 
     html.dark .floating-header {
-        background: rgba(13, 11, 21, 0.75); /* Dark theme blur */
+        background: rgba(13, 11, 21, 0.75);
     }
 
     .floating-header:hover {
@@ -378,7 +417,6 @@ const {
         gap: 16px;
     }
 
-    /* Theme toggle styling / Estilos de botón de tema */
     .theme-toggle-btn {
         background: transparent;
         border: 1px solid var(--border-color);
@@ -398,7 +436,6 @@ const {
         border-color: var(--border-focus);
     }
 
-    /* Sun/moon icon visibility rules based on .dark class on html */
     .sun-icon {
         display: none;
     }
@@ -438,13 +475,11 @@ const {
         font-size: 0.85rem;
     }
 
-    /* Content area margins for floating header / Márgenes del contenido para cabecera flotante */
     .main-content {
         min-height: 80vh;
         padding-top: 120px;
     }
 
-    /* Footer styles / Estilos del pie de página */
     .site-footer {
         border-top: 1px solid var(--border-color);
         padding: 40px 0;
@@ -493,16 +528,6 @@ const {
         width: auto;
     }
 
-    .footer-copy {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-    }
-
-    .footer-links {
-        display: flex;
-        gap: 24px;
-    }
-
     .footer-link {
         color: var(--text-secondary);
         font-size: 0.9rem;
@@ -513,7 +538,6 @@ const {
         color: var(--text-primary);
     }
 
-    /* Hamburger menu button / Botón de menú hamburguesa */
     .menu-toggle-btn {
         display: none;
         background: transparent;
@@ -545,7 +569,6 @@ const {
         display: block;
     }
 
-    /* Mobile navigation panel / Panel de navegación móvil */
     .mobile-nav {
         display: none;
         position: absolute;
@@ -585,7 +608,6 @@ const {
         color: var(--text-primary);
     }
 
-    /* Responsive styling / Estilos responsivos */
     @media (max-width: 800px) {
         .nav-links {
             display: none;
