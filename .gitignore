@@ -5,6 +5,8 @@ dist/
 
 # dependencies
 node_modules/
+pnpm-lock.yaml
+pnpm-workspace.yaml
 
 # logs
 npm-debug.log*
@@ -22,3 +24,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# avoid agent skills for now
+.agents/

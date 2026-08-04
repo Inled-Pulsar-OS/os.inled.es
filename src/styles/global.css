@@ -871,3 +871,419 @@ html.dark .notice-icon {
         padding: 24px;
     }
 }
+
+/* ============================================
+   PEAR EDITION PAGE
+   ============================================ */
+
+/* Tag / badge */
+.pear-tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: rgba(150, 108, 232, 0.08);
+    color: var(--accent-purple);
+    border: 1px solid rgba(150, 108, 232, 0.2);
+}
+
+/* Hero */
+.pear-hero {
+    padding: 100px 0 0 0;
+    text-align: center;
+}
+
+.pear-hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pear-hero-title {
+    font-family: var(--font-display);
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -2.5px;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+}
+
+.pear-hero-desc {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pear-hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 80px;
+}
+
+/* Carousel */
+.pear-carousel {
+    width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    background: var(--bg-hero-slot);
+    position: relative;
+    transition: border-radius var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pear-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.pear-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.pear-carousel-slide {
+    min-width: 100%;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+}
+
+.pear-carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 100vh;
+    transition: max-height var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pear-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0 8px 0;
+}
+
+.pear-carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: all var(--transition-speed) ease;
+}
+
+.pear-carousel-dot:hover {
+    background: var(--text-secondary);
+}
+
+.pear-carousel-dot.active {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    width: 24px;
+    border-radius: 100px;
+}
+
+/* Carousel arrow buttons */
+.pear-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    z-index: 10;
+}
+
+.pear-carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.55);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.pear-carousel-prev {
+    left: 16px;
+}
+
+.pear-carousel-next {
+    right: 16px;
+}
+
+/* Features */
+.pear-features {
+    padding: 120px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.pear-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.pear-feature-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 40px;
+    transition: all var(--transition-speed) ease;
+}
+
+.pear-feature-card:hover {
+    border-color: var(--border-focus);
+    background-color: var(--bg-card-hover);
+}
+
+.pear-feature-wide {
+    grid-column: span 2;
+}
+
+.pear-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(150, 108, 232, 0.08);
+    border: 1px solid rgba(150, 108, 232, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    color: var(--accent-purple);
+}
+
+.pear-feature-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.pear-feature-desc {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Showcase (alternating row) */
+.pear-showcase {
+    padding: 120px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.pear-showcase-row {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.pear-showcase-content {
+    flex: 1;
+}
+
+.pear-showcase-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.pear-showcase-desc {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.pear-showcase-media {
+    flex: 1.2;
+    min-width: 320px;
+}
+
+/* Cross-platform */
+.pear-compat {
+    padding: 120px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.pear-compat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.pear-compat-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 36px;
+    text-align: center;
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pear-compat-card:hover {
+    border-color: var(--border-focus);
+    background-color: var(--bg-card-hover);
+    transform: translateY(-2px);
+}
+
+.pear-compat-logo {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.pear-compat-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.pear-compat-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Download CTA */
+.pear-download {
+    padding: 120px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.pear-download-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 32px;
+    padding: 80px 48px;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.pear-download-title {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.pear-download-desc {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.pear-download-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.pear-download-note {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .pear-hero-title {
+        font-size: 3.25rem;
+    }
+
+    .pear-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pear-feature-wide {
+        grid-column: span 1;
+    }
+
+    .pear-showcase-row,
+    .pear-showcase-row {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .pear-compat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pear-carousel-slide img {
+        max-height: 360px;
+        object-fit: contain;
+    }
+}
+
+@media (max-width: 600px) {
+    .pear-hero-title {
+        font-size: 2.5rem;
+        letter-spacing: -1.5px;
+    }
+
+    .pear-hero-desc {
+        font-size: 1.05rem;
+    }
+
+    .pear-feature-card {
+        padding: 28px;
+    }
+
+    .pear-compat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pear-download-card {
+        padding: 48px 24px;
+    }
+
+    .pear-download-title {
+        font-size: 2rem;
+    }
+
+    .pear-carousel {
+        border-radius: 16px;
+    }
+
+    .pear-carousel-slide img {
+        max-height: 220px;
+        object-fit: contain;
+    }
+}
