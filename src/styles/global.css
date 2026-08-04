@@ -75,6 +75,25 @@ body {
         color var(--transition-speed) ease;
 }
 
+/* Skip to content link for accessibility */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 16px;
+    z-index: 1000;
+    padding: 12px 24px;
+    background-color: var(--accent-btn-bg);
+    color: var(--accent-btn-text);
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 16px;
+}
+
 /* Container / Contenedor general */
 .container {
     width: 100%;
@@ -949,6 +968,9 @@ html.dark .notice-icon {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .pear-carousel-track::-webkit-scrollbar {
