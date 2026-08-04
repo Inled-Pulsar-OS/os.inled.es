@@ -1,4 +1,4 @@
-name: Build
+name: Build and Deploy
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -28,9 +28,19 @@ jobs:
         run: npm run build
         env:
           # The community page syncs errors/ideas/help from the GitHub
-          # project at build time. The default GITHUB_TOKEN is only
-          # authorized for this repository's own resources; if the
-          # project lives in another organization, set a PAT with
-          # `project` + `read:org` scopes as a secret and reference it
-          # here (e.g. GITHUB_TOKEN: ${{ secrets.GITHUB_PROJECT_TOKEN }}).
+          # project at build time. The default GITHUB_TOKEN can read
+          # projects/issues of this organization; if it ever lacks
+          # access, create a fine-grained PAT with `Projects: Read` and
+          # `Issues: Read` on the Inled-Pulsar-OS org and store it as
+          # the GITHUB_PROJECT_TOKEN secret.
           GITHUB_TOKEN: ${{ secrets.GITHUB_PROJECT_TOKEN || github.token }}
+
+      - name: Publish to Cloudflare Pages
+        if: secrets.CLOUDFLARE_API_TOKEN != ''
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: a52219f385f97d9f46f3153ecef16fde
+          projectName: os-inled-es
+          directory: dist
+          gitHubToken: ${{ github.token }}
