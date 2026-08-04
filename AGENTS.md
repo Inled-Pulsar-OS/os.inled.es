@@ -23,16 +23,22 @@ Consult these guides before working on related tasks:
 
 ## Community page data source
 
-The `/community` page syncs errors, ideas and help requests from the GitHub
-project `https://github.com/orgs/Inled-Pulsar-OS/projects/1` via the loader in
-`src/lib/github-project-loader.ts`. Categorization is driven by GitHub labels:
+The `/community` page renders errors, ideas and help requests from markdown
+files in `src/data/community/`. The `Sync Community Data` GitHub Action
+(`.github/workflows/sync-community.yml` + `scripts/sync-community.mjs`) pulls
+them from the GitHub project `https://github.com/orgs/Inled-Pulsar-OS/projects/1`
+and commits the `.md` files, which Cloudflare Pages then builds. Categorization
+is driven by GitHub labels:
 
-- `bug` → errors section
-- `idea` → ideas section
-- `help-wanted` (or `help wanted`) → help section
+- `bug` (or `error`) → errors section
+- `idea` (or `enhancement`) → ideas section
+- `help-wanted` (or `help wanted`, `good first issue`) → help section
 
 When adding or editing project items, always set one of these labels and the
-"Status" project field. Without a `GITHUB_TOKEN` (local builds) the loader
-logs a warning and the page falls back to the markdown files in
-`src/data/community/`; edits there will be overwritten on the next synced
-deploy, so keep the GitHub project as the source of truth.
+"Status" project field. To regenerate the markdown locally, run:
+
+```
+GITHUB_TOKEN=$(gh auth token) node scripts/sync-community.mjs
+```
+
+The roadmap section is manual and lives in `src/data/community/roadmap/`.

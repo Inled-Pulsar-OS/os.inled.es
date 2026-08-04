@@ -1,13 +1,12 @@
 ---
 // Community page / Página de comunidad
-// Errors, ideas and help are synced from the GitHub project at build time
-// (requires GITHUB_TOKEN, e.g. in GitHub Actions). Local markdown in
-// src/data/community is used as a fallback when no token is available.
+// Errors, ideas and help are stored as markdown in src/data/community.
+// The "Sync Community Data" GitHub Action keeps them in sync with the
+// GitHub project (https://github.com/orgs/Inled-Pulsar-OS/projects/1).
 import Layout from "../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 
-const local = await getCollection("community");
-const github = await getCollection("github");
+const all = await getCollection("community");
 
 const withContent = async (entries) =>
     Promise.all(
@@ -20,21 +19,10 @@ const withContent = async (entries) =>
 const sortByDate = (a, b) =>
     b.entry.data.date.getTime() - a.entry.data.date.getTime();
 
-const fromGitHub = github.length > 0;
-const base = fromGitHub ? github : local;
-const categoryOf = (entry) =>
-    fromGitHub ? entry.data.category : entry.data.type;
-
-const pick = (category) =>
-    withContent(base.filter((e) => categoryOf(e) === category)).then((items) =>
-        items.sort(sortByDate),
-    );
-
-const errors = await pick("error");
-const ideas = await pick("idea");
-const helpItems = await pick("help");
-// Roadmap always comes from local markdown.
-const roadmap = (await withContent(local.filter((e) => e.data.type === "roadmap"))).sort(sortByDate);
+const errors = (await withContent(all.filter((e) => e.data.type === "error"))).sort(sortByDate);
+const ideas = (await withContent(all.filter((e) => e.data.type === "idea"))).sort(sortByDate);
+const roadmap = (await withContent(all.filter((e) => e.data.type === "roadmap"))).sort(sortByDate);
+const helpItems = (await withContent(all.filter((e) => e.data.type === "help"))).sort(sortByDate);
 
 const formatDate = (date) =>
     date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
