@@ -1,0 +1,42 @@
+---
+interface Channel {
+    title: string;
+    desc: string;
+    badge?: string;
+    badgeClass?: string;
+    extra?: string;
+}
+
+interface Props {
+    title: string;
+    subtitle: string;
+    channels: Channel[];
+    id?: string;
+}
+
+const { title, subtitle, channels, id } = Astro.props;
+---
+
+<section id={id} class="releases-section">
+    <div class="container">
+        <h2 class="section-title">{title}</h2>
+        <p class="section-subtitle">{subtitle}</p>
+
+        <div class="releases-grid">
+            {channels.map((channel) => (
+                <div class="release-card">
+                    {channel.badge && (
+                        <div class={`release-badge ${channel.badgeClass ?? ""}`}>
+                            {channel.badge}
+                        </div>
+                    )}
+                    <h3 class="release-title">{channel.title}</h3>
+                    <p class="release-desc">{channel.desc}</p>
+                    {channel.extra && (
+                        <p class="release-extra">{channel.extra}</p>
+                    )}
+                </div>
+            ))}
+        </div>
+    </div>
+</section>

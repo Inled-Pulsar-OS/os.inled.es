@@ -1,0 +1,122 @@
+---
+// Contributors page / Página de contribuyentes
+// Names are stored as markdown in src/data/people/hall-of-fame and src/data/people/collaborators.
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("people");
+
+const sortByDate = (a, b) =>
+    b.data.date.getTime() - a.data.date.getTime();
+
+const hallOfFame = all
+    .filter((entry) => entry.id.startsWith("hall-of-fame"))
+    .sort(sortByDate);
+const collaborators = all
+    .filter((entry) => entry.id.startsWith("collaborators"))
+    .sort(sortByDate);
+
+const formatDate = (date) =>
+    date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+const DISCORD = "https://link.inled.es/discord";
+const GITHUB = "https://github.com/Inled-Pulsar-OS";
+---
+
+<Layout
+    title="Community wall — Hall of Fame & Collaborators"
+    description="The people who recommend, test, audit and build Pulsar OS. Their names live here, permanently."
+>
+    <!-- Hero -->
+    <section class="community-hero">
+        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h1 class="section-title">Community wall</h1>
+            <p class="section-subtitle" style="margin-bottom: 0;">
+                Everyone who recommends Pulsar OS, brings people in, or contributes
+                in any way gets a permanent place here. This wall is ours.
+            </p>
+        </div>
+    </section>
+
+    <!-- Hall of Fame -->
+    <section class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Hall of Fame</h2>
+            <p class="section-subtitle">
+                Recommended Pulsar OS and brought new people to Discord or Matrix.
+                Their names stay here forever.
+            </p>
+
+            {
+                hallOfFame.length > 0 ? (
+                    <div class="community-people-grid">
+                        {hallOfFame.map((entry) => (
+                            <div class="community-person-card">
+                                <div class="community-person-name">{entry.data.name}</div>
+                                <p class="community-person-note">{entry.data.note}</p>
+                                <div class="community-person-date">
+                                    Joined the wall — {formatDate(entry.data.date)}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">
+                        No one on the wall yet. Recommend Pulsar OS to earn your place.
+                    </p>
+                )
+            }
+        </div>
+    </section>
+
+    <!-- Collaborators -->
+    <section class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Contributions and authors</h2>
+            <p class="section-subtitle">
+                People who audited, tested, coded, translated, designed or
+                documented the project — or whose project is included on PulsarOS
+            </p>
+
+            {
+                collaborators.length > 0 ? (
+                    <div class="community-people-grid">
+                        {collaborators.map((entry) => (
+                            <div class="community-person-card">
+                                <div class="community-person-name">{entry.data.name}</div>
+                                <p class="community-person-note">{entry.data.note}</p>
+                                <div class="community-person-date">
+                                    Since {formatDate(entry.data.date)}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">No collaborators yet — be the first.</p>
+                )
+            }
+        </div>
+    </section>
+
+    <!-- Join -->
+    <section class="community-bottom-cta">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title" style="font-size: 2.25rem;">
+                Your name could be next
+            </h2>
+            <p class="section-subtitle" style="margin-bottom: 32px;">
+                Recommend the project, or contribute with an audit, a test, a
+                translation or a pull request.
+            </p>
+            <div class="community-cta-row">
+                <a href="/community" class="btn btn-primary">Back to community</a>
+                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    <i class="fa-brands fa-discord"></i>&nbsp; Join Discord
+                </a>
+                <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    Explore repositories
+                </a>
+            </div>
+        </div>
+    </section>
+</Layout>

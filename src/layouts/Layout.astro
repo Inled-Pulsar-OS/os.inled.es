@@ -77,10 +77,9 @@ const {
 
                 <nav class="nav-links">
                     <a href="#hero" class="nav-link">Home</a>
-                    <a href="#flavours" class="nav-link">Flavours</a>
+                    <a href="/pear-edition" class="nav-link">Pear Edition</a>
                     <a href="#features" class="nav-link">Features</a>
-                    <a href="/contribute" class="nav-link">Contribute</a>
-                    <a href="#community" class="nav-link">Community</a>
+                    <a href="/community" class="nav-link">Community</a>
                     <a href="https://github.com/Inled-Pulsar-OS/DOCS/wiki" target="_blank" rel="noopener noreferrer" class="nav-link">Docs</a>
                 </nav>
 
@@ -136,7 +135,7 @@ const {
                     </button>
 
                     <a
-                        href="https://discord.com/invite/PSeTkDMnr"
+                        href="https://link.inled.es/discord"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn-icon btn-nav-icon"
@@ -164,9 +163,12 @@ const {
                         </svg>
                     </a>
                     <a
-                        href="/pear-edition"
+                        href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-download-warn
                         class="btn btn-primary btn-nav-download"
-                        >Download (coming soon)</a
+                        >Download</a
                     >
 
                     <!-- Hamburger Menu Button / Botón de menú hamburguesa -->
@@ -211,12 +213,11 @@ const {
             <!-- Mobile Navigation Menu / Menú de navegación móvil -->
             <nav id="mobile-nav" class="mobile-nav">
                 <a href="#hero" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a>
-                <a href="#flavours" class="mobile-nav-link" onclick="closeMobileMenu()">Flavours</a>
+                <a href="/pear-edition" class="mobile-nav-link" onclick="closeMobileMenu()">Pear Edition</a>
                 <a href="#features" class="mobile-nav-link" onclick="closeMobileMenu()">Features</a>
-                <a href="/contribute" class="mobile-nav-link" onclick="closeMobileMenu()">Contribute</a>
-                <a href="#community" class="mobile-nav-link" onclick="closeMobileMenu()">Community</a>
+                <a href="/community" class="mobile-nav-link" onclick="closeMobileMenu()">Community</a>
                 <a href="https://github.com/Inled-Pulsar-OS/DOCS/wiki" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Docs</a>
-                <a href="https://discord.com/invite/PSeTkDMnr" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Discord</a>
+                <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Discord</a>
                 <a href="https://matrix.to/#/!POXBFohLnmrKwRBxTi:matrix.org?via=matrix.org" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Matrix</a>
             </nav>
         </header>
@@ -258,6 +259,8 @@ const {
                         rel="noopener noreferrer"
                         class="footer-link">Projects</a
                     >
+                    <a href="/community" class="footer-link">Community</a>
+                    <a href="/community/contributors" class="footer-link">Wall</a>
                 </div>
             </div>
             <div class="container">
@@ -267,6 +270,42 @@ const {
                 </p>
             </div>
         </footer>
+
+        <!-- Alpha download warning dialog / Diálogo de aviso de descarga alpha -->
+        <dialog id="alpha-dialog" class="alpha-dialog">
+            <div class="alpha-dialog-content">
+                <h3 class="alpha-dialog-title">Pear Edition is in alpha</h3>
+                <p class="alpha-dialog-text">
+                    We are starting to offer it openly, but it is still in testing.
+                    We recommend trying it in a virtual machine and checking the
+                    GitHub project for known errors before using it on real hardware.
+                </p>
+                <div class="alpha-dialog-actions">
+                    <a
+                        href="https://github.com/orgs/Inled-Pulsar-OS/projects/1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-secondary"
+                    >
+                        View GitHub project
+                    </a>
+                    <a
+                        href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-primary"
+                        >Continue to download</a
+                    >
+                </div>
+                <button
+                    type="button"
+                    class="alpha-dialog-cancel"
+                    data-close-dialog
+                >
+                    Cancel
+                </button>
+            </div>
+        </dialog>
 
         <!-- Theme handler + mobile menu logic / Lógica de control de temas y menú móvil -->
         <script>
@@ -290,6 +329,23 @@ const {
                 menuToggle?.classList.remove("open");
                 mobileNav?.classList.remove("open");
             }
+
+            const alphaDialog = document.getElementById("alpha-dialog");
+
+            document.querySelectorAll("[data-download-warn]").forEach((btn) => {
+                btn.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    alphaDialog?.showModal();
+                });
+            });
+
+            document.querySelectorAll("[data-close-dialog]").forEach((btn) => {
+                btn.addEventListener("click", () => alphaDialog?.close());
+            });
+
+            alphaDialog?.addEventListener("click", (event) => {
+                if (event.target === alphaDialog) alphaDialog.close();
+            });
         </script>
     </body>
 </html>
@@ -582,6 +638,73 @@ const {
 
     .mobile-nav-link:hover {
         background: var(--bg-card-hover);
+        color: var(--text-primary);
+    }
+
+    /* Alpha download dialog / Diálogo de aviso de descarga */
+    .alpha-dialog {
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+        padding: 40px;
+        max-width: 460px;
+        width: calc(100% - 48px);
+        margin: auto;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+    }
+
+    .alpha-dialog::backdrop {
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
+    .alpha-dialog-content {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .alpha-dialog-title {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+    }
+
+    .alpha-dialog-text {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 28px;
+    }
+
+    .alpha-dialog-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .alpha-dialog-cancel {
+        margin-top: 20px;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: underline;
+        transition: color var(--transition-speed) ease;
+    }
+
+    .alpha-dialog-cancel:hover {
         color: var(--text-primary);
     }
 

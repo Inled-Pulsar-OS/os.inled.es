@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+        env:
+          # The community page syncs errors/ideas/help from the GitHub
+          # project at build time. The default GITHUB_TOKEN is only
+          # authorized for this repository's own resources; if the
+          # project lives in another organization, set a PAT with
+          # `project` + `read:org` scopes as a secret and reference it
+          # here (e.g. GITHUB_TOKEN: ${{ secrets.GITHUB_PROJECT_TOKEN }}).
+          GITHUB_TOKEN: ${{ secrets.GITHUB_PROJECT_TOKEN || github.token }}

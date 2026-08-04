@@ -1,0 +1,457 @@
+---
+// Community page / Página de comunidad
+// Errors, ideas and help are synced from the GitHub project at build time
+// (requires GITHUB_TOKEN, e.g. in GitHub Actions). Local markdown in
+// src/data/community is used as a fallback when no token is available.
+import Layout from "../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+
+const local = await getCollection("community");
+const github = await getCollection("github");
+
+const withContent = async (entries) =>
+    Promise.all(
+        entries.map(async (entry) => {
+            const { Content } = await render(entry);
+            return { entry, Content };
+        }),
+    );
+
+const sortByDate = (a, b) =>
+    b.entry.data.date.getTime() - a.entry.data.date.getTime();
+
+const fromGitHub = github.length > 0;
+const base = fromGitHub ? github : local;
+const categoryOf = (entry) =>
+    fromGitHub ? entry.data.category : entry.data.type;
+
+const pick = (category) =>
+    withContent(base.filter((e) => categoryOf(e) === category)).then((items) =>
+        items.sort(sortByDate),
+    );
+
+const errors = await pick("error");
+const ideas = await pick("idea");
+const helpItems = await pick("help");
+// Roadmap always comes from local markdown.
+const roadmap = (await withContent(local.filter((e) => e.data.type === "roadmap"))).sort(sortByDate);
+
+const formatDate = (date) =>
+    date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+const DISCORD = "https://link.inled.es/discord";
+const MATRIX = "https://matrix.to/#/!POXBFohLnmrKwRBxTi:matrix.org?via=matrix.org";
+const GITHUB = "https://github.com/Inled-Pulsar-OS";
+const PROJECT = "https://github.com/orgs/Inled-Pulsar-OS/projects/1";
+const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
+---
+
+<Layout
+    title="Community"
+    description="Pulsar OS is built by and for its community. Report errors, share ideas, help with audits and testing — or get your name on the wall."
+>
+    <!-- Hero -->
+    <section class="community-hero">
+        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h1 class="section-title">Built by the community</h1>
+            <p class="section-subtitle" style="margin-bottom: 0;">
+                We don't want to be a one-person distro. Errors, ideas, audits
+                and testing all live at the Github Project (posted here manually)
+            </p>
+        </div>
+    </section>
+
+    <!-- Join the conversation -->
+    <section class="community-channels-section">
+        <div class="container">
+            <div class="community-channels-grid">
+                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="community-channel-card">
+                    <div class="community-channel-icon"><i class="fa-brands fa-discord"></i></div>
+                    <h3 class="community-channel-title">Discord</h3>
+                    <p class="community-channel-desc">
+                        Chat with the community, ask questions and follow development in real time.
+                    </p>
+                </a>
+                <a href={MATRIX} target="_blank" rel="noopener noreferrer" class="community-channel-card">
+                    <div class="community-channel-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20">
+                            <path fill="currentColor" d="M61.6 27l-32.9 0 0 458 32.9 0 0 11-45.6 0 0-480 45.6 0 0 11zM496 496l-45.6 0 0-11 32.9 0 0-458-32.9 0 0-11 45.6 0 0 480zM324.1 167.6c9 0 17.4 1.1 25.2 3.3s14.3 5.7 19.8 10.6 9.8 11.2 12.9 19c3 7.8 4.6 17.3 4.6 28.3l0 114.5-47 0 0-97c0-5.7-.2-11.2-.6-16.3s-1.7-9.5-3.6-13.2c-2-3.8-4.9-6.8-8.7-9s-9.1-3.3-15.7-3.3c-6.6 0-12 1.3-16.1 3.8-4.1 2.6-7.3 5.8-9.6 10-2.3 4.1-3.9 8.7-4.6 13.9-.7 5.2-1.2 10.4-1.2 15.7l0 95.3-47 0 0-96c0-5.1-.1-10.1-.4-15-.2-5-1.2-9.5-2.9-13.8-1.7-4.1-4.4-7.6-8.3-10.1s-9.5-3.8-17.1-3.8c-2.2 0-5.2 .5-8.8 1.5s-7.2 2.9-10.6 5.6-6.4 6.7-8.8 11.9-3.6 12-3.6 20.4l0 99.3-47 0 0-171.3 44.3 0 0 23.2 .7 0c6.2-8.9 13.7-15.7 22.3-20.5 8.7-4.9 18.7-7.3 30-7.3 10.8 0 20.7 2.1 29.6 6.3s15.7 11.6 20.4 22.2c5.1-7.5 12-14.1 20.7-19.8s19-8.6 30.9-8.6z"/>
+                        </svg>
+                    </div>
+                    <h3 class="community-channel-title">Matrix</h3>
+                    <p class="community-channel-desc">
+                        An open alternative for everyone who prefers federation and open protocols.
+                    </p>
+                </a>
+                <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="community-channel-card">
+                    <div class="community-channel-icon"><i class="fa-brands fa-github"></i></div>
+                    <h3 class="community-channel-title">GitHub</h3>
+                    <p class="community-channel-desc">
+                        Every repository, every build and every line of code is public and auditable.
+                    </p>
+                </a>
+                <a href={PROJECT} target="_blank" rel="noopener noreferrer" class="community-channel-card">
+                    <div class="community-channel-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        </svg>
+                    </div>
+                    <h3 class="community-channel-title">Project Board</h3>
+                    <p class="community-channel-desc">
+                        See what is pending, in progress or done — and pick a task.
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reported errors -->
+    <section id="errors" class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Reported errors</h2>
+            <p class="section-subtitle">
+                Known issues are tracked openly. Found one we don't know about? Report it.
+            </p>
+
+            {
+                errors.length > 0 ? (
+                    <div class="community-grid">
+                        {errors.map(({ entry, Content }) => (
+                            <article class="community-item-card">
+                                <div class="community-item-meta">
+                                    <span class="community-status">{entry.data.status}</span>
+                                    {entry.data.priority && (
+                                        <span class={`community-priority priority-${entry.data.priority}`}>
+                                            {entry.data.priority}
+                                        </span>
+                                    )}
+                                </div>
+                                <h3 class="community-item-title">{entry.data.title}</h3>
+                                <div class="community-item-body"><Content /></div>
+                                <div class="community-item-footer">
+                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
+                                    {entry.data.url && (
+                                        <a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="community-item-link">
+                                            View on GitHub
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">No known errors right now — that's a good sign.</p>
+                )
+            }
+
+            <div class="community-cta-row">
+                <a href={ISSUES} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Report an error
+                </a>
+                <a href={PROJECT} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    Follow the fixes
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ideas -->
+    <section id="ideas" class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Ideas</h2>
+            <p class="section-subtitle">
+                The roadmap is shaped by the community. Proposals are reviewed openly.
+            </p>
+
+            {
+                ideas.length > 0 ? (
+                    <div class="community-grid">
+                        {ideas.map(({ entry, Content }) => (
+                            <article class="community-item-card">
+                                <div class="community-item-meta">
+                                    <span class="community-status">{entry.data.status}</span>
+                                    {entry.data.priority && (
+                                        <span class={`community-priority priority-${entry.data.priority}`}>
+                                            {entry.data.priority}
+                                        </span>
+                                    )}
+                                </div>
+                                <h3 class="community-item-title">{entry.data.title}</h3>
+                                <div class="community-item-body"><Content /></div>
+                                <div class="community-item-footer">
+                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
+                                    {entry.data.url && (
+                                        <a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="community-item-link">
+                                            View on GitHub
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">No ideas published yet — be the first to share one.</p>
+                )
+            }
+
+            <div class="community-cta-row">
+                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Share an idea
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section id="roadmap" class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Roadmap</h2>
+            <p class="section-subtitle">
+                What we are planning next — new editions and ideas we are
+                exploring. Some of these decisions need your input.
+            </p>
+
+            {
+                roadmap.length > 0 ? (
+                    <div class="community-grid community-grid-stack">
+                        {roadmap.map(({ entry, Content }) => (
+                            <article class="community-item-card">
+                                <div class="community-item-meta">
+                                    <span class="community-status">{entry.data.status}</span>
+                                    <span class={`community-priority priority-${entry.data.priority}`}>
+                                        {entry.data.priority}
+                                    </span>
+                                </div>
+                                <h3 class="community-item-title">{entry.data.title}</h3>
+                                <div class="community-item-body"><Content /></div>
+                                <div class="community-item-footer">
+                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">The roadmap is empty for now — check back soon.</p>
+                )
+            }
+
+            <div class="community-cta-row">
+                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Have your say
+                </a>
+                <a href={PROJECT} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    Follow the project board
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Help wanted -->
+    <section id="help" class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Help wanted</h2>
+            <p class="section-subtitle">
+                Concrete tasks where the community can help — audits, testing,
+                translations and documentation. Everything is credited.
+            </p>
+
+            {
+                helpItems.length > 0 ? (
+                    <div class="community-grid community-grid-wide">
+                        {helpItems.map(({ entry, Content }) => (
+                            <article class="community-item-card">
+                                <div class="community-item-meta">
+                                    <span class="community-status">{entry.data.status}</span>
+                                    {entry.data.priority && (
+                                        <span class={`community-priority priority-${entry.data.priority}`}>
+                                            {entry.data.priority}
+                                        </span>
+                                    )}
+                                </div>
+                                <h3 class="community-item-title">{entry.data.title}</h3>
+                                <div class="community-item-body"><Content /></div>
+                                <div class="community-item-footer">
+                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
+                                    {entry.data.url && (
+                                        <a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="community-item-link">
+                                            View on GitHub
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">Nothing open right now — check back soon.</p>
+                )
+            }
+
+            <div class="community-cta-row">
+                <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Explore repositories
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get your name on the wall -->
+    <section id="wall" class="community-referral-section">
+        <div class="container">
+            <h2 class="section-title">Get your name on the wall</h2>
+            <p class="section-subtitle">
+                Pulsar OS grows because people recommend it and help it. We want to
+                thank the people who make that happen — publicly.
+            </p>
+
+            <div class="community-referral-grid">
+                <div class="community-referral-card">
+                    <div class="community-referral-number">01</div>
+                    <h3 class="community-referral-title">Recommend Pulsar OS</h3>
+                    <p class="community-referral-desc">
+                        Recommend Pulsar OS and bring people into Discord or Matrix.
+                        When new members arrive, tell us who invited them — or write
+                        your name in the <code>hall-of-fame</code> file of the repo.
+                    </p>
+                    <div class="community-referral-reward">
+                        Your name gets etched into the
+                        <a href="/community/contributors">Hall of Fame</a>, on a
+                        dedicated page that stays forever.
+                    </div>
+                </div>
+
+                <div class="community-referral-card">
+                    <div class="community-referral-number">02</div>
+                    <h3 class="community-referral-title">Publicize or collaborate</h3>
+                    <p class="community-referral-desc">
+                        Write about Pulsar OS, run an audit, review code, translate,
+                        design, test on real hardware, document. Any contribution counts.
+                    </p>
+                    <div class="community-referral-reward">
+                        Your name joins the
+                        <a href="/community/contributors">Collaborators</a> list, with
+                        a note describing what you did.
+                    </div>
+                </div>
+            </div>
+
+            <div class="community-cta-row">
+                <a href="/community/contributors" class="btn btn-primary">
+                    Meet the community
+                </a>
+                <a href="#contribute" class="btn btn-secondary">
+                    How contributing works
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How contributing works (merged from the contribute page) -->
+    <section id="contribute" class="community-contribute-section">
+        <div class="container">
+            <h2 class="section-title">How contributing works</h2>
+            <p class="section-subtitle">
+                Pulsar OS is open source, built by and for the community. Whether
+                you're a developer, designer, translator, documentation writer or
+                simply want to help out, there is a place for you.
+            </p>
+
+            <div class="community-contribute-grid">
+                <div class="community-contribute-card">
+                    <div class="community-channel-icon"><i class="fa-brands fa-github"></i></div>
+                    <h3 class="community-contribute-title">GitHub Organization</h3>
+                    <p class="community-contribute-desc">
+                        All of Pulsar OS source code is available on GitHub. Explore the
+                        repositories, open issues, send pull requests and follow development
+                        in real time. The project board shows which tasks are pending, in
+                        progress or completed.
+                    </p>
+                    <div class="community-cta-row community-cta-inline">
+                        <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            GitHub Organization
+                        </a>
+                        <a href="https://github.com/orgs/Inled-Pulsar-OS/projects/1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            Project Board
+                        </a>
+                    </div>
+                </div>
+
+                <div class="community-contribute-card">
+                    <div class="community-channel-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="community-contribute-title">AI-assisted development policy</h3>
+                    <p class="community-contribute-desc">
+                        We welcome pull requests developed with the help of AI assistants,
+                        as long as they meet the following requirements:
+                    </p>
+                    <ol class="community-contribute-list">
+                        <li>
+                            <strong>Testing:</strong> Every AI-generated PR must pass the
+                            appropriate testing before being submitted. We don't accept
+                            untested code.
+                        </li>
+                        <li>
+                            <strong>Bilingual comments:</strong> All comments in the code
+                            must be written in both English and Spanish so the codebase
+                            remains accessible to our community. AI tools handle this
+                            effortlessly.
+                        </li>
+                    </ol>
+                    <p class="community-contribute-desc">
+                        AI is a powerful productivity tool, not a replacement for
+                        responsibility. If your PR is well tested and properly documented,
+                        it will be reviewed like any other.
+                    </p>
+                </div>
+
+                <div class="community-contribute-card">
+                    <div class="community-channel-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="community-contribute-title">Other ways to contribute</h3>
+                    <p class="community-contribute-desc">
+                        You don't need to be a programmer to help. You can contribute with
+                        documentation, translations, graphic design, bug reports, or simply
+                        by sharing Pulsar OS with others. Every bit helps.
+                    </p>
+                    <div class="community-cta-row community-cta-inline">
+                        <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            Explore repositories
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="community-bottom-cta">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title" style="font-size: 2.25rem;">
+                Start contributing today
+            </h2>
+            <p class="section-subtitle" style="margin-bottom: 32px;">
+                Whether you audit, test, translate, code or simply spread the word —
+                your name belongs on the wall.
+            </p>
+            <div class="community-cta-row">
+                <a href={PROJECT} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    See open tasks
+                </a>
+                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    <i class="fa-brands fa-discord"></i>&nbsp; Join Discord
+                </a>
+            </div>
+        </div>
+    </section>
+</Layout>
