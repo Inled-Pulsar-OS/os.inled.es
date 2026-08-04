@@ -124,6 +124,8 @@ async function fetchProjectItems() {
             node.fieldValueByName?.name ??
             (content.state === "CLOSED" ? "Done" : "Open");
 
+        if (status === "Completados" || status === "Done") continue;
+
         items.push({
             category,
             title: content.title ?? "Untitled",
