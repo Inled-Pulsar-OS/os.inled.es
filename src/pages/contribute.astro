@@ -2,8 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Contribute to Pulsar OS">
-    <section class="contribute-hero">
+<Layout pageKey="contribute">
+    <section class="contribute-hero" aria-label="Contribute hero">
         <div
             class="container"
             style="text-align: center; max-width: 800px; margin: 0 auto;"
@@ -18,9 +18,9 @@ import Layout from "../layouts/Layout.astro";
         </div>
     </section>
 
-    <section class="contribute-ways">
+    <section class="contribute-ways" aria-label="Ways to contribute">
         <div class="container" style="max-width: 800px; margin: 0 auto;">
-            <div class="community-card" style="margin-bottom: 32px;">
+            <article class="community-card" style="margin-bottom: 32px;">
                 <h2 class="community-title" style="font-size: 1.75rem;">
                     GitHub Organization
                 </h2>
@@ -49,9 +49,9 @@ import Layout from "../layouts/Layout.astro";
                         Project Board
                     </a>
                 </div>
-            </div>
+            </article>
 
-            <div class="community-card" style="margin-bottom: 32px;">
+            <article class="community-card" style="margin-bottom: 32px;">
                 <h2 class="community-title" style="font-size: 1.75rem;">
                     Discord
                 </h2>
@@ -90,9 +90,9 @@ import Layout from "../layouts/Layout.astro";
                         Matrix
                     </a>
                 </div>
-            </div>
+            </article>
 
-            <div class="community-card" style="margin-bottom: 32px;">
+            <article class="community-card" style="margin-bottom: 32px;">
                 <h2 class="community-title" style="font-size: 1.75rem;">
                     AI-assisted development policy
                 </h2>
@@ -120,9 +120,9 @@ import Layout from "../layouts/Layout.astro";
                     responsibility. If your PR is well tested and properly
                     documented, it will be reviewed like any other.
                 </p>
-            </div>
+            </article>
 
-            <div class="community-card">
+            <article class="community-card">
                 <h2 class="community-title" style="font-size: 1.75rem;">
                     Other ways to contribute
                 </h2>
@@ -142,11 +142,11 @@ import Layout from "../layouts/Layout.astro";
                         Explore repositories
                     </a>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
 
-    <section class="contribute-back">
+    <section class="contribute-back" aria-label="Back to landing">
         <div class="container" style="text-align: center; padding: 60px 0;">
             <a href="/" class="btn btn-secondary">&larr; Back to landing</a>
         </div>

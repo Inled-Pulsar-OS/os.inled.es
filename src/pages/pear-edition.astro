@@ -13,12 +13,9 @@ const PICTURES = [
 ]
 ---
 
-<Layout
-    title="Pear Edition — The macOS-Inspired Experience"
-    description="Pear Edition is a macOS-inspired edition of Pulsar OS. Elegant, minimal, and built on Arch Linux and Debian. The desktop experience you love, fully auditable."
->
+<Layout pageKey="pear-edition">
     <!-- Hero -->
-    <section class="pear-hero">
+    <section class="pear-hero" aria-label="Pear Edition hero">
         <div class="container pear-hero-inner">
             <span class="pear-tag">Pear Edition</span>
             <h1 class="pear-hero-title">
@@ -43,13 +40,13 @@ const PICTURES = [
         </div>
         <div class="container">
             <div class="pear-carousel" id="pear-carousel">
-                <div class="pear-carousel-track" id="pear-carousel-track">
-                    {PICTURES.map(picture => (
-                        <div class="pear-carousel-slide">
-                            <img src={picture} alt="Pear Edition screenshot" loading="lazy" />
-                        </div>
+                <ul class="pear-carousel-track" id="pear-carousel-track" role="list">
+                    {PICTURES.map((picture, index) => (
+                        <li class="pear-carousel-slide" role="group" aria-label={`Slide ${index + 1}`}>
+                            <img src={picture} alt={`Pear Edition screenshot - ${index + 1}`} loading="lazy" />
+                        </li>
                     ))}
-                </div>
+                </ul>
                 <button class="pear-carousel-btn pear-carousel-prev" aria-label="Previous slide">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"></polyline>
@@ -149,7 +146,7 @@ const PICTURES = [
     </section>
 
     <!-- Feature Cards -->
-    <section class="pear-features">
+    <section class="pear-features" aria-label="Features">
         <div class="container">
             <h2 class="section-title">Built for how you work</h2>
             <p class="section-subtitle">
@@ -157,7 +154,7 @@ const PICTURES = [
             </p>
 
             <div class="pear-features-grid">
-                <div class="pear-feature-card pear-feature-wide">
+                <article class="pear-feature-card pear-feature-wide">
                     <div class="pear-feature-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -170,9 +167,9 @@ const PICTURES = [
                         Top bar, dock, gestures, and window management that feel instantly
                         familiar. Not a clone — an interpretation that improves on the originals.
                     </p>
-                </div>
+                </article>
 
-                <div class="pear-feature-card">
+                <article class="pear-feature-card">
                     <div class="pear-feature-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
@@ -185,9 +182,9 @@ const PICTURES = [
                         Choose Debian for stability or Arch for rolling releases. AUR access,
                         latest drivers, or rock-solid packages — your call.
                     </p>
-                </div>
+                </article>
 
-                <div class="pear-feature-card">
+                <article class="pear-feature-card">
                     <div class="pear-feature-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -197,9 +194,9 @@ const PICTURES = [
                     <p class="pear-feature-desc">
                         No phone home, no tracking, no hidden data collection. Your machine stays yours.
                     </p>
-                </div>
+                </article>
 
-                <div class="pear-feature-card pear-feature-wide">
+                <article class="pear-feature-card pear-feature-wide">
                     <div class="pear-feature-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
@@ -212,13 +209,13 @@ const PICTURES = [
                         Every build runs on GitHub Actions. Source code, workflows, and
                         packaging are fully transparent. Reproducible from scratch.
                     </p>
-                </div>
+                </article>
             </div>
         </div>
     </section>
 
     <!-- Showcase -->
-    <section class="pear-showcase">
+    <section class="pear-showcase" aria-label="Showcase">
         <div class="container">
             <div class="pear-showcase-row">
                 <div class="pear-showcase-content">
@@ -244,7 +241,7 @@ const PICTURES = [
     </section>
 
     <!-- Cross-platform -->
-    <section class="pear-compat">
+    <section class="pear-compat" aria-label="Cross-platform compatibility">
         <div class="container">
             <h2 class="section-title">Connected everywhere</h2>
             <p class="section-subtitle">
@@ -253,7 +250,7 @@ const PICTURES = [
             </p>
 
             <div class="pear-compat-grid">
-                <div class="pear-compat-card">
+                <article class="pear-compat-card">
                     <img
                         src="https://hosted.inled.es/macboat.png"
                         alt="MacBoat logo"
@@ -264,9 +261,9 @@ const PICTURES = [
                         Run macOS in a VM, downloaded from Apple's official servers.
                         OpenCore integration, no hassle.
                     </p>
-                </div>
+                </article>
 
-                <div class="pear-compat-card">
+                <article class="pear-compat-card">
                     <img
                         src="https://hosted.inled.es/winboat_logo.NqN8dmd9.svg"
                         alt="WinBoat logo"
@@ -277,9 +274,9 @@ const PICTURES = [
                         Windows apps as native windows. Real Windows instance underneath,
                         no Wine, no activation.
                     </p>
-                </div>
+                </article>
 
-                <div class="pear-compat-card">
+                <article class="pear-compat-card">
                     <img
                         src="https://hosted.inled.es/droidtux.png"
                         alt="DroidTux logo"
@@ -290,9 +287,9 @@ const PICTURES = [
                         Android apps run as desktop windows. Your phone's apps,
                         on your big screen.
                     </p>
-                </div>
+                </article>
 
-                <div class="pear-compat-card">
+                <article class="pear-compat-card">
                     <img
                         src="https://hosted.inled.es/gsconnect.png"
                         alt="GSConnect logo"
@@ -303,15 +300,15 @@ const PICTURES = [
                         Notifications, file sharing, and remote control. Your phone
                         and desktop, unified.
                     </p>
-                </div>
+                </article>
             </div>
         </div>
     </section>
 
     <!-- Download CTA -->
-    <section id="download" class="pear-download">
+    <section id="download" class="pear-download" aria-label="Download">
         <div class="container">
-            <div class="pear-download-card">
+            <article class="pear-download-card">
                 <h2 class="pear-download-title">Get Pear Edition</h2>
                 <p class="pear-download-desc">
                     Free to download. Free to use. Free to audit.
@@ -332,7 +329,7 @@ const PICTURES = [
                 <p class="pear-download-note">
                     Available for x86_64. ISO image, ~2.5 GB.
                 </p>
-            </div>
+            </article>
         </div>
     </section>
 </Layout>
