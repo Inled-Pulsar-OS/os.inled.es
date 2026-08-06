@@ -5,18 +5,19 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
 ---
 
 <Layout
-    title="Download Pear Edition"
-    description="Minimum requirements, boot variants, installers and flashing instructions for Pear Edition. Read this before downloading the ISO."
+    title="Download the ISO"
+    description="Minimum requirements, editions, boot variants, installers and flashing instructions for Pulsar OS. Read this before downloading the ISO."
 >
     <div class="iso-page">
         <!-- Hero -->
         <section class="iso-hero">
             <div class="container iso-hero-inner">
-                <h1 class="iso-hero-title">Download Pear Edition</h1>
+                <h1 class="iso-hero-title">Download the ISO</h1>
                 <p class="iso-hero-desc">
-                    Everything you need to know before flashing the ISO — minimum
-                    requirements, boot variants, installers and the mistakes
-                    everyone makes. Read it once and save yourself a headache.
+                    Everything you need to know before flashing an ISO — minimum
+                    requirements, editions, boot variants, installers and the
+                    mistakes everyone makes. Read it once and save yourself a
+                    headache.
                 </p>
                 <div class="iso-hero-actions">
                     <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
@@ -26,8 +27,8 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </a>
-                    <a href="/pear-edition" class="btn btn-secondary">
-                        Back to Pear Edition
+                    <a href="/" class="btn btn-secondary">
+                        Back to home
                     </a>
                 </div>
             </div>
@@ -38,8 +39,8 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
             <div class="container">
                 <h2 class="section-title">Minimum requirements</h2>
                 <p class="section-subtitle">
-                    Pear Edition targets x86_64 hardware. These are the minimums —
-                    more is always better.
+                    For Pear Edition: x86_64 hardware with at least the following.
+                    These are the minimums — more is always better.
                 </p>
                 <div class="iso-req-grid">
                     <div class="iso-req-card">
@@ -96,6 +97,38 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
             </div>
         </section>
 
+        <!-- Editions -->
+        <section class="iso-section">
+            <div class="container">
+                <h2 class="section-title">Arch or Debian — your choice</h2>
+                <p class="section-subtitle">
+                    Every edition ships on both bases. Pick the one that fits how you
+                    use your computer.
+                </p>
+                <div class="iso-cards-grid">
+                    <div class="iso-info-card">
+                        <h3 class="iso-info-title">Debian Edition</h3>
+                        <p class="iso-info-desc">
+                            Rock-solid and predictable. Packages change slowly, so
+                            nothing breaks unexpectedly — but support for very recent
+                            hardware (new GPUs, Wi-Fi cards...) can lag behind. Best
+                            for older computers and anyone who values stability above
+                            all.
+                        </p>
+                    </div>
+                    <div class="iso-info-card">
+                        <h3 class="iso-info-title">Arch Edition</h3>
+                        <p class="iso-info-desc">
+                            Rolling release, always up to date with the newest drivers
+                            and packages. Excellent compatibility with new hardware —
+                            but updates ship constantly, so a version can introduce
+                            changes. Best for modern computers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Boot variants -->
         <section class="iso-section">
             <div class="container">
@@ -109,15 +142,13 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                         <h3 class="iso-info-title">rEFInd</h3>
                         <p class="iso-info-desc">
                             The closest to the Mac experience and the most comfortable
-                            to use. It requires a computer with <strong>UEFI</strong>
-                            support — it will not boot on legacy BIOS.
+                            to use. It requires a computer with <strong>UEFI</strong> support — it will not boot on legacy BIOS.
                         </p>
                     </div>
                     <div class="iso-info-card">
                         <h3 class="iso-info-title">GRUB</h3>
                         <p class="iso-info-desc">
-                            The classic bootloader. Works on any machine, including
-                            <strong>legacy BIOS</strong>. Choose this if your computer
+                            The classic bootloader. Works on any machine, including <strong>legacy BIOS</strong>. Choose this if your computer
                             does not support UEFI.
                         </p>
                     </div>
@@ -130,7 +161,7 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
             <div class="container">
                 <h2 class="section-title">Two installers included</h2>
                 <p class="section-subtitle">
-                    The ISO comes with two ways to install Pear Edition.
+                    Every edition comes with two ways to install the system.
                 </p>
                 <div class="iso-cards-grid">
                     <div class="iso-info-card iso-card-recommended">
@@ -143,8 +174,7 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                     <div class="iso-info-card">
                         <h3 class="iso-info-title">Calamares</h3>
                         <p class="iso-info-desc">
-                            Still being polished. It works as a
-                            <strong>fallback</strong> — if the Pulsar Installer fails
+                            Still being polished. It works as a <strong>fallback</strong> — if the Pulsar Installer fails
                             for any reason, try Calamares.
                         </p>
                     </div>
@@ -171,9 +201,7 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                 <div class="iso-flash-card">
                     <h3 class="iso-info-title">Recommended: balenaEtcher</h3>
                     <p class="iso-info-desc">
-                        Use
-                        <a href="https://etcher.balena.io/" target="_blank" rel="noopener noreferrer">balenaEtcher</a>
-                        to write the ISO image directly to the USB drive. Other tools
+                        Use <a href="https://etcher.balena.io/" target="_blank" rel="noopener noreferrer">balenaEtcher</a> to write the ISO image directly to the USB drive. Other tools
                         that write the ISO as a raw image (like Rufus or the
                         Raspberry Pi Imager) also work.
                     </p>
@@ -194,7 +222,7 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                         Once the installer finishes, nothing will remind you. The
                         system does not prompt you about it. Remove the USB drive
                         before you reboot — otherwise your computer may boot straight
-                        back into the installer instead of Pear Edition.
+                        back into the installer instead of your new system.
                     </p>
                 </div>
             </div>
