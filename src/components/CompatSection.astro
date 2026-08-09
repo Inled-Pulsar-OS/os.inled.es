@@ -1,0 +1,39 @@
+---
+interface CompatItem {
+    logo: string;
+    alt: string;
+    title: string;
+    desc: string;
+    meta?: string;
+}
+
+interface Props {
+    title: string;
+    subtitle: string;
+    items: CompatItem[];
+}
+
+const { title, subtitle, items } = Astro.props;
+---
+
+<section class="integrations-section">
+    <div class="container">
+        <h2 class="section-title">{title}</h2>
+        <p class="section-subtitle">{subtitle}</p>
+
+        <div class="integrations-grid">
+            {items.map((item) => (
+                <div class="integration-card">
+                    <img
+                        src={item.logo}
+                        alt={item.alt}
+                        class="integration-logo"
+                    />
+                    {item.meta && <span class="integration-meta">{item.meta}</span>}
+                    <h3 class="integration-title">{item.title}</h3>
+                    <p class="integration-desc">{item.desc}</p>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>

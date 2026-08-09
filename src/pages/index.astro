@@ -2,6 +2,8 @@
 // Landing Page for Pulsar OS (Aligned with Star Labs/Novacustom visual style)
 // Página de Aterrizaje General de Pulsar OS (Alineada con el estilo visual de Star Labs/Novacustom)
 import Layout from "../layouts/Layout.astro";
+import CompatSection from "../components/CompatSection.astro";
+import ReleaseChannels from "../components/ReleaseChannels.astro";
 ---
 
 <Layout pageKey="index">
@@ -50,7 +52,7 @@ import Layout from "../layouts/Layout.astro";
                         Explore Project Roadmap
                     </a>
                     <a
-                        href="https://discord.com/invite/PSeTkDMnr"
+                        href="https://link.inled.es/discord"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn btn-secondary"
@@ -84,7 +86,7 @@ import Layout from "../layouts/Layout.astro";
 
     <!-- Hero Features Row (4 clean cards in a horizontal row on desktop, inspired by reference image) -->
     <!-- Fila de Características del Hero (4 tarjetas limpias en una fila horizontal en escritorio, inspiradas en la referencia) -->
-    <section id="features" class="hero-features-section" aria-label="Key features">
+    <section class="hero-features-section" aria-label="Key features">
         <div class="container hero-features-grid">
             <!-- Feature Card 1 -->
             <article class="feature-card">
@@ -96,6 +98,7 @@ import Layout from "../layouts/Layout.astro";
                     desktop apps, you can run a fully MacOS desktop from
                     official servers and execute Windows apps as native apps
                     without Wine, eith a real Windows instance
+                    <!-- Diseñado sobre bases de Linux modernas, no adaptado a posteriori. Estable, seguro y listo para el día a día. -->
                 </p>
             </article>
 
@@ -104,6 +107,7 @@ import Layout from "../layouts/Layout.astro";
                 <h3 class="feature-title">Usability first</h3>
                 <p class="feature-desc">
                     A fully functional environment, which does not simply focus on replicating the MacOS or Windows experience, but rather focuses on the user experience. Without replicating patterns that are already difficult in MacOS or Windows, improving it.
+                    <!-- Un entorno de escritorio completamente funcional y estable configurado de fábrica para trabajar y jugar. -->
                 </p>
             </article>
 
@@ -112,6 +116,7 @@ import Layout from "../layouts/Layout.astro";
                 <h3 class="feature-title">Rock-solid base</h3>
                 <p class="feature-desc">
                     Unlike other custom distributions, we offer versions based on Arch Linux and Debian. In this way, we give the user the option to choose between more modern or more stable.
+                    <!-- Construido usando los repositorios de Debian Trixie. Misma estabilidad y paquetes del sistema core. -->
                 </p>
             </article>
 
@@ -123,156 +128,137 @@ import Layout from "../layouts/Layout.astro";
                     source code are auditable. We are the first Linux
                     distribution that is 100% replicable from source code.
                     You can contribute to all the code.
+                    <!-- Sin telemetría oculta ni restricciones de licencia. Verifica el código, audita y compila componentes. -->
                 </p>
             </article>
         </div>
     </section>
 
-    <!-- Flavours Section (Clean description cards, no feature lists, clean image placeholders) -->
-    <!-- Sección de Sabores (Tarjetas descriptivas limpias, sin listas de características, marcadores de imagen) -->
-    <section id="flavours" class="flavours-section" aria-label="Desktop flavours">
+    <!-- Pear Edition Public Test Announcement -->
+    <!-- Anuncio del Test Público de Pear Edition -->
+    <section class="notice-section pear-test-notice" aria-label="Pear Edition test announcement">
+        <div class="container notice-container">
+            <article class="notice-card">
+                <span class="notice-icon">&#9432;</span>
+                <div class="notice-content">
+                    <h3 class="notice-title">
+                        Pear Edition public testing has begun
+                    </h3>
+                    <p class="notice-desc">
+                        The macOS-inspired edition of Pulsar OS is now in public
+                        testing. Try it, report bugs and help us polish the
+                        experience — <a href="/pear-edition">learn more</a>.
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Pear Edition CTA Section (replaces Flavours) -->
+    <!-- Sección CTA de Pear Edition (reemplaza Flavours) -->
+    <section id="pear-edition" class="pear-cta-section" aria-label="Pear Edition">
         <div class="container">
-            <h2 class="section-title">Designed for Your Workflow</h2>
-            <p class="section-subtitle">
-                Pulsar OS is distributed in two target desktop configurations
-                tailored to mimic macOS and Windows.
-                <!-- Pulsar OS se ofrece en dos configuraciones de escritorio adaptadas para imitar macOS y Windows. -->
-            </p>
-
-            <!-- Pear Flavour -->
-            <div class="flavour-row">
-                <div class="flavour-info">
-                    <h3 class="flavour-title">Tahoe</h3>
-                    <p class="flavour-desc">
-                        It perfectly replicates the aesthetics of MacOS, even
-                        improving usability.
-                        <!-- Replica la estética pulida, barra superior, dock de aplicaciones y flujo Unix de macOS. Perfecto para la elegancia visual y desarrollo. -->
-                    </p>
-                </div>
-                <div class="flavour-media">
-                    <div class="image-placeholder">
-                        <img src="demopear1.png" alt="Pulsar OS Tahoe flavour - macOS-inspired desktop" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wintux Flavour (Inverted Row) -->
-            <div class="flavour-row inverted">
-                <div class="flavour-info">
-                    <h3 class="flavour-title">Wintux</h3>
-                    <p class="flavour-desc">
-                        Forget it, you don't need Winux or Ubuntu, you need
-                        something auditable and just like the Windows you love.
-                        <!-- Conserva el menú de inicio centrado, barra de tareas y atajos de teclado estándar de Windows. El puente de migración ideal. -->
-                    </p>
-                </div>
-                <div class="flavour-media">
-                    <div class="image-placeholder">
-                        <img
-                            src="https://hosted.inled.es/pulsar-win11-nobg.png"
-                            alt="Pulsar OS Wintux flavour - Windows-inspired desktop"
-                            class="image-placeholder-icon"
-                        />
-                        <div class="image-placeholder-title">Coming soon</div>
-                    </div>
+            <div class="pear-cta-content">
+                <img
+                    src="https://hosted.inled.es/pulsar-mac.png"
+                    alt="Pear Edition logo"
+                    class="pear-cta-logo"
+                />
+                <h2 class="pear-cta-title">Pear Edition</h2>
+                <p class="pear-cta-desc">
+                    The macOS-inspired edition of Pulsar OS has entered public
+                    testing. A polished desktop built on Arch Linux and Debian —
+                    familiar, minimal and 100% auditable. Each edition ships
+                    with GRUB and rEFInd boot variants, with rEFInd bringing a
+                    much more Mac-like and comfortable boot experience.
+                </p>
+                <div class="pear-cta-actions">
+                    <a href="/pear-edition" class="btn btn-primary">
+                        Discover Pear Edition
+                        <svg
+                            class="btn-arrow"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                    <a
+                        href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-download-warn
+                        class="btn btn-secondary"
+                    >
+                        Download the ISO
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Release Channels Section (Stable, Forky, Rolling) -->
-    <section id="releases" class="releases-section" aria-label="Release channels">
-        <div class="container">
-            <h2 class="section-title">Two release channel for every flavour</h2>
-            <p class="section-subtitle">
-                You may prefer the simplicity of Debian or the constant updating of Arch. Well, you can choose which one you prefer.
-            </p>
-            <div class="releases-grid">
-                <article class="release-card">
-                    <div class="release-badge stable">Stable</div>
-                    <h3 class="release-title">Debian Base</h3>
-                    <p class="release-desc">
-                        The most stable and simple distribution. Perfect for older or modern computers without new graphics.
-                    </p>
-                </article>
-                <article class="release-card">
-                    <div class="release-badge rolling">Rolling Release</div>
-                    <h3 class="release-title">Arch Linux Base</h3>
-                    <p class="release-desc">
-                       Do you want to be up to date or does your computer need newer drivers? This is the best decision!
-                    </p>
-                </article>
-            </div>
-        </div>
-    </section>
+    <ReleaseChannels
+        id="releases"
+        title="Two release channel for every flavour"
+        subtitle="You may prefer the simplicity of Debian or the constant updating of Arch. Well, you can choose which one you prefer."
+        channels={[
+            {
+                title: "Debian Base",
+                badge: "Stable",
+                badgeClass: "stable",
+                desc: "The most stable and simple distribution. Perfect for older or modern computers without new graphics."
+            },
+            {
+                title: "Arch Linux Base",
+                badge: "Rolling Release",
+                badgeClass: "rolling",
+                desc: "Do you want to be up to date or does your computer need newer drivers? This is the best decision!"
+            }
+        ]}
+    />
 
     <!-- Pulsar Integrations Section (Macboat, Winboat, Droidtux) -->
     <!-- Sección de Integraciones de Pulsar (Macboat, Winboat, Droidtux) -->
-    <section id="integrations" class="integrations-section" aria-label="Multi-OS integrations">
-        <div class="container">
-            <h2 class="section-title">Multi-os app compatibility</h2>
-            <p class="section-subtitle">
-               What many operating systems have failed to implement, we achieve. You can use everything from MacOS to Windows apps as native or even integrate your phone as if it were an iPhone in the Mac ecosystem.
-                <!-- Accede a tus otros entornos directamente desde Pulsar OS con integraciones nativas de sistema. -->
-            </p>
-
-            <div class="integrations-grid">
-                <!-- Macboat Integration -->
-                <article class="integration-card">
-                    <img
-                        src="https://hosted.inled.es/macboat.png"
-                        alt="Macboat Logo"
-                        class="integration-logo"
-                    />
-                    <h3 class="integration-title">Macboat</h3>
-                    <p class="integration-desc">
-                        Run ANY MacOS (AMD or ARM arch) on Pulsar OS with a complete desktop. Run from Big Sur to Sonoma and upgrade to Tahoe with one click. Opencore integration, no hassle, downloaded from Apple official servers
-                    </p>
-                </article>
-
-                <!-- Winboat Integration -->
-                <article class="integration-card">
-                    <img
-                        src="https://hosted.inled.es/winboat_logo.NqN8dmd9.svg"
-                        alt="Winboat Logo"
-                        class="integration-logo"
-                    />
-                    <span class="integration-meta">Third Party</span>
-                    <h3 class="integration-title">Winboat</h3>
-                    <p class="integration-desc">
-                        Execute Windows apps as normal apps on Pulsar OS. Under the hood, they're running on a Windows VM. No activation needed, downloaded from Microsoft official servers.
-                    </p>
-                </article>
-
-                <!-- Droidtux Integration -->
-                <article class="integration-card">
-                    <img
-                        src="https://hosted.inled.es/droidtux.png"
-                        alt="Droidtux Logo"
-                        class="integration-logo"
-                    />
-                    <h3 class="integration-title">Droidtux</h3>
-                    <p class="integration-desc">
-                        Integrate your Android phone's apps as native apps, but they run on your phone. 
-                        Use your phone as virtual camera
-                    </p>
-                </article>
-
-                <!-- GSConnect Integration -->
-                <article class="integration-card">
-                    <img
-                        src="https://hosted.inled.es/gsconnect.png"
-                        alt="GSConnect Logo"
-                        class="integration-logo"
-                    />
-                    <h3 class="integration-title">GSConnect</h3>
-                    <p class="integration-desc">
-                       Share notifications, control your desktop and many more with GSConnect
-                    </p>
-                </article>
-            </div>
-        </div>
-    </section>
+    <CompatSection
+        id="integrations"
+        title="Multi-os app compatibility"
+        subtitle="What many operating systems have failed to implement, we achieve. You can use everything from MacOS to Windows apps as native or even integrate your phone as if it were an iPhone in the Mac ecosystem."
+        items={[
+            {
+                logo: "https://hosted.inled.es/macboat.png",
+                alt: "Macboat Logo",
+                title: "Macboat",
+                desc: "Run ANY MacOS (AMD or ARM arch) on Pulsar OS with a complete desktop. Run from Big Sur to Sonoma and upgrade to Tahoe with one click. Opencore integration, no hassle, downloaded from Apple official servers."
+            },
+            {
+                logo: "https://hosted.inled.es/winboat_logo.NqN8dmd9.svg",
+                alt: "Winboat Logo",
+                title: "Winboat",
+                meta: "Third Party",
+                desc: "Execute Windows apps as normal apps on Pulsar OS. Under the hood, they're running on a Windows VM. No activation needed, downloaded from Microsoft official servers."
+            },
+            {
+                logo: "https://hosted.inled.es/droidtux.png",
+                alt: "Droidtux Logo",
+                title: "Droidtux",
+                desc: "Integrate your Android phone's apps as native apps, but they run on your phone. Use your phone as virtual camera."
+            },
+            {
+                logo: "https://hosted.inled.es/gsconnect.png",
+                alt: "GSConnect Logo",
+                title: "GSConnect",
+                desc: "Share notifications, control your desktop and many more with GSConnect."
+            }
+        ]}
+    />
 
     <!-- Enterprise, Individual & Institution Section -->
     <!-- Sección para Empresas, Particulares e Instituciones -->
@@ -326,7 +312,7 @@ import Layout from "../layouts/Layout.astro";
     <!-- Current State Notice -->
     <section class="notice-section" aria-label="Current state">
         <div class="container notice-container">
-            <div class="notice-card">
+            <article class="notice-card">
                 <span class="notice-icon">&#9432;</span>
                 <div class="notice-content">
                     <h3 class="notice-title">Current state</h3>
@@ -337,7 +323,7 @@ import Layout from "../layouts/Layout.astro";
                         bumps along the road.
                     </p>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
 
@@ -345,17 +331,17 @@ import Layout from "../layouts/Layout.astro";
     <!-- Sección de Comunidad y Contribución -->
     <section id="community" class="community-section" aria-label="Community">
         <div class="container community-container">
-            <article class="community-card">
+            <div class="community-card">
                 <h2 class="community-title">Community</h2>
                 <p class="community-desc">
                     We want to grow by delegating responsibility, not by
                     concentrating decisions in a handful of people. If you want
-                    to become a contributor, get in touch.
+                    to become a contributor, get in touch. <br>
                     We will soon publish a list of contributing positions we need (we are open to any type, but this way we can reach specific people)
                 </p>
                 <div class="community-actions">
                     <a
-                        href="https://discord.com/invite/PSeTkDMnr"
+                        href="https://link.inled.es/discord"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn btn-secondary"
@@ -390,11 +376,11 @@ import Layout from "../layouts/Layout.astro";
                     >
                         Documentation
                     </a>
-                    <a href="/contribute" class="btn btn-secondary">
-                        See how to contribute
+                    <a href="/community" class="btn btn-secondary">
+                        Join the community
                     </a>
                 </div>
-            </article>
+            </div>
         </div>
     </section>
 </Layout>

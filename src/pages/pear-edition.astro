@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CompatSection from "../components/CompatSection.astro";
+import ReleaseChannels from "../components/ReleaseChannels.astro";
 
 const PICTURES = [
     "/assets/pear-edition/boot.png",
@@ -11,325 +13,360 @@ const PICTURES = [
     "/assets/pear-edition/spotlight.png",
     "/assets/pear-edition/wizard.png"
 ]
+
+const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
+const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
 ---
 
 <Layout pageKey="pear-edition">
-    <!-- Hero -->
-    <section class="pear-hero" aria-label="Pear Edition hero">
-        <div class="container pear-hero-inner">
-            <span class="pear-tag">Pear Edition</span>
-            <h1 class="pear-hero-title">
-                The macOS experience.<br />Fully open-source.
-            </h1>
-            <p class="pear-hero-desc">
-                A polished desktop built on Arch Linux and Debian. Familiar workflow,
-                zero telemetry, complete auditable source code.
-            </p>
-            <div class="pear-hero-actions">
-                <a href="#download" class="btn btn-primary">
-                    Download Pear Edition
-                    <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </a>
-                <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                    View on GitHub
-                </a>
-            </div>
-        </div>
-        <div class="container">
-            <div class="pear-carousel" id="pear-carousel">
-                <ul class="pear-carousel-track" id="pear-carousel-track" role="list">
-                    {PICTURES.map((picture, index) => (
-                        <li class="pear-carousel-slide" role="group" aria-label={`Slide ${index + 1}`}>
-                            <img src={picture} alt={`Pear Edition screenshot - ${index + 1}`} loading="lazy" />
-                        </li>
-                    ))}
-                </ul>
-                <button class="pear-carousel-btn pear-carousel-prev" aria-label="Previous slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                </button>
-                <button class="pear-carousel-btn pear-carousel-next" aria-label="Next slide">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </button>
-                <div class="pear-carousel-dots" id="pear-carousel-dots">
-                    {PICTURES.map((_, index) => (
-                        <button class={`pear-carousel-dot ${index === 0 ? 'active' : ''}`} aria-label={`Slide ${index + 1}`}></button>
-                    ))}
-                </div>
-            </div>
-        </div>
-
-        <script>
-            (function () {
-                const track = document.getElementById("pear-carousel-track");
-                const dots = document.querySelectorAll(".pear-carousel-dot");
-                const prevBtn = document.querySelector(".pear-carousel-prev");
-                const nextBtn = document.querySelector(".pear-carousel-next");
-                if (!track || !dots.length) return;
-
-                let currentIndex = 0;
-                let autoTimer: ReturnType<typeof setInterval>;
-                const totalSlides = dots.length;
-
-                function getSlideWidth() {
-                    const slide = track!.querySelector(".pear-carousel-slide");
-                    if (!slide) return 0;
-                    return (slide as HTMLElement).offsetWidth;
-                }
-
-                function updateDots() {
-                    const scrollLeft = track!.scrollLeft;
-                    const slideWidth = getSlideWidth();
-                    if (slideWidth === 0) return;
-                    const index = Math.round(scrollLeft / slideWidth);
-                    if (index !== currentIndex) {
-                        currentIndex = index;
-                        dots.forEach((dot, i) => {
-                            dot.classList.toggle("active", i === currentIndex);
-                        });
-                    }
-                }
-
-                function scrollToIndex(index: number) {
-                    const slideWidth = getSlideWidth();
-                    track!.scrollTo({ left: index * slideWidth, behavior: "smooth" });
-                }
-
-                function startAutoScroll() {
-                    stopAutoScroll();
-                    autoTimer = setInterval(() => {
-                        currentIndex = (currentIndex + 1) % totalSlides;
-                        scrollToIndex(currentIndex);
-                    }, 4000);
-                }
-
-                function stopAutoScroll() {
-                    clearInterval(autoTimer);
-                }
-
-                function goPrev() {
-                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-                    scrollToIndex(currentIndex);
-                    startAutoScroll();
-                }
-
-                function goNext() {
-                    currentIndex = (currentIndex + 1) % totalSlides;
-                    scrollToIndex(currentIndex);
-                    startAutoScroll();
-                }
-
-                dots.forEach((dot, i) => {
-                    dot.addEventListener("click", () => {
-                        currentIndex = i;
-                        scrollToIndex(i);
-                        startAutoScroll();
-                    });
-                });
-
-                prevBtn?.addEventListener("click", goPrev);
-                nextBtn?.addEventListener("click", goNext);
-
-                track.addEventListener("mouseenter", stopAutoScroll);
-                track.addEventListener("mouseleave", startAutoScroll);
-                track.addEventListener("scroll", updateDots, { passive: true });
-
-                startAutoScroll();
-            })();
-        </script>
-    </section>
-
-    <!-- Feature Cards -->
-    <section class="pear-features" aria-label="Features">
-        <div class="container">
-            <h2 class="section-title">Built for how you work</h2>
-            <p class="section-subtitle">
-                Pear Edition combines a refined desktop with the power of Arch Linux and Debian.
-            </p>
-
-            <div class="pear-features-grid">
-                <article class="pear-feature-card pear-feature-wide">
-                    <div class="pear-feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                    </div>
-                    <h3 class="pear-feature-title">macOS-inspired desktop</h3>
-                    <p class="pear-feature-desc">
-                        Top bar, dock, gestures, and window management that feel instantly
-                        familiar. Not a clone — an interpretation that improves on the originals.
-                    </p>
-                </article>
-
-                <article class="pear-feature-card">
-                    <div class="pear-feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                            <path d="M2 17l10 5 10-5"></path>
-                            <path d="M2 12l10 5 10-5"></path>
-                        </svg>
-                    </div>
-                    <h3 class="pear-feature-title">Stable or rolling, your choice</h3>
-                    <p class="pear-feature-desc">
-                        Choose Debian for stability or Arch for rolling releases. AUR access,
-                        latest drivers, or rock-solid packages — your call.
-                    </p>
-                </article>
-
-                <article class="pear-feature-card">
-                    <div class="pear-feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="pear-feature-title">Zero telemetry</h3>
-                    <p class="pear-feature-desc">
-                        No phone home, no tracking, no hidden data collection. Your machine stays yours.
-                    </p>
-                </article>
-
-                <article class="pear-feature-card pear-feature-wide">
-                    <div class="pear-feature-icon">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                        </svg>
-                    </div>
-                    <h3 class="pear-feature-title">100% auditable</h3>
-                    <p class="pear-feature-desc">
-                        Every build runs on GitHub Actions. Source code, workflows, and
-                        packaging are fully transparent. Reproducible from scratch.
-                    </p>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Showcase -->
-    <section class="pear-showcase" aria-label="Showcase">
-        <div class="container">
-            <div class="pear-showcase-row">
-                <div class="pear-showcase-content">
-                    <span class="pear-tag">Polished</span>
-                    <h2 class="pear-showcase-title">A desktop that feels finished</h2>
-                    <p class="pear-showcase-desc">
-                        Every detail matters — from window animations to icon consistency.
-                        Pear Edition ships configured and cohesive out of the box.
-                    </p>
-                </div>
-                <div class="pear-showcase-media">
-                    <div class="image-placeholder">
-                        <!-- Replace with Figma export -->
-                        <img
-                            src="/assets/pear-edition/Captura_de_pantalla_de_2026-08-03_20-04-34.png"
-                            alt="Pear Edition polished desktop environment"
-                            loading="lazy"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cross-platform -->
-    <section class="pear-compat" aria-label="Cross-platform compatibility">
-        <div class="container">
-            <h2 class="section-title">Connected everywhere</h2>
-            <p class="section-subtitle">
-                Your other systems aren't islands. Pear Edition bridges macOS, Windows,
-                and Android — natively.
-            </p>
-
-            <div class="pear-compat-grid">
-                <article class="pear-compat-card">
-                    <img
-                        src="https://hosted.inled.es/macboat.png"
-                        alt="MacBoat logo"
-                        class="pear-compat-logo"
-                    />
-                    <h3 class="pear-compat-title">MacBoat</h3>
-                    <p class="pear-compat-desc">
-                        Run macOS in a VM, downloaded from Apple's official servers.
-                        OpenCore integration, no hassle.
-                    </p>
-                </article>
-
-                <article class="pear-compat-card">
-                    <img
-                        src="https://hosted.inled.es/winboat_logo.NqN8dmd9.svg"
-                        alt="WinBoat logo"
-                        class="pear-compat-logo"
-                    />
-                    <h3 class="pear-compat-title">WinBoat</h3>
-                    <p class="pear-compat-desc">
-                        Windows apps as native windows. Real Windows instance underneath,
-                        no Wine, no activation.
-                    </p>
-                </article>
-
-                <article class="pear-compat-card">
-                    <img
-                        src="https://hosted.inled.es/droidtux.png"
-                        alt="DroidTux logo"
-                        class="pear-compat-logo"
-                    />
-                    <h3 class="pear-compat-title">DroidTux</h3>
-                    <p class="pear-compat-desc">
-                        Android apps run as desktop windows. Your phone's apps,
-                        on your big screen.
-                    </p>
-                </article>
-
-                <article class="pear-compat-card">
-                    <img
-                        src="https://hosted.inled.es/gsconnect.png"
-                        alt="GSConnect logo"
-                        class="pear-compat-logo"
-                    />
-                    <h3 class="pear-compat-title">GSConnect</h3>
-                    <p class="pear-compat-desc">
-                        Notifications, file sharing, and remote control. Your phone
-                        and desktop, unified.
-                    </p>
-                </article>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download CTA -->
-    <section id="download" class="pear-download" aria-label="Download">
-        <div class="container">
-            <article class="pear-download-card">
-                <h2 class="pear-download-title">Get Pear Edition</h2>
-                <p class="pear-download-desc">
-                    Free to download. Free to use. Free to audit.
-                    Built by the community, for everyone.
+    <div class="pear-page">
+        <!-- Hero -->
+        <section class="pear-hero" aria-label="Pear Edition hero">
+            <div class="container pear-hero-inner">
+                <img src={PEAR_LOGO} alt="Pear Edition logo" class="pear-logo" />
+                <h1 class="pear-hero-title">
+                    The macOS experience.<br />Fully open-source.
+                </h1>
+                <p class="pear-hero-desc">
+                    A polished desktop built on Arch Linux and Debian. Familiar workflow,
+                    zero telemetry, complete auditable source code.
                 </p>
-                <div class="pear-download-actions">
-                    <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                        Download
+                <div class="pear-hero-actions">
+                    <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" data-download-warn class="btn btn-primary">
+                        Download Pear Edition
                         <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </a>
-                    <a href="https://github.com/orgs/Inled-Pulsar-OS/projects/1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                        View Roadmap
+                    <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                        View on GitHub
                     </a>
                 </div>
-                <p class="pear-download-note">
-                    Available for x86_64. ISO image, ~2.5 GB.
+            </div>
+            <div class="container">
+                <div class="pear-carousel" id="pear-carousel">
+                    <ul class="pear-carousel-track" id="pear-carousel-track" role="list">
+                        {PICTURES.map((picture, index) => (
+                            <li class="pear-carousel-slide" role="group" aria-label={`Slide ${index + 1}`}>
+                                <img src={picture} alt={`Pear Edition screenshot - ${index + 1}`} loading="lazy" />
+                            </li>
+                        ))}
+                    </ul>
+                    <button class="pear-carousel-btn pear-carousel-prev" aria-label="Previous slide">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="pear-carousel-btn pear-carousel-next" aria-label="Next slide">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    <div class="pear-carousel-dots" id="pear-carousel-dots">
+                        {PICTURES.map((_, index) => (
+                            <button class={`pear-carousel-dot ${index === 0 ? 'active' : ''}`} aria-label={`Slide ${index + 1}`}></button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                (function () {
+                    const track = document.getElementById("pear-carousel-track");
+                    const dots = document.querySelectorAll(".pear-carousel-dot");
+                    const prevBtn = document.querySelector(".pear-carousel-prev");
+                    const nextBtn = document.querySelector(".pear-carousel-next");
+                    if (!track || !dots.length) return;
+
+                    let currentIndex = 0;
+                    let autoTimer: ReturnType<typeof setInterval>;
+                    const totalSlides = dots.length;
+
+                    function getSlideWidth() {
+                        const slide = track!.querySelector(".pear-carousel-slide");
+                        if (!slide) return 0;
+                        return (slide as HTMLElement).offsetWidth;
+                    }
+
+                    function updateDots() {
+                        const scrollLeft = track!.scrollLeft;
+                        const slideWidth = getSlideWidth();
+                        if (slideWidth === 0) return;
+                        const index = Math.round(scrollLeft / slideWidth);
+                        if (index !== currentIndex) {
+                            currentIndex = index;
+                            dots.forEach((dot, i) => {
+                                dot.classList.toggle("active", i === currentIndex);
+                            });
+                        }
+                    }
+
+                    function scrollToIndex(index: number) {
+                        const slideWidth = getSlideWidth();
+                        track!.scrollTo({ left: index * slideWidth, behavior: "smooth" });
+                    }
+
+                    function startAutoScroll() {
+                        stopAutoScroll();
+                        autoTimer = setInterval(() => {
+                            currentIndex = (currentIndex + 1) % totalSlides;
+                            scrollToIndex(currentIndex);
+                        }, 4000);
+                    }
+
+                    function stopAutoScroll() {
+                        clearInterval(autoTimer);
+                    }
+
+                    function goPrev() {
+                        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                        scrollToIndex(currentIndex);
+                        startAutoScroll();
+                    }
+
+                    function goNext() {
+                        currentIndex = (currentIndex + 1) % totalSlides;
+                        scrollToIndex(currentIndex);
+                        startAutoScroll();
+                    }
+
+                    dots.forEach((dot, i) => {
+                        dot.addEventListener("click", () => {
+                            currentIndex = i;
+                            scrollToIndex(i);
+                            startAutoScroll();
+                        });
+                    });
+
+                    prevBtn?.addEventListener("click", goPrev);
+                    nextBtn?.addEventListener("click", goNext);
+
+                    track.addEventListener("mouseenter", stopAutoScroll);
+                    track.addEventListener("mouseleave", startAutoScroll);
+                    track.addEventListener("scroll", updateDots, { passive: true });
+
+                    startAutoScroll();
+                })();
+            </script>
+        </section>
+
+        <!-- Editions -->
+        <ReleaseChannels
+            id="editions"
+            title="Choose your edition"
+            subtitle="Pear Edition comes in two base editions — Debian and Arch. Both include two boot variants: GRUB and rEFInd. rEFInd is the closest to the Mac experience and the most comfortable to use."
+            channels={[
+                {
+                    title: "Debian Edition",
+                    desc: "A rock-solid, simple base. Perfect for older computers or anyone who values stability above everything else.",
+                    extra: "Ships with GRUB and rEFInd — the rEFInd variant is much more Mac-like and comfortable."
+                },
+                {
+                    title: "Arch Edition",
+                    desc: "Always up to date with the newest drivers and packages. The choice for modern hardware.",
+                    extra: "Ships with GRUB and rEFInd — the rEFInd variant is much more Mac-like and comfortable."
+                }
+            ]}
+        />
+
+        <!-- Feature Cards -->
+        <section class="pear-features" aria-label="Pear Edition features">
+            <div class="container">
+                <h2 class="section-title">Built for how you work</h2>
+                <p class="section-subtitle">
+                    Pear Edition combines a refined desktop with the power of Arch Linux and Debian.
                 </p>
-            </article>
-        </div>
-    </section>
+
+                <div class="pear-features-grid">
+                    <article class="pear-feature-card pear-feature-wide">
+                        <div class="pear-feature-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                        </div>
+                        <h3 class="pear-feature-title">macOS-inspired desktop</h3>
+                        <p class="pear-feature-desc">
+                            Top bar, dock, gestures, and window management that feel instantly
+                            familiar. Not a clone — an interpretation that improves on the originals.
+                        </p>
+                    </article>
+
+                    <article class="pear-feature-card">
+                        <div class="pear-feature-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <h3 class="pear-feature-title">Stable or rolling, your choice</h3>
+                        <p class="pear-feature-desc">
+                            Choose Debian for stability or Arch for rolling releases. AUR access,
+                            latest drivers, or rock-solid packages — your call.
+                        </p>
+                    </article>
+
+                    <article class="pear-feature-card">
+                        <div class="pear-feature-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="pear-feature-title">Zero telemetry</h3>
+                        <p class="pear-feature-desc">
+                            No phone home, no tracking, no hidden data collection. Your machine stays yours.
+                        </p>
+                    </article>
+
+                    <article class="pear-feature-card pear-feature-wide">
+                        <div class="pear-feature-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h3 class="pear-feature-title">100% auditable</h3>
+                        <p class="pear-feature-desc">
+                            Every build runs on GitHub Actions. Source code, workflows, and
+                            packaging are fully transparent. Reproducible from scratch.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Showcase -->
+        <section class="pear-showcase" aria-label="Desktop showcase">
+            <div class="container">
+                <div class="pear-showcase-row">
+                    <div class="pear-showcase-content">
+                        <h2 class="pear-showcase-title">A desktop that feels finished</h2>
+                        <p class="pear-showcase-desc">
+                            Every detail matters — from window animations to icon consistency.
+                            Pear Edition ships configured and cohesive out of the box.
+                        </p>
+                    </div>
+                    <div class="pear-showcase-media">
+                        <div class="image-placeholder">
+                            <img
+                                src="/assets/pear-edition/desktop.png"
+                                alt="Pear Edition polished desktop environment"
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pear Apps -->
+        <section class="pear-apps" aria-label="Pear apps">
+            <div class="container">
+                <h2 class="section-title">Made for Pear</h2>
+                <p class="section-subtitle">
+                    Pear Edition ships with its own take on the classics — and more
+                    is on the way.
+                </p>
+
+                <div class="pear-apps-grid">
+                    <article class="pear-app-card">
+                        <img
+                            src="https://hosted.inled.es/seafari.png"
+                            alt="Seafari logo"
+                            class="pear-app-logo"
+                        />
+                        <h3 class="pear-app-title">Seafari</h3>
+                        <p class="pear-app-desc">
+                            A Safari-style browser built on Firefox, already included in
+                            Pear OS. Familiar gestures and a clean experience on an
+                            engine you can trust.
+                        </p>
+                    </article>
+
+                    <article class="pear-app-card">
+                        <div class="pear-app-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2c4 5 7 8.5 7 12a7 7 0 1 1-14 0c0-3.5 3-7 7-12z"></path>
+                                <path d="M9 14a3 3 0 0 0 3 3"></path>
+                            </svg>
+                        </div>
+                        <h3 class="pear-app-title">Liquid Glass</h3>
+                        <p class="pear-app-desc">
+                            Translucent, fluid window effects in the spirit of modern
+                            macOS. Still in development — the next improvements focus on
+                            reducing resource consumption.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cross-platform -->
+        <CompatSection
+            title="Connected everywhere"
+            subtitle="Your other systems aren't islands. Pear Edition bridges macOS, Windows, and Android — natively."
+            items={[
+                {
+                    logo: "https://hosted.inled.es/macboat.png",
+                    alt: "MacBoat logo",
+                    title: "MacBoat",
+                    desc: "Run macOS in a VM, downloaded from Apple's official servers. OpenCore integration, no hassle."
+                },
+                {
+                    logo: "https://hosted.inled.es/winboat_logo.NqN8dmd9.svg",
+                    alt: "WinBoat logo",
+                    title: "WinBoat",
+                    desc: "Windows apps as native windows. Real Windows instance underneath, no Wine, no activation."
+                },
+                {
+                    logo: "https://hosted.inled.es/droidtux.png",
+                    alt: "DroidTux logo",
+                    title: "DroidTux",
+                    desc: "Android apps run as desktop windows. Your phone's apps, on your big screen."
+                },
+                {
+                    logo: "https://hosted.inled.es/gsconnect.png",
+                    alt: "GSConnect logo",
+                    title: "GSConnect",
+                    desc: "Notifications, file sharing, and remote control. Your phone and desktop, unified."
+                }
+            ]}
+        />
+
+        <!-- Download CTA -->
+        <section id="download" class="pear-download" aria-label="Download Pear Edition">
+            <div class="container">
+                <div class="pear-download-card">
+                    <h2 class="pear-download-title">Get Pear Edition</h2>
+                    <p class="pear-download-desc">
+                        Free to download. Free to use. Free to audit.
+                        Built by the community, for everyone.
+                    </p>
+                    <div class="pear-download-actions">
+                        <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" data-download-warn class="btn btn-primary">
+                            Download
+                            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/orgs/Inled-Pulsar-OS/projects/1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            View Roadmap
+                        </a>
+                        <a href="/community" class="btn btn-secondary">
+                            Join the community
+                        </a>
+                    </div>
+                    <p class="pear-download-note">
+                        Available for x86_64. Debian and Arch editions, each with GRUB and
+                        rEFInd boot variants. ISO image, ~2.5 GB.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
 </Layout>

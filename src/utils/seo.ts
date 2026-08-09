@@ -34,16 +34,28 @@ export const SEO = {
           "A polished macOS-inspired desktop built on Arch Linux and Debian. Zero telemetry, fully auditable, familiar workflow.",
       },
     },
-    contribute: {
-      title: "Contribute to Pulsar OS — Open Source Community",
+    iso: {
+      title: "Download the ISO — Pulsar OS",
       description:
-        "Join the Pulsar OS community. Contribute code, docs, translations, or design. Open-source and community-driven.",
+        "Minimum requirements, editions, boot variants, installers and flashing instructions for Pulsar OS. Read this before downloading the ISO.",
       keywords:
-        "pulsar os contribute, open source contribution, linux community, github contribution, developer community",
+        "pulsar os iso, download linux iso, pulsar os download, pear edition iso, linux flash usb, pulsar os requirements",
       og: {
-        title: "Contribute to Pulsar OS",
+        title: "Download the ISO — Pulsar OS",
         description:
-          "Join the Pulsar OS community. Contribute code, docs, translations, or design. Open-source and community-driven.",
+          "Minimum requirements, editions, boot variants, installers and flashing instructions for Pulsar OS. Read this before downloading the ISO.",
+      },
+    },
+    community: {
+      title: "Community — Pulsar OS",
+      description:
+        "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
+      keywords:
+        "pulsar os community, linux community, open source community, report bug linux, linux ideas, contribute to pulsar os",
+      og: {
+        title: "Community — Pulsar OS",
+        description:
+          "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
       },
     },
   },
