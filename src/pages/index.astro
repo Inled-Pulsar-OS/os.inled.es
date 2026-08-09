@@ -6,10 +6,10 @@ import CompatSection from "../components/CompatSection.astro";
 import ReleaseChannels from "../components/ReleaseChannels.astro";
 ---
 
-<Layout title="The True Replacement for Mac and Windows">
+<Layout pageKey="index">
     <!-- Hero Section (2-column layout, pill buttons, large rounded image placeholder) -->
     <!-- Sección Hero (Layout de 2 columnas, botones píldora, marcador de imagen grande) -->
-    <section id="hero" class="hero-section">
+    <section id="hero" class="hero-section" aria-label="Hero">
         <div class="container hero-grid">
             <!-- Left Column: Copy & Actions / Columna Izquierda: Texto y Acciones -->
             <div class="hero-left">
@@ -86,10 +86,10 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
 
     <!-- Hero Features Row (4 clean cards in a horizontal row on desktop, inspired by reference image) -->
     <!-- Fila de Características del Hero (4 tarjetas limpias en una fila horizontal en escritorio, inspiradas en la referencia) -->
-    <section class="hero-features-section">
+    <section class="hero-features-section" aria-label="Key features">
         <div class="container hero-features-grid">
             <!-- Feature Card 1 -->
-            <div class="feature-card">
+            <article class="feature-card">
                 <h3 class="feature-title">
                     Macos, Windows and Android integration
                 </h3>
@@ -100,28 +100,28 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
                     without Wine, eith a real Windows instance
                     <!-- Diseñado sobre bases de Linux modernas, no adaptado a posteriori. Estable, seguro y listo para el día a día. -->
                 </p>
-            </div>
+            </article>
 
             <!-- Feature Card 2 -->
-            <div class="feature-card">
+            <article class="feature-card">
                 <h3 class="feature-title">Usability first</h3>
                 <p class="feature-desc">
                     A fully functional environment, which does not simply focus on replicating the MacOS or Windows experience, but rather focuses on the user experience. Without replicating patterns that are already difficult in MacOS or Windows, improving it.
                     <!-- Un entorno de escritorio completamente funcional y estable configurado de fábrica para trabajar y jugar. -->
                 </p>
-            </div>
+            </article>
 
             <!-- Feature Card 3 -->
-            <div class="feature-card">
+            <article class="feature-card">
                 <h3 class="feature-title">Rock-solid base</h3>
                 <p class="feature-desc">
                     Unlike other custom distributions, we offer versions based on Arch Linux and Debian. In this way, we give the user the option to choose between more modern or more stable.
                     <!-- Construido usando los repositorios de Debian Trixie. Misma estabilidad y paquetes del sistema core. -->
                 </p>
-            </div>
+            </article>
 
             <!-- Feature Card 4 -->
-            <div class="feature-card">
+            <article class="feature-card">
                 <h3 class="feature-title">Fully Auditable</h3>
                 <p class="feature-desc">
                     Everything is built on GitHub Actions, whose workflow and
@@ -130,15 +130,15 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
                     You can contribute to all the code.
                     <!-- Sin telemetría oculta ni restricciones de licencia. Verifica el código, audita y compila componentes. -->
                 </p>
-            </div>
+            </article>
         </div>
     </section>
 
     <!-- Pear Edition Public Test Announcement -->
     <!-- Anuncio del Test Público de Pear Edition -->
-    <section class="notice-section pear-test-notice">
+    <section class="notice-section pear-test-notice" aria-label="Pear Edition test announcement">
         <div class="container notice-container">
-            <div class="notice-card">
+            <article class="notice-card">
                 <span class="notice-icon">&#9432;</span>
                 <div class="notice-content">
                     <h3 class="notice-title">
@@ -150,13 +150,13 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
                         experience — <a href="/pear-edition">learn more</a>.
                     </p>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
 
     <!-- Pear Edition CTA Section (replaces Flavours) -->
     <!-- Sección CTA de Pear Edition (reemplaza Flavours) -->
-    <section id="pear-edition" class="pear-cta-section">
+    <section id="pear-edition" class="pear-cta-section" aria-label="Pear Edition">
         <div class="container">
             <div class="pear-cta-content">
                 <img
@@ -262,7 +262,7 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
 
     <!-- Enterprise, Individual & Institution Section -->
     <!-- Sección para Empresas, Particulares e Instituciones -->
-    <section id="enterprise" class="enterprise-section">
+    <section id="enterprise" class="enterprise-section" aria-label="For everyone">
         <div class="container">
             <h2 class="section-title">
                 Perfect for companies, individuals and institutions
@@ -274,45 +274,45 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
             </p>
 
             <div class="enterprise-features-grid">
-                <div class="enterprise-card">
+                <article class="enterprise-card">
                     <h3 class="enterprise-card-title">100% auditable code</h3>
                     <p class="enterprise-card-desc">
                         One of the few distributions with fully auditable source
                         code. Everything is built on GitHub Actions and every
                         line can be verified.
                     </p>
-                </div>
+                </article>
 
-                <div class="enterprise-card">
+                <article class="enterprise-card">
                     <h3 class="enterprise-card-title">
                         Sovereign and European
                     </h3>
                     <p class="enterprise-card-desc">
                         Developed in Europe, with applications audited by the European Linux community. No foreign interference.
                     </p>
-                </div>
+                </article>
 
-                <div class="enterprise-card">
+                <article class="enterprise-card">
                     <h3 class="enterprise-card-title">Community-driven</h3>
                     <p class="enterprise-card-desc">
                         We do not want to be a one-person distro, we are growing and we are going to delegate to the community.
                     </p>
-                </div>
+                </article>
 
-                <div class="enterprise-card">
+                <article class="enterprise-card">
                     <h3 class="enterprise-card-title">Familiar for everyone</h3>
                     <p class="enterprise-card-desc">
                         Replicates familiar user experience flows on Mac and Windows. Stable and secure.
                     </p>
-                </div>
+                </article>
             </div>
         </div>
     </section>
 
     <!-- Current State Notice -->
-    <section class="notice-section">
+    <section class="notice-section" aria-label="Current state">
         <div class="container notice-container">
-            <div class="notice-card">
+            <article class="notice-card">
                 <span class="notice-icon">&#9432;</span>
                 <div class="notice-content">
                     <h3 class="notice-title">Current state</h3>
@@ -323,13 +323,13 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
                         bumps along the road.
                     </p>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
 
     <!-- Community & Contribute Section -->
     <!-- Sección de Comunidad y Contribución -->
-    <section id="community" class="community-section">
+    <section id="community" class="community-section" aria-label="Community">
         <div class="container community-container">
             <div class="community-card">
                 <h2 class="community-title">Community</h2>

@@ -18,13 +18,10 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
 const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
 ---
 
-<Layout
-    title="Pear Edition — The macOS-Inspired Experience"
-    description="Pear Edition is a macOS-inspired edition of Pulsar OS. Elegant, minimal, and built on Arch Linux and Debian. The desktop experience you love, fully auditable."
->
+<Layout pageKey="pear-edition">
     <div class="pear-page">
         <!-- Hero -->
-        <section class="pear-hero">
+        <section class="pear-hero" aria-label="Pear Edition hero">
             <div class="container pear-hero-inner">
                 <img src={PEAR_LOGO} alt="Pear Edition logo" class="pear-logo" />
                 <h1 class="pear-hero-title">
@@ -49,13 +46,13 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
             </div>
             <div class="container">
                 <div class="pear-carousel" id="pear-carousel">
-                    <div class="pear-carousel-track" id="pear-carousel-track">
-                        {PICTURES.map(picture => (
-                            <div class="pear-carousel-slide">
-                                <img src={picture} alt="Pear Edition screenshot" loading="lazy" />
-                            </div>
+                    <ul class="pear-carousel-track" id="pear-carousel-track" role="list">
+                        {PICTURES.map((picture, index) => (
+                            <li class="pear-carousel-slide" role="group" aria-label={`Slide ${index + 1}`}>
+                                <img src={picture} alt={`Pear Edition screenshot - ${index + 1}`} loading="lazy" />
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                     <button class="pear-carousel-btn pear-carousel-prev" aria-label="Previous slide">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="15 18 9 12 15 6"></polyline>
@@ -174,7 +171,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
         />
 
         <!-- Feature Cards -->
-        <section class="pear-features">
+        <section class="pear-features" aria-label="Pear Edition features">
             <div class="container">
                 <h2 class="section-title">Built for how you work</h2>
                 <p class="section-subtitle">
@@ -182,7 +179,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                 </p>
 
                 <div class="pear-features-grid">
-                    <div class="pear-feature-card pear-feature-wide">
+                    <article class="pear-feature-card pear-feature-wide">
                         <div class="pear-feature-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -195,9 +192,9 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                             Top bar, dock, gestures, and window management that feel instantly
                             familiar. Not a clone — an interpretation that improves on the originals.
                         </p>
-                    </div>
+                    </article>
 
-                    <div class="pear-feature-card">
+                    <article class="pear-feature-card">
                         <div class="pear-feature-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
@@ -210,9 +207,9 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                             Choose Debian for stability or Arch for rolling releases. AUR access,
                             latest drivers, or rock-solid packages — your call.
                         </p>
-                    </div>
+                    </article>
 
-                    <div class="pear-feature-card">
+                    <article class="pear-feature-card">
                         <div class="pear-feature-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -222,9 +219,9 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                         <p class="pear-feature-desc">
                             No phone home, no tracking, no hidden data collection. Your machine stays yours.
                         </p>
-                    </div>
+                    </article>
 
-                    <div class="pear-feature-card pear-feature-wide">
+                    <article class="pear-feature-card pear-feature-wide">
                         <div class="pear-feature-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
@@ -237,13 +234,13 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                             Every build runs on GitHub Actions. Source code, workflows, and
                             packaging are fully transparent. Reproducible from scratch.
                         </p>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
 
         <!-- Showcase -->
-        <section class="pear-showcase">
+        <section class="pear-showcase" aria-label="Desktop showcase">
             <div class="container">
                 <div class="pear-showcase-row">
                     <div class="pear-showcase-content">
@@ -267,7 +264,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
         </section>
 
         <!-- Pear Apps -->
-        <section class="pear-apps">
+        <section class="pear-apps" aria-label="Pear apps">
             <div class="container">
                 <h2 class="section-title">Made for Pear</h2>
                 <p class="section-subtitle">
@@ -276,7 +273,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                 </p>
 
                 <div class="pear-apps-grid">
-                    <div class="pear-app-card">
+                    <article class="pear-app-card">
                         <img
                             src="https://hosted.inled.es/seafari.png"
                             alt="Seafari logo"
@@ -288,9 +285,9 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                             Pear OS. Familiar gestures and a clean experience on an
                             engine you can trust.
                         </p>
-                    </div>
+                    </article>
 
-                    <div class="pear-app-card">
+                    <article class="pear-app-card">
                         <div class="pear-app-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 2c4 5 7 8.5 7 12a7 7 0 1 1-14 0c0-3.5 3-7 7-12z"></path>
@@ -303,7 +300,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                             macOS. Still in development — the next improvements focus on
                             reducing resource consumption.
                         </p>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
@@ -341,7 +338,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
         />
 
         <!-- Download CTA -->
-        <section id="download" class="pear-download">
+        <section id="download" class="pear-download" aria-label="Download Pear Edition">
             <div class="container">
                 <div class="pear-download-card">
                     <h2 class="pear-download-title">Get Pear Edition</h2>
