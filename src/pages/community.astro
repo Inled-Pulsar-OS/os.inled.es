@@ -38,10 +38,9 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
     <!-- Hero -->
     <section class="community-hero">
         <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
-            <h1 class="section-title">Built by the community</h1>
+            <h1 class="section-title">We are a friendly community!</h1>
             <p class="section-subtitle" style="margin-bottom: 0;">
-                We don't want to be a one-person distro. Errors, ideas, audits
-                and testing all live at the Github Project (posted here manually)
+                We don't want to be a one-person distro. Do you want to collaborate? Welcome! It doesn't matter your level or if you are a programmer or not. What's more, it's even good for us to have professional people and beginners because that way we can have both ways of seeing things.
             </p>
         </div>
     </section>
@@ -54,7 +53,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                     <div class="community-channel-icon"><i class="fa-brands fa-discord"></i></div>
                     <h3 class="community-channel-title">Discord</h3>
                     <p class="community-channel-desc">
-                        Chat with the community, ask questions and follow development in real time.
+                        Chat with the community (most active). There is always someone to assist you and collaborate instantly. English and Spanish languages.
                     </p>
                 </a>
                 <a href={MATRIX} target="_blank" rel="noopener noreferrer" class="community-channel-card">
@@ -65,7 +64,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                     </div>
                     <h3 class="community-channel-title">Matrix</h3>
                     <p class="community-channel-desc">
-                        An open alternative for everyone who prefers federation and open protocols.
+                       Are you more of a geek? Well we have Matrix channel! Another great place to talk, with fewer integrations than Discord, but just as functional.
                     </p>
                 </a>
                 <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="community-channel-card">
@@ -128,7 +127,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                         ))}
                     </div>
                 ) : (
-                    <p class="community-empty">No known errors right now — that's a good sign.</p>
+                    <p class="community-empty">Wow, right now there are no errors or something is wrong, XD.</p>
                 )
             }
 
@@ -148,7 +147,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
         <div class="container">
             <h2 class="section-title">Ideas</h2>
             <p class="section-subtitle">
-                The roadmap is shaped by the community. Proposals are reviewed openly.
+                Ideas that occur to us or that you propose.
             </p>
 
             {
@@ -195,8 +194,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
         <div class="container">
             <h2 class="section-title">Roadmap</h2>
             <p class="section-subtitle">
-                What we are planning next — new editions and ideas we are
-                exploring. Some of these decisions need your input.
+                We don't stop having ideas and we need you to decide and give your opinion.
             </p>
 
             {
@@ -239,8 +237,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
         <div class="container">
             <h2 class="section-title">Help wanted</h2>
             <p class="section-subtitle">
-                Concrete tasks where the community can help — audits, testing,
-                translations and documentation. Everything is credited.
+                You can help with any error or proposal, but here we list what matters most to us.
             </p>
 
             {
@@ -270,7 +267,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                         ))}
                     </div>
                 ) : (
-                    <p class="community-empty">Nothing open right now — check back soon.</p>
+                    <p class="community-empty">If there is nothing here, it may be a good sign or that the page is crashing (most likely).</p>
                 )
             }
 
@@ -301,7 +298,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                         your name in the <code>hall-of-fame</code> file of the repo.
                     </p>
                     <div class="community-referral-reward">
-                        Your name gets etched into the
+                        Your name gets etched into the 
                         <a href="/community/contributors">Hall of Fame</a>, on a
                         dedicated page that stays forever.
                     </div>
@@ -312,7 +309,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                     <h3 class="community-referral-title">Publicize or collaborate</h3>
                     <p class="community-referral-desc">
                         Write about Pulsar OS, run an audit, review code, translate,
-                        design, test on real hardware, document. Any contribution counts.
+                        design, test on real hardware, document, or collaborate on anything.
                     </p>
                     <div class="community-referral-reward">
                         Your name joins the
@@ -324,7 +321,7 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
 
             <div class="community-cta-row">
                 <a href="/community/contributors" class="btn btn-primary">
-                    Meet the community
+                    Meet the wall
                 </a>
                 <a href="#contribute" class="btn btn-secondary">
                     How contributing works
@@ -412,6 +409,34 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                     <div class="community-cta-row community-cta-inline">
                         <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
                             Explore repositories
+                        </a>
+                    </div>
+                </div>
+
+                <div class="community-contribute-card">
+                    <div class="community-channel-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="community-contribute-title">Geeks, but respectful ones</h3>
+                    <p class="community-contribute-desc">
+                        No Linux elitism and zero gatekeeping — we have no time for
+                        loonixtards. We are a friendly bunch of geeks who love talking
+                        about Pulsar OS, and several of us are around the chats every
+                        day, so there is always someone to answer your questions.
+                    </p>
+                    <p class="community-contribute-desc">
+                        Beginners are more than welcome: every bit of help counts, no
+                        matter how small. Ask without fear — the only stupid question is
+                        the one you don't ask.
+                    </p>
+                    <div class="community-cta-row community-cta-inline">
+                        <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="fa-brands fa-discord"></i>&nbsp; Join Discord
+                        </a>
+                        <a href={MATRIX} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            Join Matrix
                         </a>
                     </div>
                 </div>

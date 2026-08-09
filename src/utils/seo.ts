@@ -58,6 +58,18 @@ export const SEO = {
           "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
       },
     },
+    help: {
+      title: "Help & Documentation — Pulsar OS",
+      description:
+        "Guides to install, use and contribute to Pulsar OS. From flashing the ISO to migrating from macOS, everything you need to get started.",
+      keywords:
+        "pulsar os help, pulsar os docs, pulsar os install, pulsar os guide, linux documentation, install pulsar os",
+      og: {
+        title: "Help & Documentation — Pulsar OS",
+        description:
+          "Guides to install, use and contribute to Pulsar OS. From flashing the ISO to migrating from macOS, everything you need to get started.",
+      },
+    },
   },
 } as const;
 

@@ -1,0 +1,103 @@
+---
+// Documentation sidebar navigation / Barra lateral de documentación
+import { getCollection } from "astro:content";
+
+interface Props {
+    current?: string;
+}
+
+const { current } = Astro.props;
+
+const all = await getCollection("help");
+
+const prettyCategory = (slug) =>
+    slug
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+const grouped = all.reduce((acc, entry) => {
+    const category = entry.id.split("/")[0];
+    (acc[category] ||= []).push(entry);
+    return acc;
+}, {});
+
+const categories = Object.entries(grouped).map(([key, items]) => ({
+    key,
+    name: prettyCategory(key),
+    items: items.sort((a, b) => a.data.order - b.data.order),
+}));
+---
+
+<div class="docs-sidebar-wrap">
+    <button
+        type="button"
+        class="docs-sidebar-toggle"
+        data-docs-toggle
+        aria-expanded="false"
+        aria-controls="docs-sidebar"
+    >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+        Index
+    </button>
+
+    <div class="docs-sidebar-backdrop" data-docs-close></div>
+
+    <aside id="docs-sidebar" class="docs-sidebar">
+        <div class="docs-sidebar-header">
+            <a href="/help/" class="docs-sidebar-brand">
+                <img
+                    src="https://hosted.inled.es/pulsar-logo-simple-sf.png"
+                    alt="Pulsar OS Logo"
+                    class="docs-sidebar-logo"
+                />
+                <span>Documentation</span>
+            </a>
+        </div>
+
+        <nav class="docs-sidebar-nav" aria-label="Documentation index">
+            {categories.map((category) => (
+                <div class="docs-sidebar-group">
+                    <div class="docs-sidebar-group-title">{category.name}</div>
+                    <ul class="docs-sidebar-list">
+                        {category.items.map((entry) => (
+                            <li>
+                                <a
+                                    href={`/help/${entry.id}/`}
+                                    class:list={[
+                                        "docs-sidebar-link",
+                                        { "is-active": current === entry.id },
+                                    ]}
+                                >
+                                    {entry.data.title}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+        </nav>
+    </aside>
+</div>
+
+<script>
+    const toggle = document.querySelector("[data-docs-toggle]");
+    const sidebar = document.getElementById("docs-sidebar");
+    const backdrop = document.querySelector("[data-docs-close]");
+
+    const setOpen = (open) => {
+        sidebar?.classList.toggle("is-open", open);
+        backdrop?.classList.toggle("is-open", open);
+        toggle?.setAttribute("aria-expanded", String(open));
+        document.body.classList.toggle("docs-nav-open", open);
+    };
+
+    toggle?.addEventListener("click", () => {
+        setOpen(!sidebar?.classList.contains("is-open"));
+    });
+    backdrop?.addEventListener("click", () => setOpen(false));
+</script>

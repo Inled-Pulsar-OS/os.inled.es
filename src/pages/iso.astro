@@ -11,12 +11,9 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
             <div class="container iso-hero-inner">
                 <h1 class="iso-hero-title">Download the ISO</h1>
                 <p class="iso-hero-desc">
-                    Everything you need to know before flashing an ISO — minimum
-                    requirements, editions, boot variants, installers and the
-                    mistakes everyone makes. Read it once and save yourself a
-                    headache.
+                    Please read all this information before starting. You may already know some parts, but it is good that you read these warnings.
                 </p>
-                <div class="iso-hero-actions">
+          <!--      <div class="iso-hero-actions">
                     <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                         Go to GitHub downloads
                         <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -27,7 +24,7 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                     <a href="/" class="btn btn-secondary">
                         Back to home
                     </a>
-                </div>
+                </div>  -->
             </div>
         </section>
 
@@ -187,20 +184,15 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                     How you write the ISO to the USB drive matters.
                 </p>
                 <div class="iso-warn-card">
-                    <h3 class="iso-warn-title">Do not use Ventoy</h3>
+                    <h3 class="iso-warn-title">Support for Ventoy still in testing</h3>
                     <p class="iso-warn-desc">
-                        Our ISO layout differs from a standard Arch install, and
-                        Ventoy does not recognize it correctly. It won't inject the
-                        right boot parameters, so booting will fail. Please flash the
-                        ISO directly instead.
+                        If something is wrong, let us know and if so, implement the solution if you want.
                     </p>
                 </div>
-                <div class="iso-flash-card">
-                    <h3 class="iso-info-title">Recommended: balenaEtcher</h3>
-                    <p class="iso-info-desc">
-                        Use <a href="https://etcher.balena.io/" target="_blank" rel="noopener noreferrer">balenaEtcher</a> to write the ISO image directly to the USB drive. Other tools
-                        that write the ISO as a raw image (like Rufus or the
-                        Raspberry Pi Imager) also work.
+                <div class="iso-warn-card">
+                    <h3 class="iso-warn-title">Don't use Balena Etcher</h3>
+                    <p class="iso-warn-desc">
+                        Balena Etcher is very picky and complains to a minimum. It gives more problems than an old car. We recommend using gnome-disks or any other.
                     </p>
                 </div>
             </div>
@@ -216,10 +208,7 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                 <div class="iso-warn-card iso-warn-highlight">
                     <h3 class="iso-warn-title">Unplug the USB before rebooting</h3>
                     <p class="iso-warn-desc">
-                        Once the installer finishes, nothing will remind you. The
-                        system does not prompt you about it. Remove the USB drive
-                        before you reboot — otherwise your computer may boot straight
-                        back into the installer instead of your new system.
+                        Once the installer restarts your computer, remove the USB. You're probably fine if you forget, but it's best to remove it.
                     </p>
                 </div>
             </div>

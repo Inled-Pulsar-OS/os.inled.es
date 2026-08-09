@@ -25,11 +25,10 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
             <div class="container pear-hero-inner">
                 <img src={PEAR_LOGO} alt="Pear Edition logo" class="pear-logo" />
                 <h1 class="pear-hero-title">
-                    The macOS experience.<br />Fully open-source.
+                    The macOS experience.<br /> But without a Mac
                 </h1>
                 <p class="pear-hero-desc">
-                    A polished desktop built on Arch Linux and Debian. Familiar workflow,
-                    zero telemetry, complete auditable source code.
+                    An almost perfect clone of MacOS, which is functional and usable on a daily basis. Made with love for the community.
                 </p>
                 <div class="pear-hero-actions">
                     <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" data-download-warn class="btn btn-primary">
@@ -170,8 +169,41 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
             ]}
         />
 
+        <!-- Comparison: Pulsar OS Pear Edition vs Pear OS -->
+        <section class="pear-compare" aria-label="Pulsar OS Pear Edition vs Pear OS">
+            <div class="container">
+                <h2 class="section-title">Pear Edition vs Pear OS</h2>
+                <p class="section-subtitle">
+                    Same inspiration, different focus. Both bring the Mac experience to
+                    Linux — here is what each one cares about.
+                </p>
+
+                <div class="pear-compare-grid">
+                    <article class="pear-compare-card">
+                        <div class="pear-compare-logo">
+                            <img src="/pearos-logo.webp" alt="Pear OS logo" />
+                        </div>
+                        <h3 class="pear-compare-name">Pear OS</h3>
+                        <p class="pear-compare-desc">
+                            The famous distribution. More oriented towards experimentation and fun, in addition to being a one-single person. Perfect if you want to have a good time with its creator.
+                        </p>
+                    </article>
+
+                    <article class="pear-compare-card">
+                        <div class="pear-compare-logo">
+                            <img src={PEAR_LOGO} alt="Pulsar OS Pear Edition logo" />
+                        </div>
+                        <h3 class="pear-compare-name">Pulsar OS Pear Edition</h3>
+                        <p class="pear-compare-desc">
+                            The distribution focused on stability and usability together with the MacOS design, perfect for everyday use. Created by the community and based on GNOME, like the original PearOS.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <!-- Feature Cards -->
-        <section class="pear-features" aria-label="Pear Edition features">
+       <!-- <section class="pear-features" aria-label="Pear Edition features">
             <div class="container">
                 <h2 class="section-title">Built for how you work</h2>
                 <p class="section-subtitle">
@@ -237,17 +269,16 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                     </article>
                 </div>
             </div>
-        </section>
+        </section>  -->
 
         <!-- Showcase -->
         <section class="pear-showcase" aria-label="Desktop showcase">
             <div class="container">
                 <div class="pear-showcase-row">
                     <div class="pear-showcase-content">
-                        <h2 class="pear-showcase-title">A desktop that feels finished</h2>
+                        <h2 class="pear-showcase-title">It works, and looks a lot like Mac</h2>
                         <p class="pear-showcase-desc">
-                            Every detail matters — from window animations to icon consistency.
-                            Pear Edition ships configured and cohesive out of the box.
+                           We clone the Mac design, but without making a Frankenstein: the distribution is made to be your daily companion.
                         </p>
                     </div>
                     <div class="pear-showcase-media">
@@ -266,10 +297,9 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
         <!-- Pear Apps -->
         <section class="pear-apps" aria-label="Pear apps">
             <div class="container">
-                <h2 class="section-title">Made for Pear</h2>
+                <h2 class="section-title">You won't miss anything</h2>
                 <p class="section-subtitle">
-                    Pear Edition ships with its own take on the classics — and more
-                    is on the way.
+                    Pear edition comes with many things, but you will surely like these two:
                 </p>
 
                 <div class="pear-apps-grid">
@@ -281,9 +311,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                         />
                         <h3 class="pear-app-title">Seafari</h3>
                         <p class="pear-app-desc">
-                            A Safari-style browser built on Firefox, already included in
-                            Pear OS. Familiar gestures and a clean experience on an
-                            engine you can trust.
+                            The perfect Safari clone, loved by the PearOS community and official and default Pear OS browser. Functional, usable and fantastic.
                         </p>
                     </article>
 
@@ -299,6 +327,66 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                             Translucent, fluid window effects in the spirit of modern
                             macOS. Still in development — the next improvements focus on
                             reducing resource consumption.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- App availability -->
+        <section class="pear-appstore" aria-label="App availability">
+            <div class="container">
+                <h2 class="section-title">An app for everything</h2>
+                <p class="section-subtitle">
+                    Linux has one of the biggest software ecosystems in the world, and
+                    Pear Edition can run almost all of it.
+                </p>
+
+                <div class="pear-appstore-grid">
+                    <article class="pear-appstore-card">
+                        <div class="pear-appstore-logo">
+                            <img src="/flathub-logo.png" alt="Flathub logo" />
+                        </div>
+                        <h3 class="pear-appstore-title">Flathub</h3>
+                        <p class="pear-appstore-desc">
+                            The largest Linux app store. Discover and install thousands of
+                            apps with a single click.
+                        </p>
+                    </article>
+
+                    <article class="pear-appstore-card">
+                        <div class="pear-appstore-logo">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 8v13H3V8"></path>
+                                <path d="M1 3h22v5H1z"></path>
+                                <path d="M10 12h4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="pear-appstore-title">pkg.tar.zst and .pacman</h3>
+                        <p class="pear-appstore-desc">
+                            The native format of Arch Linux.
+                        </p>
+                    </article>
+
+                    <article class="pear-appstore-card">
+                        <div class="pear-appstore-logo">
+                            <img src="/arch-logo.svg" alt="Arch Linux logo" />
+                        </div>
+                        <h3 class="pear-appstore-title">AUR</h3>
+                        <p class="pear-appstore-desc">
+                            The Arch User Repository: thousands of community packages,
+                            always up to date.
+                        </p>
+                    </article>
+
+                    <article class="pear-appstore-card">
+                        <div class="pear-appstore-logo">
+                            <img src="/deb.png" alt=".deb package" />
+                        </div>
+                        <h3 class="pear-appstore-title">.deb</h3>
+                        <p class="pear-appstore-desc">
+                            The most widely used Linux package format — native installs on
+                            Debian-based systems.
                         </p>
                     </article>
                 </div>
@@ -343,8 +431,7 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                 <div class="pear-download-card">
                     <h2 class="pear-download-title">Get Pear Edition</h2>
                     <p class="pear-download-desc">
-                        Free to download. Free to use. Free to audit.
-                        Built by the community, for everyone.
+                        Completely free, open and better than MacOS in many ways
                     </p>
                     <div class="pear-download-actions">
                         <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" data-download-warn class="btn btn-primary">
@@ -354,16 +441,12 @@ const PEAR_LOGO = "https://hosted.inled.es/pulsar-mac.png";
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </a>
-                        <a href="https://github.com/orgs/Inled-Pulsar-OS/projects/1" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                            View Roadmap
-                        </a>
                         <a href="/community" class="btn btn-secondary">
-                            Join the community
+                            Know about community
                         </a>
                     </div>
                     <p class="pear-download-note">
-                        Available for x86_64. Debian and Arch editions, each with GRUB and
-                        rEFInd boot variants. ISO image, ~2.5 GB.
+                        Currently available for AMD64 architecture computers, with support for UEFI or BIOS, Arch or Debian. ISO generated in Github Action. Download from Sourceforge.
                     </p>
                 </div>
             </div>

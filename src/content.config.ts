@@ -24,4 +24,14 @@ const people = defineCollection({
     }),
 });
 
-export const collections = { community, people };
+const help = defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/data/help" }),
+    schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+        order: z.number().default(0),
+        date: z.coerce.date().default(() => new Date()),
+    }),
+});
+
+export const collections = { community, people, help };
