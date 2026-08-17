@@ -2000,6 +2000,13 @@ html.dark .community-status {
     }
 }
 
+/* Community Contributors */
+.community-contributors {
+    padding: 80px 0;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
 /* Bottom CTA */
 .community-bottom-cta {
     padding: 100px 0;

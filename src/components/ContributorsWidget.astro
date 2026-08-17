@@ -1,0 +1,116 @@
+---
+export interface Props {
+    limit?: number;
+}
+
+const { limit = 20 } = Astro.props;
+---
+
+<div class="contributors-widget" id="contributors-widget">
+    <div class="contributors-grid" id="contributors-grid"></div>
+    <p class="contributors-footer">
+        <a href="https://inled-pulsar-os.github.io/.github/" target="_blank" rel="noopener noreferrer">
+            See all contributors →
+        </a>
+    </p>
+</div>
+
+<script define:vars={{ limit }}>
+    const DATA_URL = "https://inled-pulsar-os.github.io/.github/contributors.json";
+
+    fetch(DATA_URL)
+        .then(r => r.json())
+        .then(data => {
+            const grid = document.getElementById("contributors-grid");
+            const contributors = data.contributors
+                .sort((a, b) => b.contributions - a.contributions)
+                .slice(0, limit);
+
+            contributors.forEach(c => {
+                const card = document.createElement("div");
+                card.className = "contributor-card";
+                card.innerHTML = `
+                    <a href="${c.profile}" target="_blank" rel="noopener noreferrer">
+                        <img class="contributor-avatar" src="${c.avatar_url}?s=128&v=4" alt="@${c.login}" loading="lazy" />
+                        <span class="contributor-name">@${c.login}</span>
+                        <span class="contributor-count">${c.contributions}</span>
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        })
+        .catch(() => {
+            document.getElementById("contributors-widget").style.display = "none";
+        });
+</script>
+
+<style>
+    .contributors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 20px;
+    }
+
+    .contributor-card {
+        text-align: center;
+    }
+
+    .contributor-card a {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 8px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color, #e9e6dc);
+        background: var(--bg-card, #ffffff);
+        transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .contributor-card a:hover {
+        border-color: var(--accent-purple, #966ce8);
+        transform: translateY(-2px);
+    }
+
+    .contributor-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+    }
+
+    .contributor-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary, #111111);
+    }
+
+    .contributor-count {
+        font-size: 0.75rem;
+        color: var(--text-secondary, #5b5952);
+    }
+
+    .contributors-footer {
+        text-align: center;
+        margin-top: 32px;
+    }
+
+    .contributors-footer a {
+        color: var(--accent-purple, #966ce8);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .contributors-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        .contributors-grid {
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 12px;
+        }
+    }
+</style>

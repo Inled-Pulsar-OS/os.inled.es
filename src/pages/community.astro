@@ -4,6 +4,7 @@
 // The "Sync Community Data" GitHub Action keeps them in sync with the
 // GitHub project (https://github.com/orgs/Inled-Pulsar-OS/projects/1).
 import Layout from "../layouts/Layout.astro";
+import ContributorsWidget from "../components/ContributorsWidget.astro";
 import { getCollection, render } from "astro:content";
 
 const all = await getCollection("community");
@@ -558,6 +559,17 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Contributors -->
+    <section class="community-contributors" aria-label="Contributors">
+        <div class="container">
+            <h2 class="section-title">Contributors</h2>
+            <p class="section-subtitle">
+                The people who make Pulsar OS possible.
+            </p>
+            <ContributorsWidget limit={12} />
         </div>
     </section>
 
