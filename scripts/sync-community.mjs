@@ -31,22 +31,22 @@ const PROJECT_QUERY = `
                 createdAt
               }
             }
-            fieldValueByName(name: "Status") {
+            status: fieldValueByName(name: "Status") {
               ... on ProjectV2ItemFieldSingleSelectValue { name }
             }
-            fieldValueByName(name: "Tipo") {
+            tipo: fieldValueByName(name: "Tipo") {
               ... on ProjectV2ItemFieldSingleSelectValue { name }
             }
-            fieldValueByName(name: "Difficulty") {
+            difficulty: fieldValueByName(name: "Difficulty") {
               ... on ProjectV2ItemFieldSingleSelectValue { name }
             }
-            fieldValueByName(name: "Roadmap Phase") {
+            roadmapPhase: fieldValueByName(name: "Roadmap Phase") {
               ... on ProjectV2ItemFieldSingleSelectValue { name }
             }
-            fieldValueByName(name: "Benefit") {
+            benefit: fieldValueByName(name: "Benefit") {
               ... on ProjectV2ItemFieldTextValue { text }
             }
-            fieldValueByName(name: "Cost") {
+            cost: fieldValueByName(name: "Cost") {
               ... on ProjectV2ItemFieldSingleSelectValue { name }
             }
           }
@@ -108,8 +108,8 @@ function escapeFrontmatter(value) {
     return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
 }
 
-function getFieldText(fieldValueByName, fieldName) {
-    const field = fieldValueByName[fieldName];
+function getFieldText(node, alias) {
+    const field = node[alias];
     if (!field) return undefined;
     return field.name ?? field.text ?? undefined;
 }
@@ -149,19 +149,19 @@ async function fetchProjectItems() {
                 (l.name ?? "").toLowerCase(),
             ) ?? [];
 
-        const roadmapPhase = getFieldText(node.fieldValueByName, "Roadmap Phase");
+        const roadmapPhase = getFieldText(node, "roadmapPhase");
         const category = categorize(labels, !!roadmapPhase);
         if (!category) continue;
 
         const status =
-            getFieldText(node.fieldValueByName, "Status") ??
+            getFieldText(node, "status") ??
             (content.state === "CLOSED" ? "Done" : "Open");
 
         if (status === "Completados" || status === "Done") continue;
 
-        const difficulty = getFieldText(node.fieldValueByName, "Difficulty");
-        const benefit = getFieldText(node.fieldValueByName, "Benefit");
-        const cost = getFieldText(node.fieldValueByName, "Cost");
+        const difficulty = getFieldText(node, "difficulty");
+        const benefit = getFieldText(node, "benefit");
+        const cost = getFieldText(node, "cost");
 
         items.push({
             category,
