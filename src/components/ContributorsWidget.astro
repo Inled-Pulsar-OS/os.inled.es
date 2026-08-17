@@ -45,54 +45,17 @@ const { limit = 20 } = Astro.props;
 </script>
 
 <style>
+    .contributors-widget {
+        text-align: center;
+    }
+
     .contributors-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 20px;
     }
 
-    .contributor-card {
-        text-align: center;
-    }
-
-    .contributor-card a {
-        text-decoration: none;
-        color: inherit;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 16px 8px;
-        border-radius: 16px;
-        border: 1px solid var(--border-color, #e9e6dc);
-        background: var(--bg-card, #ffffff);
-        transition: border-color 0.25s ease, transform 0.25s ease;
-    }
-
-    .contributor-card a:hover {
-        border-color: var(--accent-purple, #966ce8);
-        transform: translateY(-2px);
-    }
-
-    .contributor-avatar {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-    }
-
-    .contributor-name {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--text-primary, #111111);
-    }
-
-    .contributor-count {
-        font-size: 0.75rem;
-        color: var(--text-secondary, #5b5952);
-    }
-
     .contributors-footer {
-        text-align: center;
         margin-top: 32px;
     }
 
@@ -112,5 +75,46 @@ const { limit = 20 } = Astro.props;
             grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             gap: 12px;
         }
+    }
+
+    /* Dynamic elements created by JS need :global() */
+    :global(.contributor-card) {
+        text-align: center;
+    }
+
+    :global(.contributor-card a) {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 8px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color, #e9e6dc);
+        background: var(--bg-card, #ffffff);
+        transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    :global(.contributor-card a:hover) {
+        border-color: var(--accent-purple, #966ce8);
+        transform: translateY(-2px);
+    }
+
+    :global(.contributor-avatar) {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+    }
+
+    :global(.contributor-name) {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary, #111111);
+    }
+
+    :global(.contributor-count) {
+        font-size: 0.75rem;
+        color: var(--text-secondary, #5b5952);
     }
 </style>
