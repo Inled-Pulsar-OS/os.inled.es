@@ -23,6 +23,8 @@ const errors = (await withContent(all.filter((e) => e.data.type === "error"))).s
 const ideas = (await withContent(all.filter((e) => e.data.type === "idea"))).sort(sortByDate);
 const roadmap = (await withContent(all.filter((e) => e.data.type === "roadmap"))).sort(sortByDate);
 const helpItems = (await withContent(all.filter((e) => e.data.type === "help"))).sort(sortByDate);
+const tasks = (await withContent(all.filter((e) => e.data.type === "task"))).sort(sortByDate);
+const suggestions = (await withContent(all.filter((e) => e.data.type === "suggestion"))).sort(sortByDate);
 
 const formatDate = (date) =>
     date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -189,6 +191,118 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
         </div>
     </section>
 
+    <!-- Community Tasks -->
+    <section id="tasks" class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Community Tasks</h2>
+            <p class="section-subtitle">
+                Pick a task and help us build Pulsar OS. Each task has a difficulty level and is linked to a roadmap phase.
+            </p>
+
+            {
+                tasks.length > 0 ? (
+                    <div class="community-grid">
+                        {tasks.map(({ entry, Content }) => (
+                            <article class="community-item-card">
+                                <div class="community-item-meta">
+                                    <span class="community-status">{entry.data.status}</span>
+                                    {entry.data.difficulty && (
+                                        <span class={`community-priority priority-${entry.data.difficulty === "Easy" ? "low" : entry.data.difficulty === "Medium" ? "medium" : entry.data.difficulty === "Hard" ? "high" : "critical"}`}>
+                                            {entry.data.difficulty}
+                                        </span>
+                                    )}
+                                    {entry.data.roadmapPhase && (
+                                        <span class="community-priority" style="background: var(--accent-purple); color: white;">
+                                            {entry.data.roadmapPhase}
+                                        </span>
+                                    )}
+                                </div>
+                                <h3 class="community-item-title">{entry.data.title}</h3>
+                                <div class="community-item-body"><Content /></div>
+                                <div class="community-item-footer">
+                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
+                                    {entry.data.url && (
+                                        <a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="community-item-link">
+                                            View on GitHub
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">No community tasks available yet — check back soon!</p>
+                )
+            }
+
+            <div class="community-cta-row">
+                <a href={PROJECT} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Browse all tasks
+                </a>
+                <a href="/help/contributing/developer-setup/" class="btn btn-secondary">
+                    Developer Setup Guide
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Suggestions -->
+    <section id="suggestions" class="community-list-section">
+        <div class="container">
+            <h2 class="section-title">Suggestions</h2>
+            <p class="section-subtitle">
+                Share your ideas for improving Pulsar OS. Note that roadmap priorities are: Pear Edition Stable, Tube OS, and Wintux.
+            </p>
+
+            {
+                suggestions.length > 0 ? (
+                    <div class="community-grid">
+                        {suggestions.map(({ entry, Content }) => (
+                            <article class="community-item-card">
+                                <div class="community-item-meta">
+                                    <span class="community-status">{entry.data.status}</span>
+                                    {entry.data.roadmapPhase && (
+                                        <span class="community-priority" style="background: var(--accent-purple); color: white;">
+                                            {entry.data.roadmapPhase}
+                                        </span>
+                                    )}
+                                    {entry.data.cost && (
+                                        <span class={`community-priority priority-${entry.data.cost === "Low" ? "low" : entry.data.cost === "Medium" ? "medium" : "high"}`}>
+                                            Cost: {entry.data.cost}
+                                        </span>
+                                    )}
+                                </div>
+                                <h3 class="community-item-title">{entry.data.title}</h3>
+                                {entry.data.benefit && (
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 8px 0;">
+                                        <strong>Benefit:</strong> {entry.data.benefit}
+                                    </p>
+                                )}
+                                <div class="community-item-body"><Content /></div>
+                                <div class="community-item-footer">
+                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
+                                    {entry.data.url && (
+                                        <a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="community-item-link">
+                                            View on GitHub
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="community-empty">No suggestions yet — be the first to share one!</p>
+                )
+            }
+
+            <div class="community-cta-row">
+                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    Share a suggestion
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Roadmap -->
     <section id="roadmap" class="community-list-section">
         <div class="container">
@@ -322,6 +436,9 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
             <div class="community-cta-row">
                 <a href="/community/contributors" class="btn btn-primary">
                     Meet the wall
+                </a>
+                <a href="/resources" class="btn btn-secondary">
+                    Download resources
                 </a>
                 <a href="#contribute" class="btn btn-secondary">
                     How contributing works

@@ -89,6 +89,22 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
 
     <!-- Hero Features Row (4 clean cards in a horizontal row on desktop, inspired by reference image) -->
     <!-- Fila de Características del Hero (4 tarjetas limpias en una fila horizontal en escritorio, inspiradas en la referencia) -->
+
+    <!-- Collaborator Reward -->
+    <section class="collaborator-reward-section" aria-label="Collaborator rewards">
+        <div class="container">
+            <div class="collaborator-reward-card">
+                <div class="collaborator-reward-content">
+                    <h3 class="collaborator-reward-title">Contribute and get recognized</h3>
+                    <p class="collaborator-reward-desc">
+                        Your name goes on the <a href="/community/contributors">Wall of Fame</a> forever. We also write you a reference letter and list your contributions — useful when applying for jobs.
+                    </p>
+                </div>
+                <a href="/community" class="btn btn-primary collaborator-reward-btn">Start contributing</a>
+            </div>
+        </div>
+    </section>
+
     <section class="hero-features-section" aria-label="Key features">
         <div class="container hero-features-grid">
             <!-- Feature Card 1 -->
@@ -312,21 +328,66 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
         </div>
     </section>
 
-    <!-- Current State Notice -->
-    <section class="notice-section" aria-label="Current state">
-        <div class="container notice-container">
-            <article class="notice-card">
-                <span class="notice-icon">&#9432;</span>
-                <div class="notice-content">
-                    <h3 class="notice-title">Current state</h3>
-                    <p class="notice-desc">
-                        We are moving from being users who develop GNOME
-                        extensions and apps to building a full distribution.
-                        This is new territory, and we welcome feedback on any
-                        bumps along the road.
-                    </p>
+    <!-- Commitments -->
+    <section id="commitments" class="commitments-section" aria-label="Our commitments">
+        <div class="container">
+            <h2 class="section-title">What we stand for</h2>
+            <div class="commitments-grid">
+                <div class="commitment-item">
+                    <h3 class="commitment-title">Everyone can contribute</h3>
+                    <p class="commitment-desc">We are a happy community and we support each other. Join!</p>
                 </div>
-            </article>
+                <div class="commitment-item">
+                    <h3 class="commitment-title">Without ideologies or politics</h3>
+                    <p class="commitment-desc">We don't want to get angry or talk about politics. We do not associate ourselves with anything political. Free of bad vibes.</p>
+                </div>
+                <div class="commitment-item">
+                    <h3 class="commitment-title">No to AI slop, yes to enhanced development</h3>
+                    <p class="commitment-desc">Everything is tested, functional and secure. We don't ship unreviewed generated code.</p>
+                </div>
+                <div class="commitment-item">
+                    <h3 class="commitment-title">No ads on website</h3>
+                    <p class="commitment-desc">Pulsar OS does not generate expenses, therefore it does not need income through advertisements. If we need income to improve the infrastructure, we will add an optional donation button.</p>
+                </div>
+                <div class="commitment-item">
+                    <h3 class="commitment-title">Community driven</h3>
+                    <p class="commitment-desc">Decisions are made with the community, not by a single person. Open governance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partnering & Social -->
+    <section id="partnering" class="partnering-section" aria-label="Partnering">
+        <div class="container">
+            <h2 class="section-title">Spread the word</h2>
+            <p class="partnering-desc">
+                Pulsar OS grows by word of mouth. If you like the project, sharing it on social media or partnering with us helps more than you think.
+            </p>
+            <div class="partnering-grid">
+                <article class="partnering-card">
+                    <h3 class="partnering-card-title">Share on social media</h3>
+                    <p class="partnering-card-desc">
+                        Post about Pulsar OS on X, Mastodon, Reddit or wherever you hang out.  <br>
+                        You will appear on the Wall of Fame
+                    </p>
+                </article>
+
+                <article class="partnering-card">
+                    <h3 class="partnering-card-title">Partner with us</h3>
+                    <p class="partnering-card-desc">
+                        Do you know any brand, institution, company that might be interested in Pulsar OS or that wants to collaborate with us to make hardware?
+                    </p>
+                    <div class="partnering-actions">
+                        <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                            <i class="fa-brands fa-discord"></i> Contact on Discord
+                        </a>
+                        <a href="mailto:hi@inled.es" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                            <i class="fa-solid fa-envelope"></i> Contact via Mail
+                        </a>
+                    </div>
+                </article>
+            </div>
         </div>
     </section>
 

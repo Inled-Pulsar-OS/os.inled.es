@@ -70,6 +70,18 @@ export const SEO = {
           "Guides to install, use and contribute to Pulsar OS. From flashing the ISO to migrating from macOS, everything you need to get started.",
       },
     },
+    resources: {
+      title: "Resources — Pulsar OS",
+      description:
+        "Download banners, logos and media assets to share Pulsar OS on social media. Tag us and get on the Wall of Fame.",
+      keywords:
+        "pulsar os resources, pulsar os banners, pulsar os logos, share pulsar os, social media assets",
+      og: {
+        title: "Resources — Pulsar OS",
+        description:
+          "Download banners, logos and media assets to share Pulsar OS on social media.",
+      },
+    },
   },
 } as const;
 

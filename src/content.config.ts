@@ -4,7 +4,7 @@ import { glob } from "astro/loaders";
 const community = defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/data/community" }),
     schema: z.object({
-        type: z.enum(["error", "idea", "help", "roadmap"]),
+        type: z.enum(["error", "idea", "help", "roadmap", "task", "suggestion"]),
         title: z.string(),
         status: z.string().default("Open"),
         priority: z
@@ -12,6 +12,12 @@ const community = defineCollection({
             .default("medium"),
         date: z.coerce.date().default(() => new Date()),
         url: z.string().url().optional(),
+        difficulty: z.enum(["Easy", "Medium", "Hard", "Expert"]).optional(),
+        roadmapPhase: z
+            .enum(["Pear Edition Stable", "Tube OS", "Wintux", "General"])
+            .optional(),
+        benefit: z.string().optional(),
+        cost: z.enum(["Low", "Medium", "High"]).optional(),
     }),
 });
 

@@ -34,6 +34,21 @@ const PROJECT_QUERY = `
             fieldValueByName(name: "Status") {
               ... on ProjectV2ItemFieldSingleSelectValue { name }
             }
+            fieldValueByName(name: "Tipo") {
+              ... on ProjectV2ItemFieldSingleSelectValue { name }
+            }
+            fieldValueByName(name: "Difficulty") {
+              ... on ProjectV2ItemFieldSingleSelectValue { name }
+            }
+            fieldValueByName(name: "Roadmap Phase") {
+              ... on ProjectV2ItemFieldSingleSelectValue { name }
+            }
+            fieldValueByName(name: "Benefit") {
+              ... on ProjectV2ItemFieldTextValue { text }
+            }
+            fieldValueByName(name: "Cost") {
+              ... on ProjectV2ItemFieldSingleSelectValue { name }
+            }
           }
         }
       }
@@ -49,9 +64,19 @@ const CATEGORY_LABELS = {
     "help-wanted": "help",
     "help wanted": "help",
     "good first issue": "help",
+    task: "task",
+    community: "task",
+    suggestion: "suggestion",
 };
 
-const CATEGORY_DIRS = { error: "errors", idea: "ideas", help: "help" };
+const CATEGORY_DIRS = {
+    error: "errors",
+    idea: "ideas",
+    help: "help",
+    task: "tasks",
+    suggestion: "suggestions",
+    roadmap: "roadmap",
+};
 
 const TOKEN = process.env.GITHUB_TOKEN;
 if (!TOKEN) {
@@ -59,10 +84,11 @@ if (!TOKEN) {
     process.exit(1);
 }
 
-function categorize(labels) {
+function categorize(labels, hasRoadmapPhase) {
     for (const label of labels) {
         if (CATEGORY_LABELS[label]) return CATEGORY_LABELS[label];
     }
+    if (hasRoadmapPhase) return "roadmap";
     return undefined;
 }
 
@@ -80,6 +106,12 @@ function slugify(title) {
 
 function escapeFrontmatter(value) {
     return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function getFieldText(fieldValueByName, fieldName) {
+    const field = fieldValueByName[fieldName];
+    if (!field) return undefined;
+    return field.name ?? field.text ?? undefined;
 }
 
 async function fetchProjectItems() {
@@ -117,14 +149,19 @@ async function fetchProjectItems() {
                 (l.name ?? "").toLowerCase(),
             ) ?? [];
 
-        const category = categorize(labels);
+        const roadmapPhase = getFieldText(node.fieldValueByName, "Roadmap Phase");
+        const category = categorize(labels, !!roadmapPhase);
         if (!category) continue;
 
         const status =
-            node.fieldValueByName?.name ??
+            getFieldText(node.fieldValueByName, "Status") ??
             (content.state === "CLOSED" ? "Done" : "Open");
 
         if (status === "Completados" || status === "Done") continue;
+
+        const difficulty = getFieldText(node.fieldValueByName, "Difficulty");
+        const benefit = getFieldText(node.fieldValueByName, "Benefit");
+        const cost = getFieldText(node.fieldValueByName, "Cost");
 
         items.push({
             category,
@@ -133,6 +170,10 @@ async function fetchProjectItems() {
             date: content.createdAt ?? node.createdAt ?? new Date().toISOString(),
             url: content.url ?? undefined,
             body: content.body ?? "",
+            difficulty,
+            roadmapPhase,
+            benefit,
+            cost,
         });
     }
 
@@ -159,6 +200,10 @@ async function main() {
             `status: "${escapeFrontmatter(item.status)}"`,
             `date: ${item.date}`,
             ...(item.url ? [`url: "${item.url}"`] : []),
+            ...(item.difficulty ? [`difficulty: "${item.difficulty}"`] : []),
+            ...(item.roadmapPhase ? [`roadmapPhase: "${item.roadmapPhase}"`] : []),
+            ...(item.benefit ? [`benefit: "${escapeFrontmatter(item.benefit)}"`] : []),
+            ...(item.cost ? [`cost: "${item.cost}"`] : []),
             `---`,
             ``,
             item.body ?? "",

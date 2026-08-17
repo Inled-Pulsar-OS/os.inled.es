@@ -1,0 +1,93 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+
+const resourcesDir = join(import.meta.dirname, "..", "..", "public", "resources");
+
+let files: string[] = [];
+try {
+    files = readdirSync(resourcesDir)
+        .filter((f) => !f.startsWith("."))
+        .sort((a, b) => a.localeCompare(b));
+} catch {
+    // Directory may not exist yet
+}
+
+const IMAGE_EXTS = [".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"];
+const isImage = (name: string) => IMAGE_EXTS.some((ext) => name.toLowerCase().endsWith(ext));
+
+const prettyName = (filename: string) =>
+    filename
+        .replace(/\.[^.]+$/, "")
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+
+const fileUrl = (name: string) => `/resources/${name}`;
+---
+
+<Layout pageKey="resources">
+    <section class="resources-hero">
+        <div class="container" style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <h1 class="section-title">Resources</h1>
+            <p class="section-subtitle" style="margin-bottom: 0;">
+                Download banners, logos and media assets to share Pulsar OS on social media.
+            </p>
+        </div>
+    </section>
+
+    <!-- Share CTA -->
+    <section class="resources-share-notice">
+        <div class="container">
+            <div class="resources-share-card">
+                <div class="resources-share-content">
+                    <h3 class="resources-share-title">Help us grow</h3>
+                    <p class="resources-share-desc">
+                        Share these resources on your social media. Tag us and your name goes on the <a href="/community/contributors">Wall of Fame</a>. More rewards coming soon.
+                    </p>
+                </div>
+                <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer" class="btn btn-primary resources-share-btn">
+                    Share on social media
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources grid -->
+    <section class="resources-grid-section">
+        <div class="container">
+            {
+                files.length > 0 ? (
+                    <div class="resources-grid">
+                        {files.map((file) => (
+                            <article class="resources-card">
+                                <div class="resources-preview">
+                                    {isImage(file) ? (
+                                        <img src={fileUrl(file)} alt={prettyName(file)} loading="lazy" />
+                                    ) : (
+                                        <div class="resources-icon">
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <polyline points="14 2 14 8 20 8"></polyline>
+                                            </svg>
+                                        </div>
+                                    )}
+                                </div>
+                                <div class="resources-info">
+                                    <h3 class="resources-name">{prettyName(file)}</h3>
+                                    <a href={fileUrl(file)} download class="btn btn-secondary resources-download-btn">
+                                        Download
+                                    </a>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                ) : (
+                    <p class="resources-empty">
+                        No resources yet. Add files to <code>/public/resources</code> and rebuild.
+                    </p>
+                )
+            }
+        </div>
+    </section>
+</Layout>
