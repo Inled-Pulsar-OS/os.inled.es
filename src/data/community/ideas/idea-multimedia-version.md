@@ -4,6 +4,7 @@ title: "[IDEA] Multimedia version"
 status: "Backlog"
 date: 2026-07-15T10:46:24Z
 url: "https://github.com/Inled-Pulsar-OS/PKG/issues/56"
+roadmapPhase: "General"
 ---
 
 Crear algo mejor que zimaos:
