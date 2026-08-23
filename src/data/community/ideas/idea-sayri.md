@@ -1,6 +1,6 @@
 ---
 type: "idea"
-title: "[IDEA] Siri, but is openclaw"
+title: "[IDEA] Sayri"
 status: "Backlog"
 date: 2026-06-30T19:33:10Z
 url: "https://github.com/Inled-Pulsar-OS/PKG/issues/37"

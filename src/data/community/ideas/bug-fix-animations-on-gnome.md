@@ -1,6 +1,6 @@
 ---
 type: "idea"
-title: "[IDEA] add more smooth animations"
+title: "[BUG] Fix animations on gnome"
 status: "Backlog"
 date: 2026-08-21T18:30:18Z
 url: "https://github.com/Inled-Pulsar-OS/PKG/issues/116"
