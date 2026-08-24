@@ -32,7 +32,10 @@ is driven by GitHub labels:
 
 - `bug` (or `error`) → errors section
 - `idea` (or `enhancement`) → ideas section
-- `help-wanted` (or `help wanted`, `good first issue`) → help section
+
+The sync only manages the `errors/`, `ideas/`, `tasks/` and `suggestions/`
+folders. The roadmap is manual and lives in `src/data/community/roadmap/` —
+the sync never touches that folder, so edit those files freely.
 
 When adding or editing project items, always set one of these labels and the
 "Status" project field. To regenerate the markdown locally, run:
@@ -40,5 +43,3 @@ When adding or editing project items, always set one of these labels and the
 ```
 GITHUB_TOKEN=$(gh auth token) node scripts/sync-community.mjs
 ```
-
-The roadmap section is manual and lives in `src/data/community/roadmap/`.

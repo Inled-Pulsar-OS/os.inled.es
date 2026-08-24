@@ -61,21 +61,18 @@ const CATEGORY_LABELS = {
     error: "error",
     idea: "idea",
     enhancement: "idea",
-    "help-wanted": "help",
-    "help wanted": "help",
-    "good first issue": "help",
     task: "task",
     community: "task",
     suggestion: "suggestion",
 };
 
+// The roadmap folder is manual (src/data/community/roadmap) and must never
+// be touched by the sync; there is no synced "help" section anymore either.
 const CATEGORY_DIRS = {
     error: "errors",
     idea: "ideas",
-    help: "help",
     task: "tasks",
     suggestion: "suggestions",
-    roadmap: "roadmap",
 };
 
 const TOKEN = process.env.GITHUB_TOKEN;
@@ -84,11 +81,10 @@ if (!TOKEN) {
     process.exit(1);
 }
 
-function categorize(labels, hasRoadmapPhase) {
+function categorize(labels) {
     for (const label of labels) {
         if (CATEGORY_LABELS[label]) return CATEGORY_LABELS[label];
     }
-    if (hasRoadmapPhase) return "roadmap";
     return undefined;
 }
 
@@ -150,7 +146,7 @@ async function fetchProjectItems() {
             ) ?? [];
 
         const roadmapPhase = getFieldText(node, "roadmapPhase");
-        const category = categorize(labels, !!roadmapPhase);
+        const category = categorize(labels);
         if (!category) continue;
 
         const status =
