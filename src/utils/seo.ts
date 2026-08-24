@@ -11,27 +11,27 @@ export const SEO = {
   },
   pages: {
     index: {
-      title: "Pulsar OS — The True Replacement for Mac and Windows",
+      title: "Pulsar OS — The True Replacement for Mac, Windows and much more!",
       description:
-        "Linux-based OS replicating macOS and Windows experience. Open-source, community-driven, zero telemetry, fully auditable.",
+        "The Linux distribution that includes editions to replicate the UI and UX of each of the most famous operating systems. You will feel at home.",
       keywords:
-        "linux, macos replacement, windows alternative, open source operating system, pulsar os, pear edition, wintux, auditable linux",
+        "linux, macos replacement, windows alternative, open source operating system, pulsar os, pear edition, wintux, auditable linux, pear os, winux, linuxfx, zorin os, gnome, elementary os",
       og: {
-        title: "Pulsar OS — The True Replacement for Mac and Windows",
+        title: "Discover Pulsar OS! The True Replacement for your operative systems",
         description:
-          "Linux-based OS replicating macOS and Windows experience. Open-source, community-driven, zero telemetry, fully auditable.",
+          "And join our community, together we can make the best Linux operating system.",
       },
     },
     "pear-edition": {
-      title: "Pear Edition — macOS-Inspired Linux Desktop | Pulsar OS",
+      title: "PulsarOS Pear Edition | It's time to replace Mac | Linux Distro",
       description:
-        "A polished macOS-inspired desktop built on Arch Linux and Debian. Zero telemetry, fully auditable, familiar workflow.",
+        "It is like Mac in everything: from the appearance to the flow of use. This really is an alternative!",
       keywords:
-        "macos linux, macos clone, pear edition, arch linux desktop, debian desktop, linux macos alternative, auditable linux",
+        "macos linux, macos clone, pear edition, arch linux desktop, debian desktop, linux macos alternative, auditable linux, pear os, pear os nicec0re, elementary os",
       og: {
-        title: "Pear Edition — macOS-Inspired Linux Desktop",
+        title: "Switch from MacOS to Linux the easy way | Discover Pear Edition from Pulsar OS",
         description:
-          "A polished macOS-inspired desktop built on Arch Linux and Debian. Zero telemetry, fully auditable, familiar workflow.",
+          "It is like Mac in everything: from the appearance to the flow of use. This really is an alternative!",
       },
     },
     iso: {
@@ -41,19 +41,19 @@ export const SEO = {
       keywords:
         "pulsar os iso, download linux iso, pulsar os download, pear edition iso, linux flash usb, pulsar os requirements",
       og: {
-        title: "Download the ISO — Pulsar OS",
+        title: "It's time to download! Here are the ISO's for Pulsar OS",
         description:
           "Minimum requirements, editions, boot variants, installers and flashing instructions for Pulsar OS. Read this before downloading the ISO.",
       },
     },
     community: {
-      title: "Community — Pulsar OS",
+      title: "We are a community | Meet Pulsar OS",
       description:
         "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
       keywords:
         "pulsar os community, linux community, open source community, report bug linux, linux ideas, contribute to pulsar os",
       og: {
-        title: "Community — Pulsar OS",
+        title: "Join our community and see more | Pulsar OS",
         description:
           "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
       },

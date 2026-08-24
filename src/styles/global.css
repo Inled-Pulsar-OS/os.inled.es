@@ -177,6 +177,14 @@ a:hover {
     transform: translateY(-1px);
 }
 
+/* Disabled download button (availability system via src/config/downloads.json)
+   Botón de descarga deshabilitado (sistema de disponibilidad) */
+.btn-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* Placeholders for Images (Clean rounded empty boxes / Cajas vacías limpias y redondeadas) */
 .image-placeholder {
     width: 100%;
@@ -1254,11 +1262,11 @@ html.dark .notice-icon {
     border: 1px solid var(--border-color);
     border-radius: 28px;
     padding: 44px;
-    text-align: center;
+    text-align: left;
     transition: all var(--transition-speed) ease;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .pear-app-card:hover {
@@ -1285,6 +1293,12 @@ html.dark .notice-icon {
     color: var(--accent-purple);
 }
 
+.pear-app-icon svg {
+    width: 46px;
+    height: 46px;
+    stroke-width: 2.2;
+}
+
 .pear-app-title {
     font-family: var(--font-pear-display);
     font-size: 1.5rem;
@@ -1297,6 +1311,45 @@ html.dark .notice-icon {
     color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.6;
+}
+
+/* --- Card watermark hover effect (site-wide)
+       Efecto de marca de agua al hacer hover en las cards de toda la web:
+       icono gigante casi invisible, recortado en la esquina inferior derecha --- */
+.card-has-watermark {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-has-watermark > :not(.card-watermark) {
+    position: relative;
+    z-index: 1;
+}
+
+.card-watermark {
+    position: absolute;
+    right: -10%;
+    bottom: -14%;
+    width: min(260px, 85%);
+    aspect-ratio: 1;
+    color: var(--text-primary);
+    opacity: 0;
+    transform: translate(-24px, 24px) rotate(-10deg);
+    pointer-events: none;
+    z-index: 0;
+    transition:
+        opacity 0.4s ease,
+        transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.card-has-watermark:hover .card-watermark {
+    opacity: 0.07;
+    transform: translate(0, 0) rotate(0deg);
+}
+
+.card-watermark svg {
+    width: 100%;
+    height: 100%;
 }
 
 @media (max-width: 1024px) {
@@ -2910,5 +2963,127 @@ html.dark .community-status {
 
     body.docs-nav-open {
         overflow: hidden;
+    }
+}
+
+/*
+  SITE-WIDE MOTION SYSTEM
+  SISTEMA DE MOVIMIENTO GLOBAL
+
+  Lenis smooth scroll, header hide/show on scroll, hero word-by-word
+  reveal and scroll-triggered reveals for titles and cards.
+  Scroll suave con Lenis, cabecera que se oculta/muestra al hacer scroll,
+  aparición palabra a palabra en el hero y animaciones de entrada
+  para títulos y cards de toda la web.
+*/
+
+/* --- Lenis base styles / Estilos base de Lenis --- */
+html.lenis,
+html.lenis body {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+/* --- Header hide/show on scroll direction:
+       defined in Layout.astro (scoped) so it wins the cascade over
+       the base .floating-header rule / La lógica de ocultar/mostrar la
+       cabecera vive en Layout.astro para ganar la cascada de estilos --- */
+
+/* --- Hero titles: word blocks rise from below, blur to sharp
+       Títulos del hero: bloques por palabra que suben y pasan de borroso a nítido --- */
+html.js .hero-title,
+html.js .pear-hero-title,
+html.js .iso-hero-title {
+    opacity: 0;
+}
+
+html.js .hero-title.animate,
+html.js .pear-hero-title.animate,
+html.js .iso-hero-title.animate {
+    opacity: 1;
+}
+
+.hero-word {
+    display: inline-block;
+    will-change: transform, filter, opacity;
+}
+
+html.js .hero-word {
+    opacity: 0;
+    transform: translateY(0.7em);
+    filter: blur(12px);
+}
+
+html.js .hero-title.animate .hero-word,
+html.js .pear-hero-title.animate .hero-word,
+html.js .iso-hero-title.animate .hero-word {
+    animation: hero-word-in 0.9s cubic-bezier(0.19, 1, 0.22, 1) both;
+    animation-delay: calc(150ms + var(--wi, 0) * 90ms);
+}
+
+@keyframes hero-word-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.7em);
+        filter: blur(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* --- Scroll-triggered reveals (titles + cards site-wide)
+       Aparición al hacer scroll (títulos y cards de toda la web):
+       subida en bloque con disolución de borroso a visible --- */
+html.js :where([data-reveal]) {
+    opacity: 0;
+    transform: translateY(34px);
+    filter: blur(10px);
+    transition:
+        opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 0.85s cubic-bezier(0.19, 1, 0.22, 1),
+        filter 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform, filter;
+}
+
+html.js :where([data-reveal].is-visible) {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+/* --- Reduced motion fallback / Respeto por usuarios con movimiento reducido --- */
+@media (prefers-reduced-motion: reduce) {
+    html.js .hero-title,
+    html.js .pear-hero-title,
+    html.js .iso-hero-title {
+        opacity: 1;
+    }
+
+    html.js .hero-word,
+    html.js :where([data-reveal]) {
+        opacity: 1;
+        transform: none;
+        filter: none;
+        transition: none;
+        animation: none;
+    }
+
+    .card-watermark {
+        display: none;
     }
 }

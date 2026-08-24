@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { SEO, type PageKey } from "@/utils/seo";
+import { downloadAvailability } from "@/utils/downloads";
 
 interface Props {
     title?: string;
@@ -23,6 +24,9 @@ const pageOg = pageSeo.og;
 
 const pathname = Astro.url.pathname;
 const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
+
+// Global download availability / Disponibilidad global de descargas
+const DOWNLOADS = downloadAvailability();
 ---
 
 <!doctype html>
@@ -101,8 +105,9 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
             crossorigin="anonymous"
         />
 
-        <!-- Theme prevention script -->
+        <!-- Theme prevention + JS flag for motion system -->
         <script is:inline>
+            document.documentElement.classList.add("js");
             (function () {
                 const savedTheme = localStorage.getItem("theme");
                 const prefersDark = window.matchMedia(
@@ -225,14 +230,22 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
                     >
                         <i class="fa-brands fa-github"></i>
                     </a>
-                    <a
-                        href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-download-warn
-                        class="btn btn-primary btn-nav-download"
-                        >Download</a
-                    >
+                    {DOWNLOADS.enabled ? (
+                        <a
+                            href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-download-warn
+                            class="btn btn-primary btn-nav-download"
+                            >Download</a
+                        >
+                    ) : (
+                        <span
+                            class="btn btn-primary btn-nav-download btn-disabled"
+                            aria-disabled="true"
+                            >{DOWNLOADS.message}</span
+                        >
+                    )}
 
                     <button
                         id="menu-toggle"
@@ -359,8 +372,30 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
             </div>
         </dialog>
 
-        <!-- Theme handler + mobile menu logic / Lógica de control de temas y menú móvil -->
+        <!-- Theme handler + mobile menu logic + site motion / Lógica de temas, menú móvil y movimiento global -->
         <script>
+            import Lenis from "lenis";
+
+            const prefersReducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)",
+            ).matches;
+
+            /* --- Lenis smooth scroll / Scroll suave con Lenis --- */
+            let lenis: Lenis | null = null;
+
+            if (!prefersReducedMotion) {
+                lenis = new Lenis({
+                    lerp: 0.12,
+                    anchors: true,
+                });
+
+                const raf = (time: number) => {
+                    lenis?.raf(time);
+                    requestAnimationFrame(raf);
+                };
+                requestAnimationFrame(raf);
+            }
+
             const themeToggle = document.getElementById("theme-toggle");
 
             themeToggle?.addEventListener("click", () => {
@@ -372,15 +407,19 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
             const menuToggle = document.getElementById("menu-toggle");
             const mobileNav = document.getElementById("mobile-nav");
 
+            function closeMobileMenu() {
+                menuToggle?.classList.remove("open");
+                mobileNav?.classList.remove("open");
+            }
+
             menuToggle?.addEventListener("click", () => {
                 menuToggle.classList.toggle("open");
                 mobileNav?.classList.toggle("open");
             });
 
-            function closeMobileMenu() {
-                menuToggle?.classList.remove("open");
-                mobileNav?.classList.remove("open");
-            }
+            mobileNav?.querySelectorAll("a").forEach((link) => {
+                link.addEventListener("click", closeMobileMenu);
+            });
 
             const alphaDialog = document.getElementById("alpha-dialog");
 
@@ -388,6 +427,7 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
                 btn.addEventListener("click", (event) => {
                     event.preventDefault();
                     alphaDialog?.showModal();
+                    lenis?.stop();
                 });
             });
 
@@ -398,6 +438,221 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
             alphaDialog?.addEventListener("click", (event) => {
                 if (event.target === alphaDialog) alphaDialog.close();
             });
+
+            alphaDialog?.addEventListener("close", () => lenis?.start());
+
+            /* --- Header: hide on scroll down, show on scroll up
+                   Cabecera: se oculta al bajar y aparece al subir --- */
+            const header = document.querySelector<HTMLElement>(
+                ".floating-header",
+            );
+
+            if (header) {
+                let lastY = window.scrollY;
+                let ticking = false;
+
+                const updateHeader = () => {
+                    ticking = false;
+                    const y = window.scrollY;
+                    const menuOpen =
+                        mobileNav?.classList.contains("open") ?? false;
+
+                    if (!menuOpen && y > lastY && y > 140) {
+                        header.classList.add("header-hidden");
+                    } else {
+                        header.classList.remove("header-hidden");
+                    }
+                    lastY = y;
+                };
+
+                window.addEventListener(
+                    "scroll",
+                    () => {
+                        if (!ticking) {
+                            ticking = true;
+                            requestAnimationFrame(updateHeader);
+                        }
+                    },
+                    { passive: true },
+                );
+            }
+
+            /* --- Hero titles: word-by-word blur-to-sharp rise
+                   Títulos del hero: aparición palabra a palabra,
+                   de borroso a nítido subiendo desde abajo --- */
+            const setupHeroTitle = () => {
+                const titles = document.querySelectorAll<HTMLElement>(
+                    ".hero-title, .pear-hero-title, .iso-hero-title",
+                );
+
+                if (!titles.length) return;
+
+                if (prefersReducedMotion) {
+                    titles.forEach((t) => t.classList.add("animate"));
+                    return;
+                }
+
+                titles.forEach((title) => {
+                    const label = (title.textContent ?? "")
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+                    if (!label) {
+                        title.classList.add("animate");
+                        return;
+                    }
+
+                    title.setAttribute("aria-label", label);
+
+                    const nodes = Array.from(title.childNodes);
+                    title.textContent = "";
+
+                    let wordIndex = 0;
+                    const pushWord = (word: string) => {
+                        const wordEl = document.createElement("span");
+                        wordEl.className = "hero-word";
+                        wordEl.setAttribute("aria-hidden", "true");
+                        wordEl.style.setProperty("--wi", String(wordIndex));
+                        wordEl.textContent = word;
+                        title.appendChild(wordEl);
+                        title.appendChild(document.createTextNode(" "));
+                        wordIndex += 1;
+                    };
+
+                    nodes.forEach((node) => {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            (node.textContent ?? "")
+                                .split(/\s+/)
+                                .filter(Boolean)
+                                .forEach(pushWord);
+                        } else if (
+                            node.nodeType === Node.ELEMENT_NODE &&
+                            (node as Element).tagName === "BR"
+                        ) {
+                            title.appendChild(document.createElement("br"));
+                        }
+                    });
+
+                    requestAnimationFrame(() =>
+                        requestAnimationFrame(() =>
+                            title.classList.add("animate"),
+                        ),
+                    );
+                });
+            };
+
+            setupHeroTitle();
+
+            /* --- Scroll reveals for titles and cards across the site
+                   Animación de aparición para títulos y cards de toda la web --- */
+            const setupReveals = () => {
+                if (prefersReducedMotion) return;
+
+                const targets: HTMLElement[] = [];
+
+                // Cards: any element whose class token ends in "card" + known items
+                document
+                    .querySelectorAll<HTMLElement>(
+                        "main [class*='card'], main .commitment-item",
+                    )
+                    .forEach((el) => {
+                        const isCard =
+                            [...el.classList].some((c) =>
+                                /(^|[-_])card$/.test(c),
+                            ) || el.classList.contains("commitment-item");
+                        // Very tall article wrappers are skipped: their inner
+                        // headings reveal individually instead
+                        if (
+                            isCard &&
+                            !el.classList.contains("help-article-card")
+                        )
+                            targets.push(el);
+                    });
+
+                // Titles and hero copy not already inside a revealed card
+                document
+                    .querySelectorAll<HTMLElement>(
+                        "main h1, main h2, main h3, .section-subtitle, .hero-desc, .hero-actions, .pear-logo, .pear-hero-desc, .pear-hero-actions, .iso-hero-desc",
+                    )
+                    .forEach((el) => {
+                        if (el.closest("[data-reveal]")) return;
+                        if (
+                            el.matches(
+                                ".hero-title, .pear-hero-title, .iso-hero-title",
+                            )
+                        )
+                            return;
+                        targets.push(el);
+                    });
+
+                // Stagger per parent group / Escalonado por grupo de hermanos
+                const groupIndex = new Map<Element | null, number>();
+
+                targets.forEach((el) => {
+                    const parent = el.parentElement;
+                    const idx = groupIndex.get(parent) ?? 0;
+                    groupIndex.set(parent, idx + 1);
+
+                    let delay = Math.min(idx * 80, 400);
+                    if (
+                        el.matches(".hero-desc, .pear-hero-desc, .iso-hero-desc")
+                    )
+                        delay = Math.max(delay, 850);
+                    if (el.matches(".hero-actions, .pear-hero-actions"))
+                        delay = Math.max(delay, 1000);
+
+                    el.style.setProperty("--reveal-delay", `${delay}ms`);
+                    el.setAttribute("data-reveal", "");
+                });
+
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add("is-visible");
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    },
+                    // threshold 0 so very tall cards still trigger
+                    { threshold: 0, rootMargin: "0px 0px -8% 0px" },
+                );
+
+                targets.forEach((el) => observer.observe(el));
+            };
+
+            /* --- Card watermarks: clone each card's icon as a giant
+                   barely-visible background mark on hover, clipped at the
+                   bottom-right corner / Marca de agua gigante casi
+                   invisible al hover en las cards de toda la web --- */
+            const isSiteCard = (el: HTMLElement) =>
+                [...el.classList].some((c) => /(^|[-_])card$/.test(c)) ||
+                el.classList.contains("commitment-item");
+
+            const setupCardWatermarks = () => {
+                document
+                    .querySelectorAll<HTMLElement>("main [class*='card']")
+                    .forEach((card) => {
+                        if (!isSiteCard(card)) return;
+
+                        const svg = [
+                            ...card.querySelectorAll("svg"),
+                        ].find((s) => !s.closest("button, a"));
+                        if (!svg) return;
+
+                        card.classList.add("card-has-watermark");
+
+                        const wm = document.createElement("div");
+                        wm.className = "card-watermark";
+                        wm.setAttribute("aria-hidden", "true");
+                        wm.appendChild(svg.cloneNode(true));
+                        card.appendChild(wm);
+                    });
+            };
+
+            setupCardWatermarks();
+
+            setupReveals();
         </script>
     </body>
 </html>
@@ -417,7 +672,25 @@ const canonicalUrl = pathname === "/" ? siteUrl : `${siteUrl}${pathname}`;
         border: 1px solid var(--border-color);
         border-radius: 20px;
         z-index: 100;
-        transition: all var(--transition-speed) ease;
+        transition:
+            transform 0.45s cubic-bezier(0.22, 0.61, 0.21, 1),
+            border-color var(--transition-speed) ease,
+            box-shadow var(--transition-speed) ease,
+            background-color var(--transition-speed) ease;
+    }
+
+    /* Hide on scroll down, show on scroll up
+       Se oculta al bajar y reaparece al subir */
+    .floating-header.header-hidden {
+        transform: translateX(-50%) translateY(calc(-100% - 32px));
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .floating-header.header-hidden {
+            transform: translateX(-50%);
+            transition: none;
+        }
     }
 
     html.dark .floating-header {

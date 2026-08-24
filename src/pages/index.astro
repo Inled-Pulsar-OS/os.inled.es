@@ -4,6 +4,9 @@
 import Layout from "../layouts/Layout.astro";
 import CompatSection from "../components/CompatSection.astro";
 import ReleaseChannels from "../components/ReleaseChannels.astro";
+import { downloadAvailability } from "@/utils/downloads";
+
+const DOWNLOADS = downloadAvailability();
 ---
 
 <Layout pageKey="index">
@@ -23,29 +26,35 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
                     <!-- Un sistema operativo elegante, completamente auditable y comunitario diseñado para clonar el flujo de tu entorno preferido con cero telemetría y libertad total. -->
                 </p>
                 <div class="hero-actions">
-                    <a
-                        href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-download-warn
-                        class="btn btn-primary"
-                    >
-                        Download and try it!
-                        <svg
-                            class="btn-arrow"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                    {DOWNLOADS.enabled ? (
+                        <a
+                            href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-download-warn
+                            class="btn btn-primary"
                         >
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
+                            Download and try it!
+                            <svg
+                                class="btn-arrow"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    ) : (
+                        <span class="btn btn-primary btn-disabled" aria-disabled="true">
+                            {DOWNLOADS.message}
+                        </span>
+                    )}
                     <a
                         href="/community"
                         target="_blank"
@@ -209,15 +218,21 @@ import ReleaseChannels from "../components/ReleaseChannels.astro";
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
                     </a>
-                    <a
-                        href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-download-warn
-                        class="btn btn-secondary"
-                    >
-                        Download the ISO
-                    </a>
+                    {DOWNLOADS.enabled ? (
+                        <a
+                            href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-download-warn
+                            class="btn btn-secondary"
+                        >
+                            Download the ISO
+                        </a>
+                    ) : (
+                        <span class="btn btn-secondary btn-disabled" aria-disabled="true">
+                            {DOWNLOADS.message}
+                        </span>
+                    )}
                 </div>
             </div>
         </div>

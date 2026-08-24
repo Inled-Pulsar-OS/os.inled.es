@@ -1,7 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { downloadAvailability } from "@/utils/downloads";
 
 const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
+const DOWNLOADS = downloadAvailability();
 ---
 
 <Layout pageKey="iso">
@@ -223,13 +225,19 @@ const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
                         Grab the latest release from GitHub, read the release notes
                         and pick the edition for your hardware.
                     </p>
-                    <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                        Download the ISO
-                        <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </a>
+                    {DOWNLOADS.enabled ? (
+                        <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            Download the ISO
+                            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    ) : (
+                        <span class="btn btn-primary btn-disabled" aria-disabled="true">
+                            {DOWNLOADS.message}
+                        </span>
+                    )}
                     <p class="iso-download-note">
                         Pear Edition is in alpha. If you're a beta tester, we'd love to hear your feedback — share any bugs, suggestions or opinions on <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer">Discord</a>.
                     </p>
