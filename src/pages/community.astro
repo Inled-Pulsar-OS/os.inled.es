@@ -22,8 +22,12 @@ const sortByDate = (a, b) =>
 
 const errors = (await withContent(all.filter((e) => e.data.type === "error"))).sort(sortByDate);
 const ideas = (await withContent(all.filter((e) => e.data.type === "idea"))).sort(sortByDate);
-const roadmap = (await withContent(all.filter((e) => e.data.type === "roadmap"))).sort(sortByDate);
-const helpItems = (await withContent(all.filter((e) => e.data.type === "help"))).sort(sortByDate);
+// The roadmap is a single manual markdown document (not synced from GitHub).
+// Must be capitalized so Astro renders it as a component, not a literal tag.
+const roadmapEntry = all.find(
+    (e) => e.data.type === "roadmap" && e.id.startsWith("roadmap/"),
+);
+const RoadmapContent = roadmapEntry ? (await render(roadmapEntry)).Content : null;
 const tasks = (await withContent(all.filter((e) => e.data.type === "task"))).sort(sortByDate);
 const suggestions = (await withContent(all.filter((e) => e.data.type === "suggestion"))).sort(sortByDate);
 
@@ -313,24 +317,10 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
             </p>
 
             {
-                roadmap.length > 0 ? (
-                    <div class="community-grid community-grid-stack">
-                        {roadmap.map(({ entry, Content }) => (
-                            <article class="community-item-card">
-                                <div class="community-item-meta">
-                                    <span class="community-status">{entry.data.status}</span>
-                                    <span class={`community-priority priority-${entry.data.priority}`}>
-                                        {entry.data.priority}
-                                    </span>
-                                </div>
-                                <h3 class="community-item-title">{entry.data.title}</h3>
-                                <div class="community-item-body"><Content /></div>
-                                <div class="community-item-footer">
-                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
+                RoadmapContent ? (
+                    <article class="community-item-card">
+                        <div class="help-prose"><RoadmapContent /></div>
+                    </article>
                 ) : (
                     <p class="community-empty">The roadmap is empty for now — check back soon.</p>
                 )
@@ -342,53 +332,6 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
                 </a>
                 <a href={PROJECT} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
                     Follow the project board
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Help wanted -->
-    <section id="help" class="community-list-section">
-        <div class="container">
-            <h2 class="section-title">Help wanted</h2>
-            <p class="section-subtitle">
-                You can help with any error or proposal, but here we list what matters most to us.
-            </p>
-
-            {
-                helpItems.length > 0 ? (
-                    <div class="community-grid community-grid-wide">
-                        {helpItems.map(({ entry, Content }) => (
-                            <article class="community-item-card">
-                                <div class="community-item-meta">
-                                    <span class="community-status">{entry.data.status}</span>
-                                    {entry.data.priority && (
-                                        <span class={`community-priority priority-${entry.data.priority}`}>
-                                            {entry.data.priority}
-                                        </span>
-                                    )}
-                                </div>
-                                <h3 class="community-item-title">{entry.data.title}</h3>
-                                <div class="community-item-body"><Content /></div>
-                                <div class="community-item-footer">
-                                    <span class="community-item-date">{formatDate(entry.data.date)}</span>
-                                    {entry.data.url && (
-                                        <a href={entry.data.url} target="_blank" rel="noopener noreferrer" class="community-item-link">
-                                            View on GitHub
-                                        </a>
-                                    )}
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                ) : (
-                    <p class="community-empty">If there is nothing here, it may be a good sign or that the page is crashing (most likely).</p>
-                )
-            }
-
-            <div class="community-cta-row">
-                <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                    Explore repositories
                 </a>
             </div>
         </div>
@@ -593,4 +536,46 @@ const ISSUES = "https://github.com/Inled-Pulsar-OS/ISO/issues";
             </div>
         </div>
     </section>
+
+    <script>
+        // Collapse long card bodies behind a "Read more" toggle.
+        // Short bodies are left untouched: no clamp, no fade, no button.
+        const COLLAPSE_HEIGHT = 140;
+
+        document.querySelectorAll(".community-item-card").forEach((card) => {
+            const body = card.querySelector(".community-item-body");
+            if (!body) return;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "community-item-toggle";
+            button.hidden = true;
+            body.insertAdjacentElement("afterend", button);
+
+            let expanded = false;
+
+            const syncLabel = () => {
+                button.textContent = expanded ? "Read less" : "Read more";
+                button.setAttribute("aria-expanded", String(expanded));
+            };
+
+            const checkOverflow = () => {
+                const overflowing = body.scrollHeight > COLLAPSE_HEIGHT + 8;
+                body.classList.toggle("is-collapsed", overflowing && !expanded);
+                button.hidden = !overflowing;
+                syncLabel();
+            };
+
+            button.addEventListener("click", () => {
+                expanded = !expanded;
+                body.classList.toggle("is-collapsed", !expanded);
+                syncLabel();
+            });
+
+            checkOverflow();
+            body.querySelectorAll("img").forEach((img) => {
+                if (!img.complete) img.addEventListener("load", checkOverflow, { once: true });
+            });
+        });
+    </script>
 </Layout>

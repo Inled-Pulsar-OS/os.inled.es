@@ -4,6 +4,7 @@
 import Layout from "../../layouts/Layout.astro";
 import HelpSidebar from "../../components/HelpSidebar.astro";
 import { getCollection, render } from "astro:content";
+import { orderHelpEntries } from "../../utils/helpOrder.js";
 
 export async function getStaticPaths() {
     const articles = await getCollection("help");
@@ -23,9 +24,7 @@ const prettyCategory = (slug) =>
         .join(" ");
 
 const all = await getCollection("help");
-const ordered = [...all].sort(
-    (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
-);
+const ordered = orderHelpEntries(all);
 const index = ordered.findIndex((item) => item.id === entry.id);
 const prev = index > 0 ? ordered[index - 1] : null;
 const next = index >= 0 && index < ordered.length - 1 ? ordered[index + 1] : null;

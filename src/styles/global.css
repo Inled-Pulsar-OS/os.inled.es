@@ -1777,6 +1777,54 @@ html.dark .community-status {
     margin-bottom: 6px;
 }
 
+/* Embedded media from GitHub issues must never blow up the card */
+.community-item-body img,
+.community-item-body video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Long bodies start collapsed with a fade; the toggle button expands them */
+.community-item-body.is-collapsed {
+    position: relative;
+    max-height: 140px;
+    overflow: hidden;
+}
+
+.community-item-body.is-collapsed::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, var(--bg-card));
+    pointer-events: none;
+}
+
+/* Keep the fade in sync with the hover background so it never mismatches */
+.community-item-card:hover .community-item-body.is-collapsed::after {
+    background: linear-gradient(to bottom, transparent, var(--bg-card-hover));
+}
+
+.community-item-toggle {
+    align-self: flex-start;
+    margin-top: 10px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+.community-item-toggle:hover {
+    text-decoration: underline;
+}
+
 .community-item-footer {
     margin-top: auto;
     padding-top: 24px;

@@ -1,6 +1,7 @@
 ---
 // Documentation sidebar navigation / Barra lateral de documentación
 import { getCollection } from "astro:content";
+import { orderHelpEntries } from "../utils/helpOrder.js";
 
 interface Props {
     current?: string;
@@ -8,7 +9,7 @@ interface Props {
 
 const { current } = Astro.props;
 
-const all = await getCollection("help");
+const ordered = orderHelpEntries(await getCollection("help"));
 
 const prettyCategory = (slug) =>
     slug
@@ -16,7 +17,7 @@ const prettyCategory = (slug) =>
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
 
-const grouped = all.reduce((acc, entry) => {
+const grouped = ordered.reduce((acc, entry) => {
     const category = entry.id.split("/")[0];
     (acc[category] ||= []).push(entry);
     return acc;
@@ -25,7 +26,7 @@ const grouped = all.reduce((acc, entry) => {
 const categories = Object.entries(grouped).map(([key, items]) => ({
     key,
     name: prettyCategory(key),
-    items: items.sort((a, b) => a.data.order - b.data.order),
+    items,
 }));
 ---
 
