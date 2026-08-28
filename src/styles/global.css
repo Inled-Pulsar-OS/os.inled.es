@@ -163,6 +163,7 @@ a:hover {
 .btn-primary:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
+    color: var(--accent-btn-text);
 }
 
 .btn-secondary {
@@ -175,6 +176,7 @@ a:hover {
     background-color: var(--bg-card-hover);
     border-color: var(--border-focus);
     transform: translateY(-1px);
+    color: var(--accent-sec-text);
 }
 
 /* Disabled download button (availability system via src/config/downloads.json)
