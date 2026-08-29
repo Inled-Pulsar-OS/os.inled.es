@@ -12,7 +12,7 @@ Medium
 
 ### Roadmap Phase
 
-Pear Edition Stable
+Bitten Fruit Stable
 
 ### Task Description
 

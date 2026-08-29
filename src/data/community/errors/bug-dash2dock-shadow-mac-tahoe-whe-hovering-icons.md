@@ -22,6 +22,6 @@ Not to have this background color on hover
 If applicable, add screenshots or logs to help explain your problem.
 
 ### Environment Details
-* OS / Browser: pulsar os pear edition
+* OS / Browser: pulsar os Bitten Fruit
 * Version / Commit SHA:
 
