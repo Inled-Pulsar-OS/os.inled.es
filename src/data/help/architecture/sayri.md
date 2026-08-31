@@ -1,6 +1,6 @@
 ---
 title: "Sayri AI Architecture & Bubblewrap Sandbox"
-description: "Comprehensive documentation of Sayri: UI Cajita, Zero-Plaintext Secrets Manager, Bubblewrap Sandbox Isolation, and Subagent Capabilities."
+description: "In-depth guide to Sayri: Hexagonal ReAct loop, Bubblewrap (bwrap) kernel isolation, and Zero-Plaintext Security."
 order: 2
 ---
 
@@ -55,9 +55,13 @@ graph TD
 
 ---
 
-## 🛡️ 2. Bubblewrap (`bwrap`) Sandbox Isolation & Permission Model
+## 📦 2. What is Bubblewrap (`bwrap`) and How Does it Protect You?
 
-Sayri executes all subagent commands inside Linux kernel namespaces using **Bubblewrap (`bwrap`)**.
+### ❓ What is Bubblewrap?
+**Bubblewrap (`bwrap`)** is an unprivileged Linux container sandbox utility created by the GNOME and Flatpak teams. Unlike heavy container virtualization platforms like Docker, Bubblewrap:
+1. **Requires NO Root Privileges & NO Background Daemons**: It uses standard unprivileged Linux kernel **Namespaces** (`user`, `pid`, `net`, `ipc`, `uts`, `mount`).
+2. **Instant Microsecond Startup**: Spawns an isolated jail in under **5 milliseconds** with zero runtime overhead.
+3. **Mount Point Manipulation**: Mounts existing host directories as **Strictly Read-Only** (`--ro-bind`) or memory-backed RAM tmpfs (`--tmpfs`).
 
 ```mermaid
 flowchart TD
@@ -74,20 +78,12 @@ flowchart TD
     LevelCheck -->|LEVEL_4_HOST_ROOT| Polkit[🔐 Polkit Graphical Dialog<br/>pkexec Administrator Confirmation]
 ```
 
-### ❓ How Does the Permission Model Work?
-
-Bubblewrap in Sayri operates on a **Declarative Security Policy (Capabilities & Bind Mounts)** rather than interrupting the user with interactive popups for every single system call:
-
-1. **Why not ask permission for every single action?**
-   - If an automated subagent asked for user confirmation on every single file read, compile command, or sub-process fork, autonomous execution would stall and create critical alert fatigue.
-2. **Declarative Isolation by Default**:
-   - When an agent is launched, its capabilities are established at the container level:
-     - **Read-Only System**: The host root (`/`, `/usr`, `/etc`, `/home`) is mounted strictly read-only (`--ro-bind / /`). The agent can execute standard tools (`python3`, `node`, `grep`), but **cannot alter any existing file**.
-     - **Private Workspace**: Only its dedicated directory (`~/.local/share/sayri/sandboxes/<agent_id>`) is mounted read-write.
-     - **Network Boundary**: With `allow_network: false`, the container creates an isolated network namespace (`--unshare-net`) blocking all inbound and outbound traffic.
-     - **Process Isolation**: The subagent cannot view or signal host processes (`--unshare-pid --unshare-ipc`).
-3. **When does the user get prompted?**
-   - **Administrator Privileges (`LEVEL_4_HOST_ROOT` / `sudo`)**: If an agent requests system updates (`pacman`) or system configurations (`systemctl`), Sayri automatically elevates via **Polkit (`pkexec`)**, presenting the native desktop graphical authorization dialog for password verification.
+### 🛡️ How Sayri Isolates Subagents with Bubblewrap:
+- **Read-Only System Root (`--ro-bind / /`)**: Subagents can read shared system binaries (`python3`, `gcc`, `grep`, `node`), but **any write or delete operation to `/etc`, `/usr`, or your real `$HOME` immediately fails with `EROFS: Read-only file system`**.
+- **Ephemeral Scratch Memory (`--tmpfs /tmp --tmpfs /run`)**: Temporary files are created in isolated memory and automatically destroyed when the subagent command terminates.
+- **Private Playground (`--bind ~/.local/share/sayri/sandboxes/<id>`)**: In `LEVEL_2_ISOLATED_DEV`, the subagent has full write access ONLY within its designated sandbox directory.
+- **Network Boundary (`--unshare-net`)**: Unshares the network namespace, preventing unauthorized outbound socket calls or telemetry leaks.
+- **Process Shield (`--unshare-pid`)**: The subagent cannot see, inspect, or kill any other process running on your desktop.
 
 ---
 

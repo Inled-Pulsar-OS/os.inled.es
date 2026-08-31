@@ -3245,20 +3245,151 @@ html.js :where([data-reveal].is-visible) {
     }
 }
 
-/* Mermaid Diagrams */
+/* Mermaid Diagrams Interactive Container & Lightbox */
 .mermaid-chart {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 28px 0;
-    padding: 24px;
+    padding: 32px 24px;
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 20px;
     overflow-x: auto;
+    cursor: zoom-in;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
 }
 
+.mermaid-chart:hover {
+    border-color: var(--accent-purple);
+    box-shadow: 0 8px 24px rgba(150, 108, 232, 0.15);
+}
+
+.mermaid-chart svg {
+    max-width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+.mermaid-expand-hint {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--bg-highlight);
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    pointer-events: none;
+    opacity: 0.75;
+    transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.mermaid-chart:hover .mermaid-expand-hint {
+    opacity: 1;
+    color: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
+
 html.dark .mermaid-chart {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Lightbox Modal for Mermaid Diagram Fullscreen & Zoom */
+.mermaid-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: rgba(13, 11, 21, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mermaid-modal-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mermaid-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: rgba(23, 20, 36, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    color: #f5f4f9;
+}
+
+.mermaid-modal-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #f5f4f9;
+    letter-spacing: -0.3px;
+}
+
+.mermaid-modal-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mermaid-ctrl-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #f5f4f9;
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.mermaid-ctrl-btn:hover {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.mermaid-modal-viewport {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    user-select: none;
+}
+
+.mermaid-modal-viewport:active {
+    cursor: grabbing;
+}
+
+.mermaid-modal-content {
+    transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.05s ease-out;
+}
+
+.mermaid-modal-content svg {
+    max-width: 90vw;
+    max-height: 82vh;
+    width: auto;
+    height: auto;
+    filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
 }
