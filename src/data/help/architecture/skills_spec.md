@@ -128,39 +128,54 @@ Searches the local Pulsar OS offline documentation.
 
 ---
 
-## 5. Tool Implementation Example (`scripts/discord_tool.py`)
+## 6. How to Install & Uninstall Skills and Gateways
 
-```python
-#!/usr/bin/env python3
-import os
-import sys
-import argparse
-import json
+Sayri provides multiple intuitive methods to discover, install, and uninstall skills:
 
-def main():
-    # Secrets are injected by Sayri's Zero-Plaintext Vault into environment variables
-    bot_token = os.environ.get("DISCORD_BOT_TOKEN")
-    if not bot_token:
-        print(json.dumps({"error": "Missing DISCORD_BOT_TOKEN in vault"}), file=sys.stderr)
-        sys.exit(1)
+### Method 1: Using the Unified Store CLI (`pulsar-store`)
+The universal package manager for Pulsar OS handles Flatpaks, GNOME Extensions, Sayri Skills, and Gateways:
+```bash
+# Search packages (Official Pulsar Store prioritized)
+pulsar-store search web
 
-    parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers(dest="action")
-    
-    send_p = subparsers.add_parser("send")
-    send_p.add_argument("--channel", required=True)
-    send_p.add_argument("--message", required=True)
-    
-    args = parser.parse_args()
-    
-    if args.action == "send":
-        # Process action securely
-        print(json.dumps({
-            "status": "success",
-            "channel_id": args.channel,
-            "bytes_sent": len(args.message)
-        }))
+# Install a skill or gateway
+pulsar-store install sayri-skill-web-search
 
-if __name__ == "__main__":
-    main()
+# Uninstall / remove a skill or gateway
+pulsar-store remove sayri-skill-web-search
 ```
+
+### Method 2: Using the Dedicated Sayri CLI (`sayri-skills` & `sayri-plugins`)
+```bash
+# Search official Pulsar Store (⭐) and ClawHub community (🌐)
+sayri-skills search telegram
+
+# Install a package directly
+sayri-skills install sayri-gateway-telegram
+
+# List installed skills and gateways
+sayri-skills list
+
+# Uninstall / remove a skill or plugin
+sayri-skills uninstall sayri-gateway-telegram
+```
+
+### Method 3: Via Natural Voice or Chat in Sayri Cajita
+Simply ask Sayri in natural conversation:
+- *"Sayri, install Web Search Tool from the store"*
+- *"Sayri, uninstall Telegram Bot Gateway"*
+
+---
+
+## 7. Package Ranking & Priority: Official vs. Community
+
+Sayri always prioritizes official, security-audited packages:
+
+1. **Official Store Packages (`⭐ OFFICIAL (Pulsar Store)`)**:
+   - Hosted at `https://store-os.inled.es`.
+   - Pre-audited by **OpenCode AI** against modern sandbox policies.
+   - Scanned with **VirusTotal API** (0 detections guaranteed).
+   - Displayed at the very top of search results.
+2. **Community Registry (`🌐 Community (ClawHub)`)**:
+   - Queried as a secondary fallback if an official package is not available.
+
