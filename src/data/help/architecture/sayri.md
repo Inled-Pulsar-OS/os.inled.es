@@ -1,111 +1,112 @@
 ---
-title: "Sayri: Guía Conceptual, Arquitectura y Sandbox"
-description: "Explicación directa y completa de cómo funciona Sayri: Skills, Gateways, aislamiento Bubblewrap y Bóveda Zero-Plaintext."
+title: "Sayri: Conceptual Guide, Architecture & Sandboxing"
+description: "In-depth guide to Sayri: Skills, Gateways, Bubblewrap (bwrap) isolation, and Zero-Plaintext Vault."
 order: 2
 ---
 
-# 🤖 Sayri: Guía Conceptual y Arquitectura del Sistema
+# Sayri: Conceptual Guide & System Architecture
 
-Sayri es el copiloto inteligente nativo de **Pulsar OS**. Su diseño está pensado para combinar la potencia de un modelo de lenguaje (LLM) con el control total, la seguridad y la privacidad de tu propio escritorio Linux.
+Sayri is the native intelligent AI copilot engineered specifically for **Pulsar OS**. It is designed from the ground up to combine the power of modern Language Models (LLMs) with full user control, privacy, and operating system sandboxing.
 
 ---
 
-## 💡 1. Entendiendo los Conceptos Clave (Explicado de Forma Directa)
+## 1. Core Concepts Explained
 
-Para entender cómo funciona Sayri, solo necesitas tener claros tres conceptos:
+Understanding Sayri's architecture comes down to three primary concepts:
 
 ```mermaid
 graph LR
-    User["Usuario en el Escritorio"] -->|Voz / Texto| Cajita["Sayri Cajita (UI)"]
-    Remote["Usuario en Telegram / Discord"] -->|Internet| Gateway["Channel Gateway (Plugin)"]
+    User["Desktop User (Pulsar OS)"] -->|Voice / Text Input| Cajita["Sayri Cajita (GTK4 UI)"]
+    Remote["Mobile User (Telegram / Discord)"] -->|Internet Message| Gateway["Channel Gateway (Plugin)"]
     
-    Gateway -->|Socket UNIX| Core["Sayri Core (ReAct Loop)"]
+    Gateway -->|Local UNIX Socket| Core["Sayri Core (ReAct Brain)"]
     Cajita --> Core
     
-    Core -->|Usa herramientas| Skills["Sayri Skills (SKILL.md)"]
-    Skills -->|Ejecución aislada| Bwrap["Bubblewrap Sandbox (bwrap)"]
+    Core -->|Invokes Tools| Skills["Sayri Skills (SKILL.md)"]
+    Skills -->|Isolated Execution| Bwrap["Bubblewrap Sandbox (bwrap)"]
 ```
 
-### 🧠 ¿Qué es una Skill (Habilidad)?
-Imagina que Sayri viene de fábrica sabiendo razonar y hablar, pero no sabe cómo interactuar con programas específicos (como buscar en internet, inspeccionar código o mandar un mensaje a Discord).
-* Una **Skill** es un paquete modular que contiene un archivo **`SKILL.md`** y varios scripts (en Python o Bash).
-* En el `SKILL.md` le explicamos a Sayri: *"Cuando el usuario te pida buscar documentación, ejecuta este script `search.py` pasándole la consulta"*.
-* **En resumen**: Una Skill le da **nuevas herramientas y conocimientos** a Sayri para que pueda realizar tareas concretas en tu equipo.
+### What is a Skill? (New Superpowers for Sayri)
+By default, Sayri knows how to reason and converse, but **does not know how to interact with specific external tools or private workflows** (like querying documentation, searching the web, or filing a GitHub issue).
+* A **Skill** is a modular package containing a **`SKILL.md`** manifest and execution scripts (Python or Bash).
+* In the `SKILL.md` file, we instruct Sayri: *"When the user asks for weather or technical documentation, execute `search.py` with the query argument"*.
+* When a user makes a request, Sayri reads the `SKILL.md`, executes the script inside an isolated **Bubblewrap container**, receives structured JSON output, and responds.
+* **In summary**: A Skill gives Sayri **new tools and capabilities** to perform tasks on your machine.
 
 ---
 
-### 🔌 ¿Qué es un Channel Gateway (Plugin)?
-Una Skill se usa cuando estás delante de tu ordenador usando la interfaz gráfica (**Cajita**). Pero, ¿qué pasa si estás fuera de casa y quieres consultar algo a Sayri desde tu móvil por **Telegram** o **Discord**?
-* Un **Gateway** es un programa en segundo plano (demonio) que se conecta a tu bot de Telegram o Discord y hace de puente hacia Sayri.
-* Cuando te llega un mensaje en Telegram, el Gateway se lo pasa a Sayri a través de un canal interno de comunicación ultra-rápido: un **Socket UNIX local** (`/run/user/<UID>/sayri/ipc.sock`).
-* Sayri razona la respuesta, utiliza las Skills necesarias y le devuelve el texto en tiempo real al Gateway para que te lo mande a tu chat.
-* **En resumen**: Un Gateway es un **puente de comunicación** para hablar con Sayri desde aplicaciones externas.
+### What is a Channel Gateway? (Remote Access Bridge)
+A Skill is invoked locally when you are seated in front of your desktop using **Cajita**. But what if you are away from your desk and want to ask your computer something via **Telegram** or **Discord**?
+* A **Gateway** is a background daemon that connects to your Telegram or Discord bot.
+* When you send a message from your phone, the Gateway forwards it to Sayri over a high-performance internal channel: a **local UNIX Domain Socket** (`/run/user/<UID>/sayri/ipc.sock`).
+* Sayri processes the query, executes any necessary skills, and streams the response back to the Gateway to reply in your chat room.
+* **In summary**: A Gateway is a **communication bridge** that lets you talk to Sayri from external apps.
 
 ---
 
-## 🛡️ 2. ¿Qué es Bubblewrap (`bwrap`) y Cómo Protege tu Ordenador?
+## 2. What is Bubblewrap (`bwrap`) & How Does it Protect Your PC?
 
-Cuando Sayri o un subagente ejecuta código o herramientas de una Skill, **no lo hace directamente en tu sistema como si fuera tu usuario sin control**.
+When Sayri or a subagent executes code from a skill, **it never runs directly on your host desktop with unrestricted privileges**.
 
-Sayri utiliza **Bubblewrap (`bwrap`)**, la misma tecnología que usan GNOME y Flatpak para aislar aplicaciones en Linux:
+Sayri isolates every execution using **Bubblewrap (`bwrap`)**, the containerization engine created by GNOME and Flatpak:
 
 ```mermaid
 flowchart TD
-    Prompt[Sayri emite un comando] --> Check{Nivel de Sandbox}
+    Prompt[Sayri emits a command] --> Check{Sandbox Level}
     
-    Check -->|LEVEL_0_NO_EXEC| Block[❌ Bloqueo Inmediato: Prohibido tocar la terminal]
+    Check -->|LEVEL_0_NO_EXEC| Block[Immediate Block: Terminal execution prohibited]
     
-    Check -->|LEVEL_1_READONLY| RO[🔒 Contenedor Solo Lectura<br/>--ro-bind / /<br/>Tu $HOME y el sistema están blindados contra escritura<br/>Red desactivada]
+    Check -->|LEVEL_1_READONLY| RO[Read-Only Container<br/>--ro-bind / /<br/>Host filesystem protected against writes<br/>Network unshared]
     
-    Check -->|LEVEL_2_ISOLATED_DEV| Dev[📦 Espacio de Trabajo Privado<br/>Solo puede crear y editar archivos dentro de su carpeta aislada]
+    Check -->|LEVEL_2_ISOLATED_DEV| Dev[Private Workspace<br/>Can only write inside ~/.local/share/sayri/sandboxes/id]
     
-    Check -->|LEVEL_3_HOST_USER| Host[💻 Tu Usuario Real<br/>Permisos estándar de tu $HOME]
+    Check -->|LEVEL_3_HOST_USER| Host[Current User Permissions<br/>Standard $HOME access]
     
-    Check -->|LEVEL_4_HOST_ROOT| Root[🔐 Confirmación Gráfica Polkit<br/>Pide tu contraseña de administrador]
+    Check -->|LEVEL_4_HOST_ROOT| Root[Polkit Graphical Prompt<br/>Requires root password confirmation]
 ```
 
-### ¿Por qué Bubblewrap es tan seguro?
-1. **Sistema Raíz en Solo Lectura (`--ro-bind / /`)**: El subagente puede leer librerías (`python3`, `gcc`, `node`), pero **si intenta borrar o modificar `/etc`, `/usr` o tu carpeta personal `$HOME`, el kernel de Linux lo bloquea con `EROFS: Read-only file system`**.
-2. **Espacio de Juego Aislado (`--bind sandboxes/<id>`)**: En el nivel `LEVEL_2_ISOLATED_DEV`, el subagente solo tiene permiso de escritura en su propia carpeta en `~/.local/share/sayri/sandboxes/<id>`.
-3. **Aislamiento de Red (`--unshare-net`)**: Si la tarea no requiere internet, se desconecta el socket de red del contenedor para impedir fugas de información.
-4. **Memoria Temporal Efímera (`--tmpfs /tmp`)**: Los archivos temporales se crean en la memoria RAM y desaparecen automáticamente al terminar el proceso.
+### Why is Bubblewrap Secure?
+1. **Strict Read-Only Root (`--ro-bind / /`)**: Subagents can read shared system binaries (`python3`, `node`, `gcc`), but **any write or delete attempt to `/etc`, `/usr` or your `$HOME` directory is intercepted and blocked by the Linux kernel with `EROFS: Read-only file system`**.
+2. **Private Workspace (`--bind sandboxes/<id>`)**: In `LEVEL_2_ISOLATED_DEV`, the subagent has write permissions ONLY inside its designated sandbox folder in `~/.local/share/sayri/sandboxes/<id>`.
+3. **Network Boundary (`--unshare-net`)**: If a task does not require internet, the container's network namespace is detached, preventing telemetry leaks or data exfiltration.
+4. **Ephemeral RAM Filesystem (`--tmpfs /tmp`)**: Temporary files exist only in RAM and are destroyed when the process terminates.
 
 ---
 
-## 🔒 3. Bóveda de Secretos Zero-Plaintext (Token Shield)
+## 3. Zero-Plaintext Secrets Manager (Token Shield)
 
-Para que tus claves privadas (como `DISCORD_BOT_TOKEN`, `TELEGRAM_BOT_TOKEN` o API keys) **NUNCA se envíen a los modelos de lenguaje (LLM)** ni aparezcan en el historial de chat:
+To ensure private tokens (like `TELEGRAM_BOT_TOKEN`, `DISCORD_BOT_TOKEN`, or API keys) **are NEVER leaked to third-party LLM providers** or saved in chat logs:
 
-1. Guardas el token en la pestaña **Vault** de Sayri Cajita.
-2. Sayri lo cifra con AES usando claves derivadas del hardware de tu placa base (`/etc/machine-id` + UID).
-3. Cuando el LLM genera el plan de acción, Sayri censura el token por una etiqueta opaca (ej: `$SECRET:TELEGRAM_BOT_TOKEN`).
-4. Al arrancar el contenedor Bubblewrap, Sayri inyecta el valor real directamente en las variables de entorno del script. **El LLM nunca ve tu clave en texto plano**.
+1. Credentials are saved in the **Vault** tab of Sayri Cajita (`~/.config/sayri/vault.json`, permissions `0600`).
+2. Sayri encrypts them using hardware-derived keys (`/etc/machine-id` + UID).
+3. When the LLM generates an execution plan, Sayri redacts the secret into an opaque placeholder (e.g. `$SECRET:TELEGRAM_BOT_TOKEN`).
+4. When launching the Bubblewrap container, Sayri injects the real value strictly into the child process environment variables. **The LLM never sees the plaintext token**.
 
 ---
 
-## 📂 4. Estructura de Directorios del Sistema
+## 4. System Directory Layout
 
 ```text
-/usr/share/sayri/lib/sayri/          # Librería central de Sayri
-├── app.py                          # Bucle de aplicación GTK4 y servidor IPC
-├── cajita.py                       # Interfaz gráfica Cajita (Entrada y Drawer)
-├── domain/                         # Lógica del núcleo
-│   ├── agent_engine.py             # Bucle de razonamiento ReAct
-│   ├── secrets_manager.py          # Bóveda Zero-Plaintext
-│   ├── agent_creator.py            # Creador de subagentes
-│   └── skills_scanner.py           # Lector de SKILL.md
-└── adapters/                       # Conexión con el sistema
-    ├── sandbox/executor.py         # Ejecutor de Bubblewrap y Polkit
-    └── storage/sqlite_sessions.py  # Base de datos SQLite (sayri.db)
+/usr/share/sayri/lib/sayri/          # Core Sayri Python library
+├── app.py                          # GTK4 Application & IPC server
+├── cajita.py                       # Unified Cajita UI Overlay (Input & Drawer)
+├── domain/                         # Domain Logic
+│   ├── agent_engine.py             # ReAct reasoning loop
+│   ├── secrets_manager.py          # Zero-Plaintext Vault
+│   ├── agent_creator.py            # Subagent factory
+│   └── skills_scanner.py           # SKILL.md parser
+└── adapters/                       # System Adapters
+    ├── sandbox/executor.py         # Bubblewrap (bwrap) & Polkit executor
+    └── storage/sqlite_sessions.py  # SQLite database (sayri.db)
 
-~/.config/sayri/                    # Configuración de tu usuario
-├── config.json                     # Preferencias generales
-├── vault.json                      # Bóveda cifrada (Permisos 0600)
-├── authorizations.json             # Lista de usuarios de Telegram/Discord autorizados
-├── agents/                         # Perfiles de subagentes personalizados
-└── skills/                         # Habilidades instaladas
+~/.config/sayri/                    # User Configuration
+├── config.json                     # General preferences
+├── vault.json                      # Encrypted credentials store
+├── authorizations.json             # Authorized Telegram/Discord users
+├── agents/                         # Custom subagent profiles
+└── skills/                         # Installed custom skills
 
-~/.local/share/sayri/               # Estado en tiempo de ejecución
-├── sayri.db                        # Base de datos SQLite de conversaciones
-└── sandboxes/<agent_id>/           # Espacios de trabajo aislados de Bubblewrap
+~/.local/share/sayri/               # Runtime State
+├── sayri.db                        # SQLite chat database
+└── sandboxes/<agent_id>/           # Bubblewrap isolated workspaces
 ```
