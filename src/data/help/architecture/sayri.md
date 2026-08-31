@@ -1,234 +1,111 @@
 ---
-title: "Sayri AI Internal Architecture & Core Specification"
-description: "Exhaustive documentation of Sayri: Hexagonal ReAct loop, Bubblewrap (bwrap) isolation, Zero-Plaintext Vault, SQLite storage, and GTK4 Cajita."
+title: "Sayri: Guía Conceptual, Arquitectura y Sandbox"
+description: "Explicación directa y completa de cómo funciona Sayri: Skills, Gateways, aislamiento Bubblewrap y Bóveda Zero-Plaintext."
 order: 2
 ---
 
-# Sayri: Operating System AI Copilot & Core Architecture
+# 🤖 Sayri: Guía Conceptual y Arquitectura del Sistema
 
-Sayri is the native, agentic voice and text AI copilot engineered specifically for **Pulsar OS**. It is architected from the ground up using **Hexagonal Architecture (Ports and Adapters)**, providing strict isolation between the reasoning loop, the local operating system, external LLM providers, and desktop UI components.
-
----
-
-## 1. System Overview & Directory Layout
-
-Sayri's runtime files, binaries, persistent databases, and configuration directories are structured as follows:
-
-```text
-/usr/share/sayri/lib/sayri/          # Core Python library package
-├── app.py                          # GTK4 Application lifecycle & IPC streamer
-├── cajita.py                       # Unified Cajita UI Overlay (Input Pill & Response Deck)
-├── orb.py                          # Animated Chroma glow wave renderer
-├── audio.py                        # Audio stream capture & playback pipeline
-├── stt.py                          # Whisper STT offline / local speech transcriber
-├── tts.py                          # Piper neural text-to-speech engine
-├── wakeword.py                     # OpenWakeWord background listener ("Hey Sayri")
-├── config.py                       # User configuration manager
-├── domain/                         # Core Domain Logic (Zero dependencies on UI/OS)
-│   ├── models.py                   # Dataclasses: AgentProfile, Session, Message, SandboxConfig
-│   ├── agent_engine.py             # ReAct loop orchestrator & tool execution dispatcher
-│   ├── agent_creator.py            # Subagent factory & natural language parser
-│   ├── secrets_manager.py          # Zero-Plaintext Token Shield (AES-XOR Hardware Vault)
-│   ├── skills_scanner.py           # SKILL.md filesystem scanner & YAML frontmatter parser
-│   └── triggers.py                 # Cron schedules and file watcher triggers
-└── adapters/                       # Infrastructure Adapters (Drivers & Driven)
-    ├── sandbox/executor.py         # Bubblewrap (bwrap) & Polkit (pkexec) container runner
-    └── storage/sqlite_sessions.py  # SQLite persistent session repository (WAL Mode)
-
-~/.config/sayri/                    # User configuration & vault
-├── config.json                     # Main configuration (Audio mode, active profile, shortcuts)
-├── vault.json                      # Encrypted credentials store (Permissions 0600)
-├── agents/                         # Custom subagent JSON profiles
-└── skills/                         # User-installed custom skills & tools
-
-~/.local/share/sayri/               # Runtime state & storage
-├── sayri.db                        # SQLite database (Sessions, messages, tool execution logs)
-└── sandboxes/<agent_id>/           # Private isolated workspace directories for Bubblewrap
-```
+Sayri es el copiloto inteligente nativo de **Pulsar OS**. Su diseño está pensado para combinar la potencia de un modelo de lenguaje (LLM) con el control total, la seguridad y la privacidad de tu propio escritorio Linux.
 
 ---
 
-## 2. Hexagonal Architecture (Ports & Adapters)
+## 💡 1. Entendiendo los Conceptos Clave (Explicado de Forma Directa)
+
+Para entender cómo funciona Sayri, solo necesitas tener claros tres conceptos:
 
 ```mermaid
-graph TD
-    subgraph "Core Domain Layer"
-        AgentEngine["AgentEngine (ReAct Loop)"]
-        AgentCreator["AgentCreator (Subagent Factory)"]
-        SecretsMgr["SecretsManager (Token Shield)"]
-        Models["Domain Models (Profiles, Sandboxes)"]
-    end
-
-    subgraph "Inbound Ports (Drivers)"
-        CajitaUI["GTK4 Cajita Widget (Voice/Text UI)"]
-        WakewordPort["Wakeword / Live Audio Streamer"]
-        GatewayIPC["Gateway IPC (Discord / Telegram)"]
-    end
-
-    subgraph "Outbound Ports (Driven Adapters)"
-        LLMAdapter["LLM Client (OpenAI / Groq / Ollama)"]
-        SandboxAdapter["SandboxExecutor (Bubblewrap / Polkit)"]
-        StorageAdapter["SQLite Session Repository"]
-        AudioAdapter["Piper TTS & Whisper STT"]
-    end
-
-    CajitaUI --> AgentEngine
-    WakewordPort --> AgentEngine
-    GatewayIPC --> AgentEngine
-
-    AgentEngine --> LLMAdapter
-    AgentEngine --> SandboxAdapter
-    AgentEngine --> StorageAdapter
-    AgentEngine --> AudioAdapter
-    AgentEngine --> SecretsMgr
+graph LR
+    User["Usuario en el Escritorio"] -->|Voz / Texto| Cajita["Sayri Cajita (UI)"]
+    Remote["Usuario en Telegram / Discord"] -->|Internet| Gateway["Channel Gateway (Plugin)"]
+    
+    Gateway -->|Socket UNIX| Core["Sayri Core (ReAct Loop)"]
+    Cajita --> Core
+    
+    Core -->|Usa herramientas| Skills["Sayri Skills (SKILL.md)"]
+    Skills -->|Ejecución aislada| Bwrap["Bubblewrap Sandbox (bwrap)"]
 ```
 
-### Core Domain Components:
-- **`AgentEngine`** (`domain/agent_engine.py`): Token-efficient orchestrator implementing the ReAct pattern. It formats system prompts, evaluates user queries, dispatches tool calls to the sandbox executor, and streams output tokens.
-- **`SecretsManager`** (`domain/secrets_manager.py`): Zero-Plaintext credential shield that prevents API keys and bot tokens from entering LLM prompts or chat history.
-- **`AgentCreator`** (`domain/agent_creator.py`): Subagent profile generator supporting JSON configuration files and automated natural language provisioning (e.g. *"Create a Discord bot subagent"*).
-- **`SQLiteSessionRepository`** (`adapters/storage/sqlite_sessions.py`): Persistent chat memory utilizing SQLite with Write-Ahead Logging (WAL) and foreign-key constraints.
+### 🧠 ¿Qué es una Skill (Habilidad)?
+Imagina que Sayri viene de fábrica sabiendo razonar y hablar, pero no sabe cómo interactuar con programas específicos (como buscar en internet, inspeccionar código o mandar un mensaje a Discord).
+* Una **Skill** es un paquete modular que contiene un archivo **`SKILL.md`** y varios scripts (en Python o Bash).
+* En el `SKILL.md` le explicamos a Sayri: *"Cuando el usuario te pida buscar documentación, ejecuta este script `search.py` pasándole la consulta"*.
+* **En resumen**: Una Skill le da **nuevas herramientas y conocimientos** a Sayri para que pueda realizar tareas concretas en tu equipo.
 
 ---
 
-## 3. What is Bubblewrap (`bwrap`) & How Does it Work?
+### 🔌 ¿Qué es un Channel Gateway (Plugin)?
+Una Skill se usa cuando estás delante de tu ordenador usando la interfaz gráfica (**Cajita**). Pero, ¿qué pasa si estás fuera de casa y quieres consultar algo a Sayri desde tu móvil por **Telegram** o **Discord**?
+* Un **Gateway** es un programa en segundo plano (demonio) que se conecta a tu bot de Telegram o Discord y hace de puente hacia Sayri.
+* Cuando te llega un mensaje en Telegram, el Gateway se lo pasa a Sayri a través de un canal interno de comunicación ultra-rápido: un **Socket UNIX local** (`/run/user/<UID>/sayri/ipc.sock`).
+* Sayri razona la respuesta, utiliza las Skills necesarias y le devuelve el texto en tiempo real al Gateway para que te lo mande a tu chat.
+* **En resumen**: Un Gateway es un **puente de comunicación** para hablar con Sayri desde aplicaciones externas.
 
-**Bubblewrap (`bwrap`)** is an unprivileged Linux sandboxing utility originally developed by the GNOME and Flatpak teams. It allows creating lightweight, ephemeral execution environments using standard Linux kernel **Namespaces** (`user`, `pid`, `net`, `ipc`, `uts`, `mount`) without requiring root access, setuid binaries, or background system daemons.
+---
+
+## 🛡️ 2. ¿Qué es Bubblewrap (`bwrap`) y Cómo Protege tu Ordenador?
+
+Cuando Sayri o un subagente ejecuta código o herramientas de una Skill, **no lo hace directamente en tu sistema como si fuera tu usuario sin control**.
+
+Sayri utiliza **Bubblewrap (`bwrap`)**, la misma tecnología que usan GNOME y Flatpak para aislar aplicaciones en Linux:
 
 ```mermaid
 flowchart TD
-    Command[Agent Emits Command] --> LevelCheck{Sandbox Level}
+    Prompt[Sayri emite un comando] --> Check{Nivel de Sandbox}
     
-    LevelCheck -->|LEVEL_0_NO_EXEC| Block[Immediate Prohibit: Exit 126]
+    Check -->|LEVEL_0_NO_EXEC| Block[❌ Bloqueo Inmediato: Prohibido tocar la terminal]
     
-    LevelCheck -->|LEVEL_1_READONLY| BwrapRO[bwrap Container<br/>--ro-bind / /<br/>--tmpfs /tmp<br/>--unshare-net<br/>--unshare-pid]
+    Check -->|LEVEL_1_READONLY| RO[🔒 Contenedor Solo Lectura<br/>--ro-bind / /<br/>Tu $HOME y el sistema están blindados contra escritura<br/>Red desactivada]
     
-    LevelCheck -->|LEVEL_2_ISOLATED_DEV| BwrapDev[bwrap Workspace<br/>--ro-bind / /<br/>--bind sandboxes/id sandboxes/id<br/>Isolated Network]
+    Check -->|LEVEL_2_ISOLATED_DEV| Dev[📦 Espacio de Trabajo Privado<br/>Solo puede crear y editar archivos dentro de su carpeta aislada]
     
-    LevelCheck -->|LEVEL_3_HOST_USER| HostUser[Host Current User<br/>Normal $USER Privileges]
+    Check -->|LEVEL_3_HOST_USER| Host[💻 Tu Usuario Real<br/>Permisos estándar de tu $HOME]
     
-    LevelCheck -->|LEVEL_4_HOST_ROOT| Polkit[Polkit Graphical Dialog<br/>pkexec Administrator Confirmation]
+    Check -->|LEVEL_4_HOST_ROOT| Root[🔐 Confirmación Gráfica Polkit<br/>Pide tu contraseña de administrador]
 ```
 
-### Bubblewrap Command Construction in `SandboxExecutor`:
-
-When executing a tool in `LEVEL_1_READONLY` or `LEVEL_2_ISOLATED_DEV`, `SandboxExecutor` builds the container arguments:
-
-```bash
-bwrap \
-  --ro-bind / / \
-  --dev /dev \
-  --proc /proc \
-  --tmpfs /tmp \
-  --tmpfs /run \
-  --bind ~/.local/share/sayri/sandboxes/<agent_id> ~/.local/share/sayri/sandboxes/<agent_id> \
-  --chdir ~/.local/share/sayri/sandboxes/<agent_id> \
-  --die-with-parent \
-  --unshare-pid \
-  --unshare-ipc \
-  --unshare-uts \
-  --unshare-net \
-  -- bash -c "<command>"
-```
-
-### Protection Mechanics:
-1. **Read-Only Host (`--ro-bind / /`)**: Mounts the entire host root as read-only. Subagents can execute compiler and runtime binaries (`python3`, `gcc`, `node`, `grep`), but **any write or delete attempt to `/etc`, `/usr`, `/var` or the user's `$HOME` directory is intercepted and blocked by the Linux kernel with `EROFS: Read-only file system`**.
-2. **Ephemeral Memory (`--tmpfs /tmp --tmpfs /run`)**: Creates ephemeral in-memory filesystems for temporary allocations that are destroyed upon process exit.
-3. **Network Isolation (`--unshare-net`)**: Unshares the network namespace, preventing unauthorized socket communication, telemetry exfiltration, or external downloads.
-4. **PID Isolation (`--unshare-pid`)**: Isolate process IDs so the subagent cannot view, trace, or signal host desktop processes.
+### ¿Por qué Bubblewrap es tan seguro?
+1. **Sistema Raíz en Solo Lectura (`--ro-bind / /`)**: El subagente puede leer librerías (`python3`, `gcc`, `node`), pero **si intenta borrar o modificar `/etc`, `/usr` o tu carpeta personal `$HOME`, el kernel de Linux lo bloquea con `EROFS: Read-only file system`**.
+2. **Espacio de Juego Aislado (`--bind sandboxes/<id>`)**: En el nivel `LEVEL_2_ISOLATED_DEV`, el subagente solo tiene permiso de escritura en su propia carpeta en `~/.local/share/sayri/sandboxes/<id>`.
+3. **Aislamiento de Red (`--unshare-net`)**: Si la tarea no requiere internet, se desconecta el socket de red del contenedor para impedir fugas de información.
+4. **Memoria Temporal Efímera (`--tmpfs /tmp`)**: Los archivos temporales se crean en la memoria RAM y desaparecen automáticamente al terminar el proceso.
 
 ---
 
-## 4. Sandbox Isolation Levels
+## 🔒 3. Bóveda de Secretos Zero-Plaintext (Token Shield)
 
-| Level | Filesystem Access | Network | Process Access | Typical Use Case |
-| :--- | :--- | :--- | :--- | :--- |
-| **`LEVEL_0_NO_EXEC`** | Execution Prohibited | Disabled | None | Public Discord bots, support assistants |
-| **`LEVEL_1_READONLY`** | Read-Only (`/`), ephemeral `/tmp` | Disabled (`--unshare-net`) | Isolated PID | Code reading, documentation queries |
-| **`LEVEL_2_ISOLATED_DEV`** | Read-Only system, write in `sandboxes/<id>` | Configurable | Isolated PID | Code generation, compilation testing |
-| **`LEVEL_3_HOST_USER`** | Current User `$HOME` | Host Network | User Processes | Desktop automation, launching apps |
-| **`LEVEL_4_HOST_ROOT`** | Full System (Elevated) | Host Network | Root / System | Package updates, system configuration |
+Para que tus claves privadas (como `DISCORD_BOT_TOKEN`, `TELEGRAM_BOT_TOKEN` o API keys) **NUNCA se envíen a los modelos de lenguaje (LLM)** ni aparezcan en el historial de chat:
+
+1. Guardas el token en la pestaña **Vault** de Sayri Cajita.
+2. Sayri lo cifra con AES usando claves derivadas del hardware de tu placa base (`/etc/machine-id` + UID).
+3. Cuando el LLM genera el plan de acción, Sayri censura el token por una etiqueta opaca (ej: `$SECRET:TELEGRAM_BOT_TOKEN`).
+4. Al arrancar el contenedor Bubblewrap, Sayri inyecta el valor real directamente en las variables de entorno del script. **El LLM nunca ve tu clave en texto plano**.
 
 ---
 
-## 5. Zero-Plaintext Secrets Manager (AES-XOR Vault)
+## 📂 4. Estructura de Directorios del Sistema
 
-To ensure third-party LLM providers never receive credentials in plaintext:
+```text
+/usr/share/sayri/lib/sayri/          # Librería central de Sayri
+├── app.py                          # Bucle de aplicación GTK4 y servidor IPC
+├── cajita.py                       # Interfaz gráfica Cajita (Entrada y Drawer)
+├── domain/                         # Lógica del núcleo
+│   ├── agent_engine.py             # Bucle de razonamiento ReAct
+│   ├── secrets_manager.py          # Bóveda Zero-Plaintext
+│   ├── agent_creator.py            # Creador de subagentes
+│   └── skills_scanner.py           # Lector de SKILL.md
+└── adapters/                       # Conexión con el sistema
+    ├── sandbox/executor.py         # Ejecutor de Bubblewrap y Polkit
+    └── storage/sqlite_sessions.py  # Base de datos SQLite (sayri.db)
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as User / Config
-    participant Vault as SecretsManager (~/.config/sayri/vault.json)
-    participant Engine as AgentEngine (LLM Context)
-    participant Sandbox as SandboxExecutor (bwrap)
+~/.config/sayri/                    # Configuración de tu usuario
+├── config.json                     # Preferencias generales
+├── vault.json                      # Bóveda cifrada (Permisos 0600)
+├── authorizations.json             # Lista de usuarios de Telegram/Discord autorizados
+├── agents/                         # Perfiles de subagentes personalizados
+└── skills/                         # Habilidades instaladas
 
-    User->>Vault: Store `DISCORD_BOT_TOKEN="secret_12345"`
-    Note over Vault: Derives key from /etc/machine-id + UID (AES-XOR)
-    
-    Engine->>Vault: Sanitize User Prompt / Tool Output
-    Vault-->>Engine: Redacted String: `$SECRET:DISCORD_BOT_TOKEN`
-    
-    Engine->>Sandbox: Execute Tool with Redacted Context
-    Note over Sandbox: Injects `env["DISCORD_BOT_TOKEN"] = "secret_12345"`
-    Sandbox->>Sandbox: Subagent Tool Reads `os.environ["DISCORD_BOT_TOKEN"]`
+~/.local/share/sayri/               # Estado en tiempo de ejecución
+├── sayri.db                        # Base de datos SQLite de conversaciones
+└── sandboxes/<agent_id>/           # Espacios de trabajo aislados de Bubblewrap
 ```
-
-1. **Hardware-Derived Key**: The encryption key is derived via SHA-256 over a composite seed:
-   $$\text{Key} = \text{SHA256}(\text{"sayri-zero-plaintext-vault"} + \text{read}(\text{/etc/machine-id}) + \text{UID})$$
-2. **Prompt Redaction**: When user prompts or tool outputs contain registered tokens, `SecretsManager.sanitize_text_for_llm()` automatically replaces the raw value with `$SECRET:<KEY_NAME>`.
-3. **Process Injection**: When spawning child processes inside `bwrap`, `SecretsManager.inject_environment()` supplies real values strictly via process environment variables (`env=...`).
-
----
-
-## 6. SQLite Storage Schema (`sayri.db`)
-
-Chat history, subagent states, and tool execution logs are stored in `~/.local/share/sayri/sayri.db` configured with `PRAGMA journal_mode=WAL;`.
-
-```sql
-CREATE TABLE IF NOT EXISTS sessions (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    agent_id TEXT NOT NULL DEFAULT 'default',
-    created_at REAL NOT NULL,
-    updated_at REAL NOT NULL,
-    token_usage INTEGER DEFAULT 0,
-    metadata TEXT DEFAULT '{}'
-);
-
-CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id TEXT NOT NULL,
-    role TEXT NOT NULL, -- 'system', 'user', 'assistant', 'tool'
-    content TEXT NOT NULL,
-    tool_call_id TEXT,
-    timestamp REAL NOT NULL,
-    metadata TEXT DEFAULT '{}',
-    FOREIGN KEY(session_id) REFERENCES sessions(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS tool_calls (
-    id TEXT PRIMARY KEY,
-    message_id INTEGER,
-    name TEXT NOT NULL,
-    arguments TEXT NOT NULL,
-    status TEXT NOT NULL, -- 'pending', 'running', 'success', 'denied', 'failed'
-    output TEXT,
-    exit_code INTEGER,
-    duration_ms REAL DEFAULT 0.0,
-    created_at REAL NOT NULL,
-    FOREIGN KEY(message_id) REFERENCES messages(id) ON DELETE CASCADE
-);
-```
-
----
-
-## 7. Audio & Speech Pipeline
-
-1. **Voice Activity & Wakeword Detection** (`wakeword.py`):
-   - Uses **OpenWakeWord** with an 80ms audio frame buffer running on CPU.
-   - Detects *"Hey Sayri"* and activates the Cajita GTK4 interface.
-2. **Speech-to-Text (STT)** (`stt.py`):
-   - Uses **Faster-Whisper** (quantized `base.en` / `small`) running locally via ONNX Runtime.
-3. **Text-to-Speech (TTS)** (`tts.py`):
-   - Uses **Piper Neural TTS** with low-latency streaming audio playback via PulseAudio / PipeWire.

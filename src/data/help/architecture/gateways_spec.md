@@ -1,77 +1,78 @@
 ---
-title: "Channel Gateways & Incoming Authorization Specification"
-description: "In-depth architecture of Sayri Channel Gateways (Discord, Telegram, MCP), UNIX domain socket protocol, and the Unified Message Authorization System."
+title: "Channel Gateways: Guía Conceptual y Autorización de Mensajes"
+description: "Cómo funcionan los Gateways (Discord, Telegram, MCP), protocolo de socket UNIX y cómo autorizar qué usuarios pueden hablar con Sayri."
 order: 5
 ---
 
-# Channel Gateways & Plugin Protocol Specification
+# 🔌 Channel Gateways: Guía Conceptual y Autorización
 
-A **Channel Gateway** in Sayri is an out-of-process background daemon that bridges Sayri's agentic core to external communication platforms (such as **Discord**, **Telegram**, **Matrix**, or **MCP (Model Context Protocol)** servers).
+Un **Channel Gateway** es un puente que conecta Sayri con plataformas de mensajería externas como **Telegram**, **Discord**, **Matrix** o servidores **MCP**. 
 
-Gateways enable users, team channels, and external bots to send queries and voice audio directly to Sayri or to specialized subagents.
+Gracias a los Gateways, puedes interactuar con tu ordenador, tus subagentes o pedir tareas complejas directamente desde tu teléfono móvil o desde un canal de chat de tu equipo.
 
 ---
 
-## 1. Gateway Architecture & IPC Communication
+## 🧭 1. ¿Cómo Funciona un Gateway? (Paso a Paso)
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as Discord/Telegram User
+    actor User as Tú en Telegram / Discord
     participant GW as Gateway Daemon (gateway.py)
-    participant Socket as UNIX Socket (/run/user/1000/sayri/ipc.sock)
-    participant Auth as GatewayAuth (Whitelist / OTP)
-    participant Core as Sayri Core (AgentEngine)
+    participant Socket as Socket UNIX (/run/user/.../sayri/ipc.sock)
+    participant Auth as Validador de Autorización (PIN / Whitelist)
+    participant Core as Sayri Core (Cerebro ReAct)
 
-    Note over GW,Socket: 1. Initialization & Handshake
-    GW->>Socket: `{"type": "HANDSHAKE", "gateway_id": "sayri-gateway-telegram"}`
-    Socket-->>GW: `{"type": "AUTH_OK", "status": "connected"}`
-
-    Note over User,Core: 2. Incoming Message & Authorization
-    User->>GW: "Hey Sayri, summarize my unread emails"
-    GW->>Socket: `{"type": "INCOMING_MSG", "author_id": "992381", "author": "@jaime", "text": "..."}`
-    Socket->>Auth: Verify user permissions (OTP / Whitelist)
-    alt User Authorized
-        Auth-->>Core: Dispatch to ReAct AgentEngine
-        Core-->>Socket: Stream `DELTA` response tokens
-        Socket-->>GW: Forward token chunk
-        GW-->>User: Reply in chat room
-    else User Unauthorized
-        Auth-->>GW: `{"type": "AUTH_REQUIRED", "pin": "849 201"}`
-        GW-->>User: "Authorization required. Confirm PIN 849201 on your Pulsar OS desktop."
+    User->>GW: "Sayri, ¿cuánta memoria RAM libre queda en el PC?"
+    GW->>Socket: Envía mensaje por el socket interno
+    Socket->>Auth: ¿Este usuario tiene permiso para hablar con Sayri?
+    
+    alt Usuario Autorizado
+        Auth-->>Core: Ejecuta la consulta en el sistema
+        Core-->>Socket: Devuelve el texto generado
+        Socket-->>GW: Pasa el resultado al Gateway
+        GW-->>User: "Tienes 12.4 GB de RAM disponibles de 16 GB."
+    else Usuario Desconocido / No Autorizado
+        Auth-->>GW: Genera reto de seguridad (PIN de 6 dígitos)
+        GW-->>User: "Código de autorización: 849 201. Confírmalo en tu pantalla de Pulsar OS."
     end
 ```
 
 ---
 
-## 2. Unified Incoming Authorization System
+## 🔐 2. Sistema de Autorización de Mensajes Entrantes
 
-To prevent unauthorized remote users from consuming AI tokens or triggering actions on your desktop, every gateway plugin specifies an **`authorization`** schema in its `manifest.json`.
+Para que nadie en internet pueda aprovecharse de tu bot y ejecutar cosas en tu ordenador o consumir tu cuota de IA, cada plugin declara cómo se autorizan los mensajes entrantes:
 
-Sayri enforces three distinct authorization modes:
-
-### Mode A: `pairing_otp` (Interactive Desktop PIN Pairing)
-Ideal for private 1-on-1 bots (such as personal Telegram or Signal bots):
-- When an unknown user messages the bot (`/start` or `!pair`), Sayri generates an ephemeral 6-digit PIN.
-- A notification banner appears in the desktop **Sayri Cajita -> Plugins** drawer:
-  ```text
-  Telegram user @jaime (ID: 998231) requests access. PIN: 849 201. [Approve] [Deny]
-  ```
-- Once approved, the user ID is permanently whitelisted in `~/.config/sayri/authorizations.json`.
-
-### Mode B: `whitelist` (Declarative User & Role Filter)
-Ideal for private team servers:
-- Only messages matching explicit `allowed_users`, `allowed_roles`, or `allowed_guilds` are accepted.
-- Non-whitelisted incoming messages are dropped or receive an immediate `403 Forbidden` response without invoking the LLM.
-
-### Mode C: `public_support` (Public Sandboxed Community Subagents)
-Ideal for public community Discord channels (`#ask-support`):
-- Anyone in designated public channels can interact with the bot.
-- **Enforcement**: Must be bound strictly to **`LEVEL_0_NO_EXEC`** (zero terminal/bash execution) with sliding-window rate limiting (e.g. max 5 queries per minute per user).
+### 🟢 Modo 1: `pairing_otp` (Emparejamiento por PIN en el Escritorio)
+* **Para qué sirve**: Cuando tienes un bot privado para ti en Telegram o Signal.
+* **Cómo funciona**:
+  1. La primera vez que le escribes a tu bot desde el móvil (`/start`), Sayri detecta que tu ID de Telegram es nueva.
+  2. En tu pantalla de Pulsar OS aparece una notificación en **Sayri Cajita -> Plugins**:
+     ```text
+     El usuario @jaime (ID: 998231) quiere conectarse. PIN: 849 201. [Aprobar] [Rechazar]
+     ```
+  3. Si pulsas **Aprobar**, tu usuario queda guardado en `~/.config/sayri/authorizations.json` y ya puedes hablar con el bot para siempre.
 
 ---
 
-## 3. Gateway Plugin Manifest (`manifest.json`)
+### 🔵 Modo 2: `whitelist` (Lista Blanca de Usuarios o Roles)
+* **Para qué sirve**: Para servidores de Discord de tu equipo de trabajo o canales privados.
+* **Cómo funciona**:
+  - En el archivo de configuración declaras los IDs de los usuarios autorizados (`allowed_users: ["123456789"]`) o los roles con permiso (`allowed_roles: ["Admin", "Developers"]`).
+  - Si un usuario no autorizado intenta hablar con el bot, el mensaje se ignora automáticamente sin gastar tokens de IA ni procesar nada.
+
+---
+
+### 🟡 Modo 3: `public_support` (Canales Públicos con Aislamiento Total)
+* **Para qué sirve**: Si quieres poner un subagente de soporte en un canal comunitario público de Discord (`#ayuda-pulsar`) al que cualquiera pueda preguntar.
+* **Cómo funciona**:
+  - El subagente se bloquea de forma obligatoria en **`LEVEL_0_NO_EXEC`** (es decir, **no tiene acceso a la terminal, ni a comandos bash ni a los archivos de tu ordenador**).
+  - Se le aplica un límite de frecuencia (rate limit) de por ejemplo 5 preguntas por minuto por usuario para evitar abusos.
+
+---
+
+## 📄 3. Manifiesto del Gateway (`manifest.json`)
 
 ```json
 {
@@ -79,9 +80,8 @@ Ideal for public community Discord channels (`#ask-support`):
   "name": "Telegram Bot Gateway",
   "version": "1.0.0",
   "author": "jaimegh-es",
-  "description": "Connects Sayri subagents to Telegram chat channels with OTP pairing.",
+  "description": "Puente de comunicación para Telegram con emparejamiento OTP y lista blanca.",
   "entrypoint": "gateway.py",
-  "target_agent_id": "default",
   "sandbox_level": "LEVEL_1_READONLY",
   "required_secrets": [
     "TELEGRAM_BOT_TOKEN"
@@ -95,112 +95,39 @@ Ideal for public community Discord channels (`#ask-support`):
       "max_requests_per_minute": 10,
       "burst": 3
     }
-  },
-  "capabilities": [
-    "receive_messages",
-    "send_replies",
-    "voice_audio_stream"
-  ],
-  "allowed_domains": [
-    "api.telegram.org"
-  ]
+  }
 }
 ```
 
 ---
 
-## 4. UNIX Domain Socket IPC Protocol
+## 🔌 4. Protocolo del Socket UNIX (`/run/user/<UID>/sayri/ipc.sock`)
 
-All gateways communicate with Sayri via a local JSON-Lines (NDJSON) UNIX Domain Socket located at:
-```text
-/run/user/<UID>/sayri/ipc.sock
-```
+El Gateway y Sayri se comunican mediante un socket local intercambiando paquetes en formato **JSON Lines (NDJSON)**:
 
-### Protocol Message Schemas:
-
-#### 1. Handshake (`HANDSHAKE`)
-```json
-{
-  "type": "HANDSHAKE",
-  "gateway_id": "sayri-gateway-telegram",
-  "manifest_version": "1.0.0"
-}
-```
-
-#### 2. Incoming Message (`INCOMING_MSG`)
-```json
-{
-  "type": "INCOMING_MSG",
-  "session_id": "tg-chat-9923841",
-  "author_id": "992381",
-  "author": "jaime",
-  "text": "What is the current RAM consumption?",
-  "target_agent": "system-monitor"
-}
-```
-
-#### 3. Authorization Challenge (`AUTH_CHALLENGE`)
-```json
-{
-  "type": "AUTH_CHALLENGE",
-  "session_id": "tg-chat-9923841",
-  "status": "pending_desktop_pin",
-  "pin_code": "849201"
-}
-```
-
-#### 4. Stream Delta (`DELTA`)
-```json
-{
-  "type": "DELTA",
-  "session_id": "tg-chat-9923841",
-  "token": "The current RAM usage is..."
-}
-```
-
-#### 5. Stream Completion (`DONE`)
-```json
-{
-  "type": "DONE",
-  "session_id": "tg-chat-9923841",
-  "full_text": "The current RAM usage is 2.4 GB out of 16 GB."
-}
-```
-
----
-
-## 5. Complete Gateway Implementation Example (`gateway.py`)
-
-```python
-#!/usr/bin/env python3
-"""Example Sayri Telegram Gateway Daemon with Unified Authorization."""
-import os
-import sys
-import json
-import socket
-
-IPC_SOCKET_PATH = f"/run/user/{os.getuid()}/sayri/ipc.sock"
-
-def main():
-    token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    if not token:
-        print("Error: TELEGRAM_BOT_TOKEN not provided by Sayri Vault.", file=sys.stderr)
-        sys.exit(1)
-
-    print("[Gateway] Connecting to Sayri IPC Socket...")
-    client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    client.connect(IPC_SOCKET_PATH)
-
-    # 1. Send Handshake
-    handshake = {
-        "type": "HANDSHAKE",
-        "gateway_id": "sayri-gateway-telegram",
-        "manifest_version": "1.0.0"
-    }
-    client.sendall(json.dumps(handshake).encode('utf-8') + b'\n')
-
-    print("[Gateway] Handshake complete. Gateway is active and enforcing authorization.")
-
-if __name__ == "__main__":
-    main()
-```
+1. **Mensaje Entrante (`INCOMING_MSG`)**:
+   ```json
+   {
+     "type": "INCOMING_MSG",
+     "session_id": "tg-9923841",
+     "author_id": "992381",
+     "author": "@jaime",
+     "text": "¿Cómo instalo un paquete flatpak?"
+   }
+   ```
+2. **Respuesta en Streaming (`DELTA`)**:
+   ```json
+   {
+     "type": "DELTA",
+     "session_id": "tg-9923841",
+     "token": "Para instalar un flatpak usa: pulsar-store install..."
+   }
+   ```
+3. **Respuesta Completada (`DONE`)**:
+   ```json
+   {
+     "type": "DONE",
+     "session_id": "tg-9923841",
+     "full_text": "Para instalar un flatpak usa: pulsar-store install <id>"
+   }
+   ```
