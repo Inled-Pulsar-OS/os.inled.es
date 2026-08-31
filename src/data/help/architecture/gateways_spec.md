@@ -48,11 +48,11 @@ To prevent unknown internet users from executing commands on your computer or co
 * **Best for**: Private 1-on-1 bots (Telegram, Signal).
 * **How it works**:
   1. The first time an unknown account messages the bot (`/start`), Sayri detects the new user ID.
-  2. A notification banner appears on your Pulsar OS desktop in **Sayri Cajita -> Plugins**:
+  2. A notification banner appears on your Pulsar OS desktop in **Sayri Cajita -> Gateways**:
      ```text
-     Telegram user @jaime (ID: 998231) requests access. PIN: 849 201. [Approve] [Reject]
+     Telegram user @username (ID: 998231) requests access. PIN: 849 201. [Approve] [Reject]
      ```
-  3. Once you click **Approve**, the user ID is saved permanently in `~/.config/sayri/authorizations.json`.
+  3. Once verified via `/pair <pin>` or approving the dialog, the user ID is saved permanently in `~/.config/sayri/authorizations.json`.
 
 ---
 
@@ -72,15 +72,17 @@ To prevent unknown internet users from executing commands on your computer or co
 
 ---
 
-## 3. Gateway Plugin Manifest (`manifest.json`)
+## 3. Gateway Plugin Manifest (`manifest.json`) & UI Specification
+
+Every Gateway declares its capabilities, secrets, sandbox tier, and UI integration helpers in `manifest.json`:
 
 ```json
 {
   "id": "sayri-gateway-telegram",
   "name": "Telegram Bot Gateway",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "jaimegh-es",
-  "description": "Telegram communication bridge with OTP pairing and whitelist enforcement.",
+  "description": "Telegram communication bridge with Desktop OTP pairing.",
   "entrypoint": "gateway.py",
   "sandbox_level": "LEVEL_1_READONLY",
   "required_secrets": [
@@ -88,13 +90,29 @@ To prevent unknown internet users from executing commands on your computer or co
   ],
   "authorization": {
     "mode": "pairing_otp",
-    "allowed_users": ["@jaime"],
+    "allowed_users": [],
     "pairing_pin_required": true,
     "pin_expiration_seconds": 300,
     "rate_limit": {
       "max_requests_per_minute": 15,
       "burst": 3
     }
+  },
+  "ui": {
+    "sync_instructions": "1. Open Telegram and message @YourBot (/start).\n2. Sayri will display a 6-digit PIN on this desktop screen.\n3. Reply with /pair <PIN> to authorize your account.",
+    "actions": [
+      {
+        "id": "set_token",
+        "label": "Configure Bot Token",
+        "type": "secret_prompt",
+        "secret_key": "TELEGRAM_BOT_TOKEN"
+      },
+      {
+        "id": "view_pin",
+        "label": "Show Pairing PIN",
+        "type": "display_pin"
+      }
+    ]
   },
   "capabilities": [
     "receive_messages",
@@ -109,7 +127,19 @@ To prevent unknown internet users from executing commands on your computer or co
 
 ---
 
-## 4. UNIX Domain Socket IPC Protocol (`sayri.sock`)
+## 4. How to Manage Gateways in Sayri Cajita UI
+
+In Sayri Cajita's **Gateways** tab:
+
+1. **Sync Instructions Box**: Step-by-step guidance on how to connect external bots.
+2. **Settings (⚙️)**: Interactive dialog to configure tokens (e.g. `TELEGRAM_BOT_TOKEN`) into the Zero-Plaintext Vault.
+3. **Pair Device (🔑)**: Generates and displays the current 6-digit pairing PIN on your screen.
+4. **Delete Gateway (🗑️)**: Uninstalls the gateway package and terminates its daemon with 1 click.
+5. **Enable / Disable Switch**: Turns the background gateway daemon on or off.
+
+---
+
+## 5. UNIX Domain Socket IPC Protocol (`sayri.sock`)
 
 Gateways and Sayri communicate via local JSON-Lines (NDJSON) over `/run/user/<UID>/sayri/ipc.sock`:
 
@@ -119,7 +149,7 @@ Gateways and Sayri communicate via local JSON-Lines (NDJSON) over `/run/user/<UI
      "type": "INCOMING_MSG",
      "session_id": "tg-9923841",
      "author_id": "992381",
-     "author": "@jaime",
+     "author": "@username",
      "text": "How do I install a Flatpak package?"
    }
    ```
