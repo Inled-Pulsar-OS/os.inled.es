@@ -4,7 +4,7 @@ description: "How to define, configure, and manage autonomous subagent profiles 
 order: 4
 ---
 
-# 🤖 Sayri Subagents Specification
+# Sayri Subagents Specification
 
 In Sayri, a **Subagent** is an autonomous AI worker instance configured with its own system prompt, isolated model parameters, fine-grained **Bubblewrap sandbox policy**, and allowed tools/skills.
 
@@ -15,7 +15,7 @@ Subagent profiles are stored persistently as JSON files under:
 
 ---
 
-## 📄 1. Agent Profile JSON Schema
+## 1. Agent Profile JSON Schema
 
 Below is the complete specification for a subagent definition:
 
@@ -55,7 +55,7 @@ Below is the complete specification for a subagent definition:
 
 ---
 
-## 🛠️ 2. Configuration Fields Reference
+## 2. Configuration Fields Reference
 
 ### Model Settings (`model`)
 - **`provider`**: Model provider client (`default`, `openai`, `groq`, `ollama`, `openrouter`).
@@ -75,7 +75,7 @@ Below is the complete specification for a subagent definition:
 
 ---
 
-## 🖱️ 3. Managing Subagents via UI Cajita
+## 3. Managing Subagents via UI Cajita
 
 You can manage agents graphically from the Sayri Cajita widget:
 1. Press the Sayri hotkey or tray indicator to open **Cajita**.

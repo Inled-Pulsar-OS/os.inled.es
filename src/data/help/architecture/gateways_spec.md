@@ -4,7 +4,7 @@ description: "In-depth architecture of Sayri Channel Gateways (Discord, Telegram
 order: 5
 ---
 
-# 🔌 Channel Gateways & Plugin Protocol Specification
+# Channel Gateways & Plugin Protocol Specification
 
 A **Channel Gateway** in Sayri is an out-of-process background daemon that bridges Sayri's agentic core to external communication platforms (such as **Discord**, **Telegram**, **Matrix**, or **MCP (Model Context Protocol)** servers).
 
@@ -12,7 +12,7 @@ Gateways enable users, team channels, and external bots to send queries and voic
 
 ---
 
-## 🏛️ 1. Gateway Architecture & IPC Communication
+## 1. Gateway Architecture & IPC Communication
 
 ```mermaid
 sequenceDiagram
@@ -42,7 +42,7 @@ sequenceDiagram
 
 ---
 
-## 📄 2. Gateway Manifest (`manifest.json`)
+## 2. Gateway Plugin Manifest (`manifest.json`)
 
 Every Gateway plugin includes a `manifest.json` declaring its required permissions, required secrets, target subagent, and entrypoint:
 
@@ -72,7 +72,7 @@ Every Gateway plugin includes a `manifest.json` declaring its required permissio
 
 ---
 
-## 🔌 3. UNIX Domain Socket IPC Protocol
+## 3. UNIX Domain Socket IPC Protocol
 
 All gateways communicate with Sayri via a local JSON-Lines (NDJSON) UNIX Domain Socket located at:
 ```text
@@ -96,7 +96,7 @@ All gateways communicate with Sayri via a local JSON-Lines (NDJSON) UNIX Domain 
   "type": "INCOMING_MSG",
   "session_id": "tg-chat-9923841",
   "author": "jaime",
-  "text": "¿Cuál es el consumo actual de memoria RAM?",
+  "text": "What is the current RAM consumption?",
   "target_agent": "system-monitor"
 }
 ```
@@ -106,7 +106,7 @@ All gateways communicate with Sayri via a local JSON-Lines (NDJSON) UNIX Domain 
 {
   "type": "DELTA",
   "session_id": "tg-chat-9923841",
-  "token": "La memoria RAM utilizada actualmente es..."
+  "token": "The current RAM usage is..."
 }
 ```
 
@@ -115,13 +115,13 @@ All gateways communicate with Sayri via a local JSON-Lines (NDJSON) UNIX Domain 
 {
   "type": "DONE",
   "session_id": "tg-chat-9923841",
-  "full_text": "La memoria RAM utilizada actualmente es de 2.4 GB de 16 GB."
+  "full_text": "The current RAM usage is 2.4 GB out of 16 GB."
 }
 ```
 
 ---
 
-## 🐍 4. Complete Gateway Implementation Example (`gateway.py`)
+## 4. Complete Gateway Implementation Example (`gateway.py`)
 
 Below is a Python implementation of an autonomous Gateway Daemon communicating with Sayri's UNIX socket:
 
@@ -138,7 +138,7 @@ IPC_SOCKET_PATH = f"/run/user/{os.getuid()}/sayri/ipc.sock"
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     if not token:
-        print("❌ Error: TELEGRAM_BOT_TOKEN not provided by Sayri Vault.", file=sys.stderr)
+        print("Error: TELEGRAM_BOT_TOKEN not provided by Sayri Vault.", file=sys.stderr)
         sys.exit(1)
 
     print("[Gateway] Connecting to Sayri IPC Socket...")
@@ -162,7 +162,7 @@ if __name__ == "__main__":
 
 ---
 
-## 🔐 5. How Plugin Authorization Works in Sayri UI
+## 5. How Plugin Authorization Works in Sayri UI
 
 To prevent rogue background daemons from running without your consent:
 

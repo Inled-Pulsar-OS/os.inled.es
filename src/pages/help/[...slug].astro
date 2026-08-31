@@ -94,10 +94,10 @@ const categoryName = prettyCategory(category);
         <header class="mermaid-modal-header">
             <span class="mermaid-modal-title">Diagram Viewer</span>
             <div class="mermaid-modal-controls">
-                <button type="button" class="mermaid-ctrl-btn" id="mermaid-zoom-in" title="Zoom In (+)">🔍 +</button>
-                <button type="button" class="mermaid-ctrl-btn" id="mermaid-zoom-out" title="Zoom Out (-)">🔎 -</button>
-                <button type="button" class="mermaid-ctrl-btn" id="mermaid-reset" title="Reset Zoom (100%)">↺ 100%</button>
-                <button type="button" class="mermaid-ctrl-btn" id="mermaid-close" title="Close (Esc)">✕ Close</button>
+                <button type="button" class="mermaid-ctrl-btn" id="mermaid-zoom-in" title="Zoom In">Zoom In (+)</button>
+                <button type="button" class="mermaid-ctrl-btn" id="mermaid-zoom-out" title="Zoom Out">Zoom Out (-)</button>
+                <button type="button" class="mermaid-ctrl-btn" id="mermaid-reset" title="Reset Zoom">Reset</button>
+                <button type="button" class="mermaid-ctrl-btn" id="mermaid-close" title="Close">Close</button>
             </div>
         </header>
         <div class="mermaid-modal-viewport" id="mermaid-viewport">
@@ -132,7 +132,7 @@ const categoryName = prettyCategory(category);
 
         function openModal(svgHtml) {
             if (!modal || !modalContent) return;
-            modalContent.innerHTML = svgHtml;
+            modalContent.innerHTML = `<div class="mermaid-modal-canvas">${svgHtml}</div>`;
             currentScale = 1;
             panX = 0;
             panY = 0;
@@ -243,7 +243,7 @@ const categoryName = prettyCategory(category);
                     container.className = "mermaid-chart";
                     container.setAttribute("title", "Click to expand diagram");
                     container.innerHTML = `
-                        <span class="mermaid-expand-hint">🔍 Expand Diagram</span>
+                        <span class="mermaid-expand-hint">Expand Diagram</span>
                         ${svg}
                     `;
                     

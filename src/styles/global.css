@@ -3372,6 +3372,7 @@ html.dark .mermaid-chart {
     justify-content: center;
     cursor: grab;
     user-select: none;
+    padding: 24px;
 }
 
 .mermaid-modal-viewport:active {
@@ -3386,10 +3387,24 @@ html.dark .mermaid-chart {
     transition: transform 0.05s ease-out;
 }
 
-.mermaid-modal-content svg {
+.mermaid-modal-canvas {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     max-width: 90vw;
     max-height: 82vh;
-    width: auto;
-    height: auto;
-    filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.6));
+}
+
+.mermaid-modal-canvas svg {
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 320px;
+    max-width: 80vw;
+    max-height: 70vh;
+    display: block;
 }

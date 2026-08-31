@@ -1,18 +1,18 @@
 ---
 title: "Sayri Skills & Tools Specification (SKILL.md)"
-description: "In-depth specification for developing Sayri AI skills: manifest declaration, custom tools, JSON schemas, and execution."
+description: "Comprehensive specification for Sayri AI skills: YAML frontmatter, custom tool schemas, Bubblewrap execution, and environment secrets."
 order: 3
 ---
 
-# 🧠 Sayri Skills & Tools Specification (`SKILL.md`)
+# Sayri Skills & Tools Specification (`SKILL.md`)
 
-A **Sayri Skill** is a modular package of system instructions, prompt strategies, and executable **Tools** that expand Sayri's agentic capabilities. Skills are declared declaratively using **`SKILL.md`** files following an extensible YAML frontmatter and Markdown standard.
+A **Sayri Skill** is an extensible package containing specialized prompts, guidelines, and executable **Tools** that empower Sayri to perform domain-specific tasks. Skills are defined declaratively using **`SKILL.md`** files with YAML frontmatter.
 
 ---
 
-## 🛠️ 1. What is a "Tool" in Sayri?
+## 1. What is a "Tool" in Sayri?
 
-In Sayri, a **Tool** is an executable capability (Python script, Bash command, or native system binding) exposed to Sayri's ReAct (Reason + Act) loop via **Function Calling**.
+In Sayri, a **Tool** is an executable function, Python script, or system utility exposed to the LLM via **JSON Schema Function Calling**.
 
 ```mermaid
 sequenceDiagram
@@ -35,20 +35,21 @@ sequenceDiagram
     Engine-->>User: Display Formatted Response in Cajita
 ```
 
-### Types of Tools:
+### Built-in vs. Custom Skill Tools:
+
 1. **Built-in System Tools**:
-   - `bash`: Runs standard shell commands inside the designated sandbox.
+   - `bash`: Executes shell commands inside the configured Bubblewrap container.
    - `read_file`: Reads text from a local path.
-   - `write_file`: Writes text to an allowed file path.
-   - `read_skill`: Reads full documentation from another skill.
+   - `write_file`: Writes content to a file inside the isolated sandbox workspace.
+   - `read_skill`: Dynamically loads documentation from another skill into the context.
 2. **Custom Skill Tools**:
-   - Executable scripts placed inside `~/.config/sayri/skills/<skill_id>/scripts/` (e.g. `scripts/discord_post.py`, `scripts/query_api.py`).
+   - Standalone executable scripts placed under `scripts/` (e.g. `scripts/discord_tool.py`, `scripts/query_api.py`).
 
 ---
 
-## 📁 2. Skill Directory Structure
+## 2. Directory Structure
 
-Every Sayri skill follows a standard layout inside `~/.config/sayri/skills/<skill-id>/` (or distributed as a `.zip` in the Pulsar Store):
+A complete Sayri skill package has the following layout:
 
 ```text
 ~/.config/sayri/skills/sayri-skill-discord-support/
@@ -62,7 +63,7 @@ Every Sayri skill follows a standard layout inside `~/.config/sayri/skills/<skil
 
 ---
 
-## 📝 3. `SKILL.md` Manifest Format
+## 3. `SKILL.md` Manifest Format
 
 The `SKILL.md` file defines the skill identity, security sandbox boundary, required secrets, and autonomous instructions:
 
@@ -85,10 +86,10 @@ keywords:
   - "ticket"
 ---
 
-# 🎯 Role & Persona
+# Role & Persona
 You are the official Discord Community Support Subagent for Pulsar OS.
 
-## 🛠️ Tool Declarations
+## Tool Declarations
 
 ### `discord_send_message`
 Sends a formatted message to a Discord channel.
@@ -103,7 +104,7 @@ Searches the local Pulsar OS offline documentation.
   - `query` (string, required): Search keyword or phrase.
 - **Entrypoint**: `python3 scripts/discord_tool.py search --query {query}`
 
-## 📋 Operational Guidelines:
+## Operational Guidelines:
 1. Answer questions clearly and concisely based on the knowledge base.
 2. If a user reports a bug, summarize the technical logs and suggest creating a GitHub Issue.
 3. NEVER attempt to execute arbitrary bash commands on the host machine.
@@ -111,9 +112,23 @@ Searches the local Pulsar OS offline documentation.
 
 ---
 
-## 🐍 4. Example Custom Tool Script (`scripts/discord_tool.py`)
+## 4. Frontmatter Properties Reference
 
-Here is an example of a tool script receiving secrets injected safely into environment variables:
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| **`name`** | `string` | Unique identifier (must match `sayri-skill-[a-z0-9-]+`). |
+| **`title`** | `string` | Display title shown in Sayri Cajita and Store catalog. |
+| **`description`** | `string` | 1-2 sentence description of the skill's functionality. |
+| **`version`** | `string` | Semantic version string (`X.Y.Z`). |
+| **`author`** | `string` | Author name or GitHub handle. |
+| **`sandbox_level`** | `enum` | `LEVEL_0_NO_EXEC`, `LEVEL_1_READONLY`, `LEVEL_2_ISOLATED_DEV`, `LEVEL_3_HOST_USER`, `LEVEL_4_HOST_ROOT`. |
+| **`allowed_tools`** | `string[]` | List of tool names that the skill is authorized to invoke. |
+| **`required_secrets`**| `string[]` | Vault secret keys injected into process environment variables. |
+| **`keywords`** | `string[]` | Trigger keywords for Sayri's natural language intent router. |
+
+---
+
+## 5. Tool Implementation Example (`scripts/discord_tool.py`)
 
 ```python
 #!/usr/bin/env python3
@@ -139,7 +154,7 @@ def main():
     args = parser.parse_args()
     
     if args.action == "send":
-        # Simulate sending message via Discord REST API
+        # Process action securely
         print(json.dumps({
             "status": "success",
             "channel_id": args.channel,
