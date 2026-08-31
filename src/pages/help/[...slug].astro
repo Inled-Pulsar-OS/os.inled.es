@@ -86,6 +86,47 @@ const categoryName = prettyCategory(category);
                     </nav>
                 </div>
             </div>
-        </div>
     </section>
+
+    <!-- Dynamic Mermaid Diagram Support -->
+    <script type="module">
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+        async function initMermaid() {
+            const isDark = document.documentElement.classList.contains("dark");
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: isDark ? "dark" : "neutral",
+                themeVariables: isDark ? {
+                    darkMode: true,
+                    background: "#171424",
+                    primaryColor: "#966ce8",
+                    primaryTextColor: "#f5f4f9",
+                    lineColor: "#676ff8"
+                } : {
+                    primaryColor: "#676ff8",
+                    primaryTextColor: "#111111",
+                    lineColor: "#966ce8"
+                }
+            });
+
+            const codeBlocks = document.querySelectorAll("pre:has(code.language-mermaid), pre.mermaid, code.language-mermaid");
+            codeBlocks.forEach((block, idx) => {
+                const code = block.textContent;
+                const container = document.createElement("div");
+                container.className = "mermaid-chart";
+                container.id = `mermaid-chart-${idx}`;
+                container.textContent = code;
+                block.replaceWith(container);
+            });
+
+            await mermaid.run({ querySelector: ".mermaid-chart" });
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initMermaid);
+        } else {
+            initMermaid();
+        }
+    </script>
 </Layout>
