@@ -103,25 +103,38 @@ const categoryName = prettyCategory(category);
                     background: "#171424",
                     primaryColor: "#966ce8",
                     primaryTextColor: "#f5f4f9",
-                    lineColor: "#676ff8"
+                    lineColor: "#676ff8",
+                    fontFamily: "'Space Grotesk', 'Inter', sans-serif"
                 } : {
                     primaryColor: "#676ff8",
                     primaryTextColor: "#111111",
-                    lineColor: "#966ce8"
+                    lineColor: "#966ce8",
+                    fontFamily: "'Space Grotesk', 'Inter', sans-serif"
                 }
             });
 
-            const codeBlocks = document.querySelectorAll("pre:has(code.language-mermaid), pre.mermaid, code.language-mermaid");
-            codeBlocks.forEach((block, idx) => {
-                const code = block.textContent;
-                const container = document.createElement("div");
-                container.className = "mermaid-chart";
-                container.id = `mermaid-chart-${idx}`;
-                container.textContent = code;
-                block.replaceWith(container);
-            });
+            const blocks = Array.from(document.querySelectorAll(
+                'pre[data-language="mermaid"], pre.astro-code[data-language="mermaid"], pre.mermaid, code.language-mermaid'
+            ));
 
-            await mermaid.run({ querySelector: ".mermaid-chart" });
+            if (blocks.length === 0) return;
+
+            for (let i = 0; i < blocks.length; i++) {
+                const block = blocks[i];
+                const code = block.innerText || block.textContent || "";
+                if (!code.trim()) continue;
+
+                try {
+                    const id = `mermaid-svg-${Date.now()}-${i}`;
+                    const { svg } = await mermaid.render(id, code.trim());
+                    const container = document.createElement("div");
+                    container.className = "mermaid-chart";
+                    container.innerHTML = svg;
+                    block.replaceWith(container);
+                } catch (err) {
+                    console.error("Mermaid diagram rendering error:", err);
+                }
+            }
         }
 
         if (document.readyState === "loading") {
@@ -129,5 +142,12 @@ const categoryName = prettyCategory(category);
         } else {
             initMermaid();
         }
+
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+            setTimeout(initMermaid, 50);
+        });
+        document.getElementById("theme-toggle")?.addEventListener("click", () => {
+            setTimeout(initMermaid, 50);
+        });
     </script>
 </Layout>
