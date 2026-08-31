@@ -169,3 +169,14 @@ Gateways and Sayri communicate via local JSON-Lines (NDJSON) over `/run/user/<UI
      "full_text": "To install a Flatpak, run: pulsar-store install <id>"
    }
    ```
+
+### 4.2 Security Specification: Desktop-Only OTP Pairing Protocol
+
+To prevent unauthorized users from hijacking private OS assistants, Sayri implements a **Zero-Leakage OTP Protocol**:
+
+1. **Local Screen Generation**: Sayri Cajita generates a random 6-digit OTP stored in `~/.config/sayri/pairing_pin.json`.
+2. **Strict Privacy**: The remote gateway daemon **NEVER** echoes the PIN to the chat when a stranger sends `/start` or `/help`.
+3. **Mutual Handshake**:
+   - The user copies the `/pair <PIN>` command from their local desktop.
+   - The bot receives `/pair <PIN>`, verifies against `pairing_pin.json`, adds the Telegram user ID to `~/.config/sayri/authorizations.json`, and confirms pairing.
+4. **UNIX Socket Streaming**: Incoming queries are routed over `/run/user/<uid>/sayri/sayri.sock` via `INCOMING_MSG` JSON payloads directly to `AgentEngine` with synchronous response resolution.
