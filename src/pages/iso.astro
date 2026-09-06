@@ -331,23 +331,58 @@ const DOWNLOADS = downloadAvailability();
                 const rows: string[] = [];
                 for (const [base, boots] of Object.entries(bases as Record<string, any>)) {
                     for (const [boot, files] of Object.entries(boots as Record<string, any>)) {
-                        if (!files?.iso) continue;
+                        // Only link real .iso files; the manifest may also list
+                        // squashfs artifacts under other fields.
+                        const isoUrl: string | undefined =
+                            files?.iso && files.iso.endsWith(".iso")
+                                ? files.iso
+                                : Object.values(files ?? {}).find(
+                                      (u): u is string => typeof u === "string" && u.endsWith(".iso"),
+                                  );
+                        if (!isoUrl) continue;
+                        const sqUrl: string | undefined =
+                            files?.squashfs && files.squashfs.endsWith(".squashfs") ? files.squashfs : undefined;
+
+                        const metaHtml = (file: any, withSha: boolean) => `
+                            ${file?.size_bytes ? `<span>${fmtSize(file.size_bytes)}</span>` : ""}
+                            ${withSha && file?.sha256 ? `<span class="iso-version-sha">SHA256</span>` : ""}
+                        `;
+                        const shaAttr = (file: any) =>
+                            file?.sha256 ? `data-sha256="${file.sha256}"` : "";
+
                         rows.push(`
                             <div class="iso-version-row">
                                 <div class="iso-version-label">
                                     <strong>${base}</strong> · ${boot}
                                 </div>
-                                <div class="iso-version-meta">
-                                    ${files.size_bytes ? `<span>${fmtSize(files.size_bytes)}</span>` : ""}
-                                    ${files.sha256 ? `<span class="iso-version-sha">SHA256</span>` : ""}
-                                </div>
+                                <div class="iso-version-meta"></div>
                                 <a
-                                    href="${files.iso}"
+                                    href="${isoUrl}"
                                     class="btn btn-secondary iso-version-btn"
-                                    ${files.sha256 ? `data-sha256="${files.sha256}"` : ""}
                                     rel="noopener noreferrer"
                                 >Download ISO</a>
                             </div>
+                            ${
+                                sqUrl
+                                    ? `
+                            <details class="iso-sq-details">
+                                <summary>Squashfs — for USB recovery</summary>
+                                <div class="iso-version-row iso-sq-row">
+                                    <div class="iso-version-label">
+                                        <strong>${base}</strong> · ${boot} · squashfs
+                                    </div>
+                                    <div class="iso-version-meta">${metaHtml(files, true)}</div>
+                                    <a
+                                        href="${sqUrl}"
+                                        class="btn btn-secondary iso-version-btn iso-sq-btn"
+                                        ${shaAttr(files)}
+                                        rel="noopener noreferrer"
+                                    >Download squashfs</a>
+                                </div>
+                            </details>
+                            `
+                                    : ""
+                            }
                         `);
                     }
                 }
@@ -881,5 +916,36 @@ const DOWNLOADS = downloadAvailability();
 
     .iso-version-btn {
         flex-shrink: 0;
+    }
+
+    .iso-sq-details {
+        margin: 0;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .iso-sq-details summary {
+        cursor: pointer;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        padding: 12px 0 12px 28px;
+        user-select: none;
+    }
+
+    .iso-sq-details summary:hover {
+        color: var(--text-primary);
+    }
+
+    .iso-sq-details[open] summary {
+        color: var(--text-primary);
+    }
+
+    .iso-sq-row {
+        border-top: none;
+        padding-top: 0;
+    }
+
+    .iso-sq-btn {
+        font-size: 0.85rem;
     }
 </style>
