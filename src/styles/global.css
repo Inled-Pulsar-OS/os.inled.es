@@ -1,3 +1,496 @@
+/* ============================================================
+   HOMEPAGE (Fedora-style friendly landing)
+   PÁGINA DE INICIO (aterrizaje amigable tipo Fedora)
+   ============================================================ */
+
+.home-hero {
+    padding: 120px 0 90px 0;
+    text-align: center;
+}
+
+.home-hero-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-logo {
+    width: 108px;
+    height: auto;
+    margin-bottom: 28px;
+}
+
+.home-title {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.home-lead {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 620px;
+    margin-bottom: 36px;
+}
+
+.home-hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.home-flavours {
+    padding: 90px 0 100px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.home-flavour-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.home-flavour-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 36px 32px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition:
+        border-color var(--transition-speed) ease,
+        background-color var(--transition-speed) ease,
+        transform var(--transition-speed) ease,
+        box-shadow var(--transition-speed) ease;
+}
+
+.home-flavour-card:hover {
+    border-color: var(--border-focus);
+    background-color: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+}
+
+/* Upcoming editions: not links, slightly quieter, no fake affordances */
+article.home-flavour-card.is-soon {
+    cursor: default;
+}
+
+.home-flavour-logo {
+    width: 64px;
+    height: auto;
+    object-fit: contain;
+}
+
+.home-flavour-placeholder {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--border-focus);
+    border-radius: 16px;
+    color: var(--text-secondary);
+}
+
+.home-flavour-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.home-flavour-name {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.home-flavour-desc {
+    font-size: 0.97rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.home-flavour-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+.home-flavour-link svg {
+    transition: transform var(--transition-speed) ease;
+}
+
+.home-flavour-card:hover .home-flavour-link svg {
+    transform: translateX(4px);
+}
+
+/* Innovation strip / Franja de innovación ("not just a theme") */
+.home-innovation {
+    padding: 80px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.home-innovation-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 44px 64px;
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.home-innovation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.home-innovation-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--accent-blue);
+    background-color: var(--bg-card);
+}
+
+.home-innovation-item h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.home-innovation-item p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .home-innovation-list {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+.home-innovation-subhead {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+    text-align: center;
+    margin: 64px auto 36px auto;
+    color: var(--text-primary);
+}
+
+.home-innovation-note {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 56px;
+}
+
+.home-innovation-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px auto 0 auto;
+    width: fit-content;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.home-innovation-more svg {
+    transition: transform var(--transition-speed) ease;
+}
+
+.home-innovation-more:hover svg {
+    transform: translateX(4px);
+}
+
+/* Contributors strip / Franja de contribuidores */
+.home-contributors {
+    padding: 80px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.home-contributors-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    max-width: 1040px;
+    margin: 0 auto;
+}
+
+.home-contributor-card {
+    width: 250px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px 24px 28px 24px;
+    text-align: center;
+    transition:
+        border-color var(--transition-speed) ease,
+        transform var(--transition-speed) ease;
+}
+
+.home-contributor-card:hover {
+    border-color: var(--border-focus);
+    transform: translateY(-2px);
+}
+
+.home-contributor-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 16px;
+}
+
+.home-contributor-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+}
+
+.home-contributor-role {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 6px 0 18px 0;
+}
+
+.home-contributor-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.home-contributor-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition:
+        color var(--transition-speed) ease,
+        border-color var(--transition-speed) ease;
+}
+
+.home-contributor-link:hover {
+    color: var(--accent-blue);
+    border-color: var(--border-focus);
+}
+
+/* Why strip / Franja de por qué */
+.home-why {
+    padding: 80px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.home-why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+.home-why-item h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.home-why-item p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Community strip / Franja de comunidad */
+.home-community {
+    padding: 90px 0 110px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.home-community-card {
+    text-align: center;
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.home-community-text {
+    margin-bottom: 44px;
+}
+
+.home-community-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.home-community-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.home-community-channels {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+.home-channel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    padding: 26px 18px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    text-decoration: none;
+    color: var(--text-primary);
+    text-align: center;
+    transition:
+        border-color var(--transition-speed) ease,
+        background-color var(--transition-speed) ease,
+        transform var(--transition-speed) ease;
+}
+
+.home-channel:hover {
+    border-color: var(--border-focus);
+    background-color: var(--bg-card-hover);
+    transform: translateY(-2px);
+}
+
+.home-channel-icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    color: var(--accent-blue);
+    font-size: 1.15rem;
+}
+
+.home-channel-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.home-channel-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+    .home-why-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-title {
+        font-size: 2.75rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .home-hero {
+        padding: 80px 0 60px 0;
+    }
+
+    .home-logo {
+        width: 84px;
+    }
+
+    .home-title {
+        font-size: 2.25rem;
+        letter-spacing: -1px;
+    }
+
+    .home-lead {
+        font-size: 1.05rem;
+    }
+
+    .home-why-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .home-community-card {
+        text-align: center;
+    }
+
+    .home-community-channels {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .home-channel {
+        width: 100%;
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .home-channel-desc {
+        display: none;
+    }
+}
+
 /*
   GLOBAL STYLES AND DESIGN SYSTEM FOR PULSAR OS
   ESTILOS GLOBALES Y SISTEMA DE DISEÑO PARA PULSAR OS
@@ -3184,7 +3677,8 @@ html.js .hero-word {
 
 html.js .hero-title.animate .hero-word,
 html.js .pear-hero-title.animate .hero-word,
-html.js .iso-hero-title.animate .hero-word {
+html.js .iso-hero-title.animate .hero-word,
+html.js .home-title.animate .hero-word {
     animation: hero-word-in 0.9s cubic-bezier(0.19, 1, 0.22, 1) both;
     animation-delay: calc(150ms + var(--wi, 0) * 90ms);
 }
@@ -3227,7 +3721,8 @@ html.js :where([data-reveal].is-visible) {
 @media (prefers-reduced-motion: reduce) {
     html.js .hero-title,
     html.js .pear-hero-title,
-    html.js .iso-hero-title {
+    html.js .iso-hero-title,
+    html.js .home-title {
         opacity: 1;
     }
 

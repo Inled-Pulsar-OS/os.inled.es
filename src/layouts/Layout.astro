@@ -109,26 +109,16 @@ const DOWNLOADS = downloadAvailability();
         <script is:inline>
             document.documentElement.classList.add("js");
             (function () {
+                // Light theme is the default; dark only when the visitor
+                // explicitly chooses it with the toggle.
+                // El tema claro es el predeterminado; el oscuro solo cuando
+                // se elige explícitamente con el botón.
                 const savedTheme = localStorage.getItem("theme");
-                const prefersDark = window.matchMedia(
-                    "(prefers-color-scheme: dark)",
-                ).matches;
-                if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+                if (savedTheme === "dark") {
                     document.documentElement.classList.add("dark");
                 } else {
                     document.documentElement.classList.remove("dark");
                 }
-
-                // Dynamic live listener for OS dark/light mode changes
-                window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-                    if (!localStorage.getItem("theme")) {
-                        if (e.matches) {
-                            document.documentElement.classList.add("dark");
-                        } else {
-                            document.documentElement.classList.remove("dark");
-                        }
-                    }
-                });
             })();
         </script>
     </head>
@@ -150,6 +140,7 @@ const DOWNLOADS = downloadAvailability();
 
                 <nav class="nav-links">
                     <a href="/bitten-fruit" class="nav-link">Bitten Fruit</a>
+                    <a href="/new-to-linux" class="nav-link">New to Linux?</a>
                     <a href="/community" class="nav-link">Community</a>
                     <a href="/resources" class="nav-link">Resources</a>
                     <a href="/help" class="nav-link">Help and docs</a>
@@ -309,6 +300,7 @@ const DOWNLOADS = downloadAvailability();
             <nav id="mobile-nav" class="mobile-nav">
                 <a href="#hero" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a>
                 <a href="/bitten-fruit" class="mobile-nav-link" onclick="closeMobileMenu()">Bitten Fruit</a>
+                <a href="/new-to-linux" class="mobile-nav-link" onclick="closeMobileMenu()">New to Linux?</a>
                 <a href="/community" class="mobile-nav-link" onclick="closeMobileMenu()">Community</a>
                 <a href="/resources" class="mobile-nav-link" onclick="closeMobileMenu()">Resources</a>
                 <a href="/help" class="mobile-nav-link" onclick="closeMobileMenu()">Help & Docs</a>
@@ -504,7 +496,7 @@ const DOWNLOADS = downloadAvailability();
                    de borroso a nítido subiendo desde abajo --- */
             const setupHeroTitle = () => {
                 const titles = document.querySelectorAll<HTMLElement>(
-                    ".hero-title, .pear-hero-title, .iso-hero-title",
+                    ".hero-title, .pear-hero-title, .iso-hero-title, .home-title",
                 );
 
                 if (!titles.length) return;
@@ -573,9 +565,11 @@ const DOWNLOADS = downloadAvailability();
                 const targets: HTMLElement[] = [];
 
                 // Cards: any element whose class token ends in "card" + known items
+                // Includes the homepage flavour cards (.home-flavour-card) and
+                // community channel cards (.home-channel)
                 document
                     .querySelectorAll<HTMLElement>(
-                        "main [class*='card'], main .commitment-item",
+                        "main [class*='card'], main .commitment-item, main .home-channel",
                     )
                     .forEach((el) => {
                         const isCard =
@@ -594,16 +588,16 @@ const DOWNLOADS = downloadAvailability();
                 // Titles and hero copy not already inside a revealed card
                 document
                     .querySelectorAll<HTMLElement>(
-                        "main h1, main h2, main h3, .section-subtitle, .hero-desc, .hero-actions, .pear-logo, .pear-hero-desc, .pear-hero-actions, .iso-hero-desc",
+                        "main h1, main h2, main h3, .section-subtitle, .hero-desc, .hero-actions, .pear-logo, .pear-hero-desc, .pear-hero-actions, .iso-hero-desc, .home-lead, .home-hero-actions, .home-logo",
                     )
                     .forEach((el) => {
                         if (el.closest("[data-reveal]")) return;
-                        if (
-                            el.matches(
-                                ".hero-title, .pear-hero-title, .iso-hero-title",
-                            )
+                    if (
+                        el.matches(
+                            ".hero-title, .pear-hero-title, .iso-hero-title, .home-title",
                         )
-                            return;
+                    )
+                        return;
                         targets.push(el);
                     });
 
@@ -617,7 +611,9 @@ const DOWNLOADS = downloadAvailability();
 
                     let delay = Math.min(idx * 80, 400);
                     if (
-                        el.matches(".hero-desc, .pear-hero-desc, .iso-hero-desc")
+                        el.matches(
+                            ".hero-desc, .pear-hero-desc, .iso-hero-desc, .home-lead",
+                        )
                     )
                         delay = Math.max(delay, 850);
                     if (el.matches(".hero-actions, .pear-hero-actions"))
@@ -686,7 +682,9 @@ const DOWNLOADS = downloadAvailability();
         left: 50%;
         transform: translateX(-50%);
         width: calc(100% - 40px);
-        max-width: var(--max-width);
+        /* Wider than the content container: six nav entries no longer fit
+           in 1200px / Más ancho que el contenido: con seis entradas no cabe */
+        max-width: 1440px;
         height: 70px;
         background: rgba(246, 244, 238, 0.75);
         backdrop-filter: blur(16px);
@@ -728,8 +726,9 @@ const DOWNLOADS = downloadAvailability();
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
 
-    .header-container {
+    .floating-header .header-container {
         height: 100%;
+        max-width: 1440px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -758,7 +757,19 @@ const DOWNLOADS = downloadAvailability();
     .nav-links {
         display: flex;
         align-items: center;
-        gap: 32px;
+        gap: 24px;
+    }
+
+    /* Tighten spacing on mid-width screens so all entries fit
+       Espaciado ajustado en pantallas medianas para que quepan todas */
+    @media (max-width: 1360px) {
+        .nav-links {
+            gap: 16px;
+        }
+
+        .header-actions {
+            gap: 10px;
+        }
     }
 
     .nav-link {

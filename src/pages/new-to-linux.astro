@@ -1,0 +1,742 @@
+---
+// New to Linux / Nuevo en Linux
+// A friendly explainer for people coming from macOS or Windows:
+// what actually changes under the hood (with optional deep-dives),
+// and how to drive Pulsar OS from day one. Plain talk, no jargon walls.
+import Layout from "../layouts/Layout.astro";
+
+const ISO_RELEASES = "https://github.com/Inled-Pulsar-OS/ISO/releases/latest";
+---
+
+<Layout pageKey="new-to-linux">
+    <div class="ntl-page">
+        <!-- Hero -->
+        <section class="ntl-hero" aria-label="New to Linux introduction">
+            <div class="container ntl-hero-inner">
+                <h1 class="ntl-title">New to Linux? Relax.</h1>
+                <p class="ntl-lead">
+                    If you have used a Mac or a PC, you already know 90% of what
+                    you need. This page explains the other 10% in plain
+                    language — and shows you how little there is to it.
+                </p>
+                <div class="ntl-hero-actions">
+                    <a href="#from-macos" class="btn btn-primary">I come from a Mac</a>
+                    <a href="#from-windows" class="btn btn-secondary">I come from Windows</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- From macOS -->
+        <section id="from-macos" class="ntl-section" aria-label="Coming from macOS">
+            <div class="container">
+                <h2 class="section-title">Coming from a Mac</h2>
+                <p class="section-subtitle">
+                    Good news: Bitten Fruit was built thinking of you. The top
+                    bar, the dock, the gestures — all of it works the way your
+                    hands already expect. Here is what is actually different.
+                </p>
+
+                <div class="ntl-compare">
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On your Mac</span>
+                            <p>Apps come from the App Store, or a .dmg you download and drag.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Bitten Fruit</span>
+                            <p>The same idea: the App Store is built in and has more apps. A .dmg becomes a .deb — same drag-and-install feel via the store.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On your Mac</span>
+                            <p>Finder with tags, previews and a sidebar.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Bitten Fruit</span>
+                            <p>A Finder rebuild with the same navigation, tags and previews — plus your clouds (Drive, Dropbox, OneDrive…) right in the sidebar.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On your Mac</span>
+                            <p>Spotlight: one key, search everything.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Bitten Fruit</span>
+                            <p>Spotlight is here too, and it can even uninstall apps and jump into folders. Same key, same feel.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On your Mac</span>
+                            <p>Time Machine backing up your stuff automatically.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Bitten Fruit</span>
+                            <p>Time Machine, same idea: continuous snapshots, saved to a USB drive, a network server or your cloud, and restorable from Recovery.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On your Mac</span>
+                            <p>System Settings, and everything in the menu bar.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Bitten Fruit</span>
+                            <p>A Settings app rebuilt to look and flow like System Settings, plus a Control Center in the top-right corner. And yes: each app's menus (File, Edit, View…) live in the top bar, like on a Mac.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On your Mac</span>
+                            <p>Cmd is the main modifier key.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Bitten Fruit</span>
+                            <p>Cmd does what Cmd does — and if you prefer Ctrl+C like on Windows or Linux, one setting swaps the whole keyboard.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <details class="ntl-deepdive">
+                    <summary>What is Pulsar OS, really? (the honest one-paragraph version)</summary>
+                    <div class="ntl-deepdive-body">
+                        <p>
+                            Under the hood it is GNU/Linux with the GNOME
+                            desktop — but almost nothing you touch is stock.
+                            The desktop, the Finder-style file manager, the
+                            global menu, the login screen, the boot sequence,
+                            the sounds, the keyboard, Spotlight, Time Machine,
+                            Recovery, the app store and Sayri are all custom
+                            builds made for this system. That is the difference
+                            between a theme and an operating system: a theme
+                            paints the same old desktop; Pulsar OS reassembles
+                            it around the Mac flow, end to end.
+                        </p>
+                    </div>
+                </details>
+
+                <details class="ntl-deepdive">
+                    <summary>What is actually different under the hood, technically? (optional nerd bit)</summary>
+                    <div class="ntl-deepdive-body">
+                        <p>
+                            A Mac runs macOS. Bitten Fruit runs Linux — a system
+                            built by a worldwide community, where thousands of
+                            people can read every line of code. That is why it
+                            can be free, auditable and never nag you.
+                        </p>
+                        <p>
+                            The practical differences you may notice one day:
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>Everything is a file.</strong> Settings,
+                                drives, even some hardware show up as files you
+                                can read. Powerful, but Bitten Fruit gives you
+                                normal Settings windows so you never have to
+                                care.
+                            </li>
+                            <li>
+                                <strong>Apps come from repositories.</strong>
+                                Instead of one store, apps live in several big
+                                catalogues. The App Store merges them all, so
+                                from your chair it looks like one store.
+                            </li>
+                            <li>
+                                <strong>You are the administrator.</strong> No
+                                gatekeeper decides what you can install. That
+                                freedom is also why Linux asks "are you sure?"
+                                a bit less often than macOS — it trusts you.
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- From Windows -->
+        <section id="from-windows" class="ntl-section" aria-label="Coming from Windows">
+            <div class="container">
+                <h2 class="section-title">Coming from Windows</h2>
+                <p class="section-subtitle">
+                    Your habits carry over: taskbar, start-style menus,
+                    Ctrl+C / Ctrl+V. And Wintux — the Windows-flow edition — is
+                    on its way. Here is what changes meanwhile.
+                </p>
+
+                <div class="ntl-compare">
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On Windows</span>
+                            <p>Download an .exe from a website, click through the installer.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Pulsar OS</span>
+                            <p>Two ways, both easy. The App Store: search, click, installed — updates included. Or download an installer (.deb, like an .exe) and open it by double-clicking, like on Windows.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On Windows</span>
+                            <p>Taskbar, start menu, tray icons, Ctrl+C / Ctrl+V.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Pulsar OS</span>
+                            <p>All of that exists: a dock for your apps, an activities view for launching, quick settings in the corner, and Ctrl+C / Ctrl+V as normal. Your hands won't notice the difference; and when Wintux arrives it will go one step further.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On Windows</span>
+                            <p>C: drive, D: drive, letters for everything.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Pulsar OS</span>
+                            <p>One folder tree: everything hangs from a single root, like branches of one tree. Your USB or second disk just appears in the file manager when plugged in — no letters to memorise.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On Windows</span>
+                            <p>Antivirus, updates that reboot when they want, "get even more out of Windows" nags.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Pulsar OS</span>
+                            <p>None of that. You decide when to update. Antivirus isn't a daily worry: apps come from reviewed catalogues and the system is designed to contain them. No nags, no accounts, no ads in the start menu.</p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-compare-row">
+                        <div class="ntl-compare-from">
+                            <span class="ntl-compare-label">On Windows</span>
+                            <p>Some professional apps are Windows-only.</p>
+                        </div>
+                        <div class="ntl-compare-arrow" aria-hidden="true">→</div>
+                        <div class="ntl-compare-to">
+                            <span class="ntl-compare-label">On Pulsar OS</span>
+                            <p>WinBoat runs real Windows apps as normal windows on your desktop, no reboot, no dual boot. And there is a free app for almost everything you do today.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <details class="ntl-deepdive">
+                    <summary>Why is Linux free? What's the catch? (optional nerd bit)</summary>
+                    <div class="ntl-deepdive-body">
+                        <p>
+                            Windows is a product someone sells you. Linux is a
+                            commons: thousands of people and companies build it
+                            together, because everyone benefits from a shared
+                            foundation. Companies like Google and most of the
+                            internet run on it.
+                        </p>
+                        <p>
+                            The catch? There isn't one for you:
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>No licences, no activations.</strong>{" "}
+                                Install it on every computer you own.
+                            </li>
+                            <li>
+                                <strong>No telemetry.</strong> Nothing phones
+                                home with your data.
+                            </li>
+                            <li>
+                                <strong>Old computers keep working.</strong>{" "}
+                                No forced obsolescence: if the hardware turns
+                                on, it can run Pulsar OS.
+                            </li>
+                            <li>
+                                <strong>The one real cost:</strong> the couple
+                                of hours of adjusting habits — and this page
+                                exists to make those hours short.
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Using Pulsar OS -->
+        <section id="using-pulsar" class="ntl-section" aria-label="How to use Pulsar OS">
+            <div class="container">
+                <h2 class="section-title">Using Pulsar OS, day to day</h2>
+                <p class="section-subtitle">
+                    From the moment you switch it on, in the order you'll meet
+                    it. This is the whole daily loop — there is nothing else to
+                    memorise.
+                </p>
+
+                <div class="ntl-basics">
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">1</span>
+                        <div>
+                            <h3>Day one: the hello, then the desktop</h3>
+                            <p>
+                                You boot, pick rEFInd or GRUB if asked, and the
+                                Mac-style login screen welcomes you. The Welcome
+                                app greets you with the classic "hello"
+                                animation, sets the essentials and disappears. From
+                                there: top bar with your app menus, dock below,
+                                live wallpapers if you want them, and the Mac
+                                boot chime — yes, it has one.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">2</span>
+                        <div>
+                            <h3>Installing apps: two ways</h3>
+                            <p>
+                                The App Store handles it all: Flathub, .deb
+                                packages, AUR, GNOME extensions, even Sayri
+                                skills — one search box, one install button. If
+                                you prefer the Windows way, you can also download
+                                an installer and open it by double-clicking. Both
+                                roads work; nobody will force the other one on
+                                you.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">3</span>
+                        <div>
+                            <h3>Updates: one screen, everything</h3>
+                            <p>
+                                A built-in updater watches the system and tells
+                                you when there's something new — one screen,
+                                everything updates, you choose when. The App
+                                Store keeps its apps current too. Restarting to
+                                update is rare, not weekly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">4</span>
+                        <div>
+                            <h3>Files, clouds and drives</h3>
+                            <p>
+                                The Finder-style file manager with tags,
+                                previews and search. Your clouds — Google Drive,
+                                OneDrive, iCloud, Dropbox and any of 50+ others —
+                                live in the sidebar, mounted like folders. A USB
+                                stick or a second disk appears on its own when
+                                you plug it in.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">5</span>
+                        <div>
+                            <h3>Backups: Time Machine, set and forget</h3>
+                            <p>
+                                Continuous snapshots of your files, saved to a
+                                USB drive, a NAS or your cloud. If you delete
+                                something or the disk dies, restore from
+                                Recovery — or browse old versions of any folder
+                                from the file manager.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">6</span>
+                        <div>
+                            <h3>Sayri: the orb at the top of the screen</h3>
+                            <p>
+                                An assistant pinned to the top of your screen,
+                                like Siri but not trapped in a box. Talk or type,
+                                in your language: it hears you (locally), speaks
+                                back, connects to any AI provider or to a model
+                                running on your own machine, and can act on the
+                                system. It also answers from your phone over
+                                Telegram or Discord.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">7</span>
+                        <div>
+                            <h3>Keyboard: your call</h3>
+                            <p>
+                                Mac-style Cmd, or classic Ctrl+C? One setting
+                                swaps every shortcut system-wide. Either way,
+                                your muscle memory decides, not the OS.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">8</span>
+                        <div>
+                            <h3>When something goes wrong</h3>
+                            <p>
+                                Recovery, from the boot menu: repair the system,
+                                reinstall without losing your files, manage
+                                disks, restore a Time Machine backup or even
+                                browse the web from there — over the internet,
+                                even if the main system won't start. For smaller
+                                troubles, Sayri is the fastest way to fix
+                                things.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="ntl-basics-item">
+                        <span class="ntl-basics-num" aria-hidden="true">9</span>
+                        <div>
+                            <h3>The graphics drivers dance</h3>
+                            <p>
+                                One app handles it: it detects your GPU and
+                                offers the right driver. NVIDIA, AMD or Intel,
+                                no terminal, no wiki archaeology. It even keeps
+                                control if a conflict needs a human decision.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <details class="ntl-deepdive">
+                    <summary>What is "the terminal" and do I need it? (spoiler: no)</summary>
+                    <div class="ntl-deepdive-body">
+                        <p>
+                            The terminal is a window where you type commands
+                            instead of clicking. It is the old-school way to
+                            control Linux, and it is why the internet is full of
+                            scary-looking instructions.
+                        </p>
+                        <p>
+                            In Pulsar OS you can ignore it forever: the App
+                            Store, Settings and Sayri cover daily life. But it
+                            is there when you want it, and unlike the old days,
+                            breaking something with it is hard — and Recovery
+                            can undo it anyway.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="ntl-cta" aria-label="Try Pulsar OS">
+            <div class="container">
+                <div class="ntl-cta-card">
+                    <h2 class="ntl-cta-title">The best way to get it? Try it.</h2>
+                    <p class="ntl-cta-desc">
+                        Put it on a USB stick, boot it, poke around. Nothing on
+                        your computer changes until you decide to install. Free,
+                        obviously.
+                    </p>
+                    <div class="ntl-cta-actions">
+                        <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" data-download-warn class="btn btn-primary">
+                            Download the ISO
+                            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="/iso" class="btn btn-secondary">Read the install guide</a>
+                        <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                            Ask us anything
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</Layout>
+
+<style>
+    /* Page-scoped styles: no collisions with global classes */
+    .ntl-page {
+        padding-bottom: 40px;
+    }
+
+    .ntl-hero {
+        padding: 40px 0 30px 0;
+        text-align: center;
+    }
+
+    .ntl-hero-inner {
+        max-width: 720px;
+        margin: 0 auto;
+    }
+
+    .ntl-title {
+        font-family: var(--font-display);
+        font-size: 3rem;
+        font-weight: 700;
+        letter-spacing: -1.5px;
+        color: var(--text-primary);
+        margin-bottom: 18px;
+    }
+
+    .ntl-lead {
+        font-size: 1.15rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: 30px;
+    }
+
+    .ntl-hero-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .ntl-section {
+        padding: 70px 0 10px 0;
+    }
+
+    .ntl-compare {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .ntl-compare-row {
+        display: grid;
+        grid-template-columns: 1fr 44px 1fr;
+        align-items: stretch;
+        gap: 0;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .ntl-compare-from,
+    .ntl-compare-to {
+        padding: 20px 24px;
+    }
+
+    .ntl-compare-to {
+        background-color: var(--bg-card-hover);
+    }
+
+    .ntl-compare-label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+    }
+
+    .ntl-compare-from p,
+    .ntl-compare-to p {
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: var(--text-primary);
+    }
+
+    .ntl-compare-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+    }
+
+    .ntl-deepdive {
+        max-width: 900px;
+        margin: 24px auto 0 auto;
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        background-color: var(--bg-card);
+        overflow: hidden;
+    }
+
+    .ntl-deepdive summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 18px 24px;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.98rem;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        user-select: none;
+    }
+
+    .ntl-deepdive summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .ntl-deepdive summary::after {
+        content: "+";
+        font-size: 1.3rem;
+        font-weight: 400;
+        color: var(--text-secondary);
+        transition: transform var(--transition-speed) ease;
+        flex-shrink: 0;
+    }
+
+    .ntl-deepdive[open] summary::after {
+        content: "−";
+    }
+
+    .ntl-deepdive summary:hover {
+        color: var(--accent-blue);
+    }
+
+    .ntl-deepdive-body {
+        padding: 4px 24px 22px 24px;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .ntl-deepdive-body p {
+        font-size: 0.94rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-top: 14px;
+    }
+
+    .ntl-deepdive-body ul {
+        margin: 12px 0 0 0;
+        padding-left: 20px;
+    }
+
+    .ntl-deepdive-body li {
+        font-size: 0.94rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        margin-bottom: 8px;
+    }
+
+    .ntl-basics {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .ntl-basics-item {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 22px 26px;
+    }
+
+    .ntl-basics-num {
+        flex-shrink: 0;
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid var(--border-focus);
+        color: var(--accent-blue);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+
+    .ntl-basics-item h3 {
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+    }
+
+    .ntl-basics-item p {
+        font-size: 0.94rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .ntl-cta {
+        padding: 70px 0 30px 0;
+    }
+
+    .ntl-cta-card {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 52px 36px;
+    }
+
+    .ntl-cta-title {
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        font-weight: 700;
+        letter-spacing: -0.6px;
+        color: var(--text-primary);
+        margin-bottom: 12px;
+    }
+
+    .ntl-cta-desc {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        max-width: 560px;
+        margin: 0 auto 28px auto;
+    }
+
+    .ntl-cta-actions {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+        .ntl-title {
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+        }
+
+        .ntl-compare-row {
+            grid-template-columns: 1fr;
+        }
+
+        .ntl-compare-arrow {
+            display: none;
+        }
+
+        .ntl-compare-to {
+            border-top: 1px dashed var(--border-color);
+        }
+    }
+</style>

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "anti-ai-slop-ui": {
+      "source": "rwcod/anti-ai-slop-ui",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "f4cd7c30f7b851dabf070cd732def357cf5732781678dc2667af501370baa7b9"
+    }
+  }
+}

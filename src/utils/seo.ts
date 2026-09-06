@@ -2,6 +2,13 @@ const SITE_URL = "https://os.inled.es";
 const LOGO_URL = "https://hosted.inled.es/pulsar-logo-simple-sf.png";
 const OG_IMAGE = "https://os.inled.es/demopear1.png";
 
+// Core message, in priority order:
+// 1. Easy Linux: you already know how to use it, because each edition
+//    copies the flow of a system you already use.
+// 2. Total freedom: the freedom only Linux gives, no licences or fees.
+// 3. Genuinely innovative: not a theme or a repackaged desktop — the whole
+//    flow is ported and new tools are built for it (session restore, Sayri,
+//    macOS-style window management). A complete OS designed for comfort.
 export const SEO = {
   site: {
     name: "Pulsar OS",
@@ -11,75 +18,90 @@ export const SEO = {
   },
   pages: {
     index: {
-      title: "Pulsar OS: The True Replacement for Mac, Windows and much more!",
+      title:
+        "Pulsar OS - Easy Linux that works like the system you already know",
       description:
-        "The Linux distribution that includes editions to replicate the UI and UX of each of the most famous operating systems. You will feel at home.",
+        "Pulsar OS is easy Linux: each edition copies the flow of macOS, Windows or your TV, so you already know how to use it. Not just a theme: the whole flow, with new tools like session restore and Sayri. Free, with the total freedom of Linux.",
       keywords:
-        "linux, macos replacement, windows alternative, open source operating system, pulsar os, Bitten Fruit, wintux, auditable linux, pear os, winux, linuxfx, zorin os, gnome, elementary os",
+        "Pulsar OS, easy Linux, Linux for beginners, Linux that feels like Mac, Linux that feels like Windows, free operating system, Linux freedom, innovative Linux, session restore Linux, Sayri AI assistant, Bitten Fruit, open source",
       og: {
-        title: "Discover Pulsar OS! The True Replacement for your operative systems",
+        title: "Pulsar OS - Easy Linux, total freedom",
         description:
-          "And join our community, together we can make the best Linux operating system.",
+          "Linux so easy you already know how to use it: each edition copies the whole flow of the system you know — not just a theme — with new tools like session restore and Sayri. Free.",
       },
     },
     "bitten-fruit": {
-      title: "PulsarOS Bitten Fruit | It's time to replace Mac | Linux Distro",
+      title:
+        "Bitten Fruit - Easy Linux that works like macOS, free with total freedom | Pulsar OS",
       description:
-        "It is like Mac in everything: from the appearance to the flow of use. This really is an alternative!",
+        "Bitten Fruit is easy Linux for Mac users: same desktop, same flow you already know — the whole flow, not just a theme — plus new tools like session restore, the Sayri AI assistant and macOS-style window management. Free with the total freedom of Linux.",
       keywords:
-        "macos linux, macos clone, Bitten Fruit, arch linux desktop, debian desktop, linux macos alternative, auditable linux, pear os, pear os nicec0re, elementary os",
+        "Bitten Fruit, easy Linux for Mac users, switch from Mac to Linux, macOS-style Linux, free Mac alternative, Linux freedom, no relearning, Sayri, session restore Linux, macOS window management, innovative Linux, Pulsar OS",
       og: {
-        title: "Switch from MacOS to Linux the easy way | Discover Bitten Fruit from Pulsar OS",
+        title: "Bitten Fruit - Linux so easy you already know it",
         description:
-          "It is like Mac in everything: from the appearance to the flow of use. This really is an alternative!",
+          "The Mac flow you already know — the whole flow, not just a theme — plus new tools like session restore and Sayri. Free with the total freedom of Linux.",
+      },
+    },
+    "new-to-linux": {
+      title:
+        "New to Linux? What changes and how to use Pulsar OS - Pulsar OS",
+      description:
+        "Coming from macOS or Windows? See what actually changes under the hood in plain language, and learn to use Pulsar OS in minutes: apps, updates, files, keyboard and rescue tools. Nothing to relearn by heart.",
+      keywords:
+        "new to Linux, Linux for beginners, switch from Mac to Linux, switch from Windows to Linux, what is Linux, Linux vs Windows, Linux vs macOS, easy Linux, Pulsar OS guide, first time Linux",
+      og: {
+        title: "New to Linux? Start without relearning everything",
+        description:
+          "What changes under the hood, explained simply, and how to drive Pulsar OS from day one. For people coming from macOS or Windows.",
       },
     },
     iso: {
       title: "Download the ISO - Pulsar OS",
       description:
-        "Minimum requirements, editions, boot variants, installers and flashing instructions for Pulsar OS. Read this before downloading the ISO.",
+        "Try Pulsar OS from a USB stick with zero commitment: easy Linux that feels familiar from minute one. Free download, simple install guide and flashing instructions.",
       keywords:
-        "pulsar os iso, download linux iso, pulsar os download, Bitten Fruit iso, linux flash usb, pulsar os requirements",
+        "Pulsar OS ISO, Bitten Fruit ISO, free Linux download, easy Linux install, try Linux without installing, flash USB Linux, Pulsar OS requirements",
       og: {
-        title: "It's time to download! Here are the ISO's for Pulsar OS",
+        title: "Download Pulsar OS - easy Linux, free to try",
         description:
-          "Minimum requirements, editions, boot variants, installers and flashing instructions for Pulsar OS. Read this before downloading the ISO.",
+          "Grab the ISO, flash a USB stick and try easy Linux with zero commitment. Completely free.",
       },
     },
     community: {
-      title: "We are a community | Meet Pulsar OS",
+      title: "Pulsar OS community - bugs, ideas, tasks and roadmap",
       description:
-        "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
+        "Join the community behind easy Linux with total freedom. Report bugs, share ideas, pick up tasks. Friendly, no gatekeeping, English and Spanish.",
       keywords:
-        "pulsar os community, linux community, open source community, report bug linux, linux ideas, contribute to pulsar os",
+        "Pulsar OS community, Linux community, report bug Linux, share ideas Linux, contribute to open source, community-driven Linux, Bitten Fruit community",
       og: {
-        title: "Join our community and see more | Pulsar OS",
+        title: "Pulsar OS community - bugs, ideas, tasks and roadmap",
         description:
-          "Join the Pulsar OS community. Report bugs, share ideas, ask for help, and help us build an auditable, community-driven operating system.",
+          "Join the Pulsar OS community. Report bugs, share ideas, pick up tasks, and help build auditable, community-driven Linux editions.",
       },
     },
     help: {
       title: "Help & Documentation - Pulsar OS",
       description:
-        "Guides to install, use and contribute to Pulsar OS. From flashing the ISO to migrating from macOS, everything you need to get started.",
+        "Guides to install, use and contribute to Pulsar OS: easy Linux with the total freedom of Linux. From flashing the ISO to migrating from macOS, step by step.",
       keywords:
-        "pulsar os help, pulsar os docs, pulsar os install, pulsar os guide, linux documentation, install pulsar os",
+        "Pulsar OS documentation, Bitten Fruit guide, install Pulsar OS, easy Linux guide, migrate from macOS to Linux, Pulsar OS help, Linux for beginners",
       og: {
         title: "Help & Documentation - Pulsar OS",
         description:
-          "Guides to install, use and contribute to Pulsar OS. From flashing the ISO to migrating from macOS, everything you need to get started.",
+          "Guides to install, use and contribute to Pulsar OS. From flashing the Bitten Fruit ISO to migrating from macOS, everything you need to get started.",
       },
     },
     resources: {
       title: "Resources - Pulsar OS",
       description:
-        "Download banners, logos and media assets to share Pulsar OS on social media. Tag us and get on the Wall of Fame.",
+        "Banners, logos and media assets to share Pulsar OS: easy Linux with total freedom. Tag us and get on the Wall of Fame.",
       keywords:
-        "pulsar os resources, pulsar os banners, pulsar os logos, share pulsar os, social media assets",
+        "Pulsar OS resources, Bitten Fruit assets, Pulsar OS logos, share Pulsar OS, social media assets, open source Linux branding",
       og: {
         title: "Resources - Pulsar OS",
         description:
-          "Download banners, logos and media assets to share Pulsar OS on social media.",
+          "Banners, logos and media assets to share Pulsar OS and Bitten Fruit on social media.",
       },
     },
   },

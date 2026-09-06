@@ -1,0 +1,81 @@
+# Pulsar OS
+
+> Pulsar OS is a family of free, open-source Linux operating systems ("flavours")
+> designed to be easy: each flavour copies the look and workflow of an operating
+> system people already use (macOS, Windows, TV), so switching to Linux requires
+> no relearning. It combines that ease of use with the total freedom only Linux
+> gives. Pulsar OS is not a theme or a repackaged desktop: it ports the whole
+> workflow of each system and builds new native tools for it — session restore
+> (choose "save session" on shutdown and the session comes back exactly as it
+> was), the Sayri local AI assistant (connect any AI provider, works fully with
+> local models, sandboxed like OpenClaw but secure), macOS-style window
+> management, Time Machine backups (network server, 50 cloud providers or USB,
+> restorable from recovery), Circle to Search (search on Google, ask Sayri or
+> OCR any part of the screen) and a universal app store that
+> bridges apt, pacman, AUR and Flathub. It is a complete operating system
+> designed around user comfort, unlike distributions that only ship a theme or
+> package an existing desktop. All code and builds are public on GitHub.
+
+Pulsar OS is developed by the Inled community (Spain). The flavours are
+independent editions: each one has its own website, its own ISO and its own
+focus. This site is the umbrella project: it lists the flavours, hosts the
+community space and the documentation.
+
+## What makes it different
+
+- Full workflow ports, not cosmetic themes: window management, gestures and
+  desktop flow are rebuilt per flavour.
+- Session restore: windows and apps come back exactly as they were after
+  shutdown or power loss (see
+  [hibernation and session restore](https://os.inled.es/help/hardware/hibernation-and-session-restore)).
+- Sayri: a local-first AI assistant integrated into the desktop, with skills,
+  gateways and sandboxed execution (see
+  [Sayri architecture](https://os.inled.es/help/architecture/sayri)).
+- Pulsar Store: one app store bridging Flatpak, GNOME Extensions, apt, pacman
+  and AUR (see [store architecture](https://os.inled.es/help/architecture/store)).
+
+## Flavours
+
+- [Bitten Fruit](https://os.inled.es/bitten-fruit): The published flavour. Easy
+  Linux for Mac users: a macOS-style desktop (top bar, dock, gestures, session
+  restore, Finder-style file manager, Spotlight search, Sayri AI assistant, and
+  an app store that bridges apt, pacman, AUR and Flathub) with the total freedom
+  of Linux. Available in Debian and Arch editions, with GRUB or rEFInd boot.
+- Wintux (in development): A Windows-style desktop edition.
+- Tube OS (in development): A living-room / NAS edition for TV and home server
+  use, based on CasaOS and Plasma Bigscreen.
+
+## Main pages
+
+- [Home](https://os.inled.es/index): Overview of the project and its flavours.
+- [Bitten Fruit (flavour page)](https://os.inled.es/bitten-fruit): The
+  macOS-style edition: features, editions, downloads.
+- [New to Linux](https://os.inled.es/new-to-linux): Explainer for switchers
+  from macOS or Windows: what changes under the hood, in plain language, and a
+  short guide to using Pulsar OS (apps, updates, files, keyboard, recovery).
+- [Community](https://os.inled.es/community): Reported errors, ideas, community
+  tasks, suggestions and the project roadmap.
+- [Help & Documentation](https://os.inled.es/help): Install guides, usage
+  documentation, hardware notes and contributing docs.
+- [ISO download guide](https://os.inled.es/iso): Minimum requirements, editions,
+  boot variants, installers and flashing instructions.
+- [Resources](https://os.inled.es/resources): Logos, banners and media assets.
+
+## Community and contact
+
+- GitHub organization: https://github.com/Inled-Pulsar-OS
+- Project board: https://github.com/orgs/Inled-Pulsar-OS/projects/1
+- Discord: https://link.inled.es/discord
+- Matrix: https://matrix.to/#/!POXBFohLnmrKwRBxTi:matrix.org?via=matrix.org
+- Telegram: https://link.inled.es/telegram
+- Email: hi@inled.es
+
+## For developers
+
+- Code is fully public and auditable; ISOs are built with GitHub Actions.
+- Contributions from beginners are welcome, including non-code work
+  (docs, translations, design, testing). AI-assisted contributions are allowed
+  if tested before submitting; see
+  [the AI policy](https://os.inled.es/help/contributing/use-ai).
+- Developer setup guide:
+  [developer setup](https://os.inled.es/help/contributing/developer-setup).
