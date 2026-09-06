@@ -216,36 +216,218 @@ const DOWNLOADS = downloadAvailability();
             </div>
         </section>
 
-        <!-- Final CTA -->
-        <section class="iso-section iso-final-cta">
+        <!-- Which download is for you? / ¿Qué descarga es para ti? -->
+        <section class="iso-section" id="download-versions">
             <div class="container">
-                <div class="iso-download-card">
-                    <h2 class="iso-download-title">Ready to download?</h2>
-                    <p class="iso-download-desc">
-                        Grab the latest release from GitHub, read the release notes
-                        and pick the edition for your hardware.
+                <h2 class="section-title">Which one should you download?</h2>
+                <p class="section-subtitle">
+                    Every release comes in four combinations. Pick by your hardware
+                    and how new your computer is — or let the assistant below help.
+                </p>
+
+                <div class="iso-pick-grid">
+                    <div class="iso-info-card">
+                        <h3 class="iso-info-title">rEFInd — if your PC uses UEFI</h3>
+                        <p class="iso-info-desc">
+                            Almost every computer from the last decade uses UEFI.
+                            rEFInd is the closest to the Mac experience and the most
+                            comfortable to use. If you are not sure and your computer
+                            is not ancient, this is probably the one.
+                        </p>
+                    </div>
+                    <div class="iso-info-card">
+                        <h3 class="iso-info-title">GRUB — if your PC uses legacy BIOS</h3>
+                        <p class="iso-info-desc">
+                            Old computers (roughly pre-2012) usually boot in legacy
+                            BIOS mode. GRUB works on any machine, including those.
+                            Choose this if rEFInd refuses to boot.
+                        </p>
+                    </div>
+                    <div class="iso-info-card">
+                        <h3 class="iso-info-title">Debian — stability, older PCs</h3>
+                        <p class="iso-info-desc">
+                            Rock-solid and predictable. Packages change slowly, so
+                            nothing breaks unexpectedly. The best choice if you value
+                            stability or your computer is a few years old.
+                        </p>
+                    </div>
+                    <div class="iso-info-card">
+                        <h3 class="iso-info-title">Arch — always up to date, new PCs</h3>
+                        <p class="iso-info-desc">
+                            Rolling release with the newest drivers and packages.
+                            The best choice if your computer is recent and you want
+                            to always be on the latest version.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ask the AI: UEFI or BIOS? -->
+                <div class="iso-ai-card">
+                    <h3 class="iso-ai-title">Not sure if your PC uses UEFI or BIOS?</h3>
+                    <p class="iso-ai-desc">
+                        Write your computer's brand and model below and ask Google's
+                        AI. It will open with the question already written for you.
                     </p>
-                    {DOWNLOADS.enabled ? (
-                        <a href={ISO_RELEASES} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                            Download the ISO
+                    <div class="iso-ai-row">
+                        <input
+                            type="text"
+                            id="ai-model-input"
+                            class="iso-ai-input"
+                            placeholder="e.g. Dell Inspiron 15 3520 / HP Pavilion x360"
+                            aria-label="Your computer brand and model"
+                        />
+                        <button type="button" id="ai-model-btn" class="btn btn-primary">
+                            Ask the AI
                             <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
-                        </a>
-                    ) : (
-                        <span class="btn btn-primary btn-disabled" aria-disabled="true">
-                            {DOWNLOADS.message}
-                        </span>
-                    )}
-                    <p class="iso-download-note">
-                        Bitten Fruit is in alpha. If you're a beta tester, we'd love to hear your feedback, share any bugs, suggestions or opinions on <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer">Discord</a>.
+                        </button>
+                    </div>
+                    <p class="iso-ai-note">
+                        Opens Google AI Mode in a new tab with your question ready.
                     </p>
                 </div>
+
+                <!-- Live version list / Lista de versiones en vivo -->
+                <h3 class="iso-versions-title">Available versions</h3>
+                <div id="iso-versions" class="iso-versions">
+                    <p class="iso-versions-loading">Loading versions…</p>
+                </div>
+                <button type="button" id="iso-versions-toggle" class="iso-versions-toggle" hidden>
+                    Show older versions
+                </button>
             </div>
         </section>
     </div>
+
 </Layout>
+
+<script>
+    // Live version list from the releases manifest / Lista de versiones en vivo
+    (async () => {
+        const container = document.getElementById("iso-versions");
+        if (!container) return;
+
+        try {
+            const res = await fetch("https://pulsaros-releases.pages.dev/releases.json");
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            const versions = data.versions ?? {};
+            const entries = Object.entries(versions);
+            if (!entries.length) throw new Error("no versions");
+
+            const fmtSize = (bytes) => `${(bytes / 1024 ** 3).toFixed(1)} GB`;
+
+            // Latest first / La última primero
+            entries.sort(([a], [b]) => {
+                if (a === data.latest_version) return -1;
+                if (b === data.latest_version) return 1;
+                return b.localeCompare(a);
+            });
+
+            const cards = entries.map(([version, bases]) => {
+                const isLatest = version === data.latest_version;
+                const rows: string[] = [];
+                for (const [base, boots] of Object.entries(bases as Record<string, any>)) {
+                    for (const [boot, files] of Object.entries(boots as Record<string, any>)) {
+                        if (!files?.iso) continue;
+                        rows.push(`
+                            <div class="iso-version-row">
+                                <div class="iso-version-label">
+                                    <strong>${base}</strong> · ${boot}
+                                </div>
+                                <div class="iso-version-meta">
+                                    ${files.size_bytes ? `<span>${fmtSize(files.size_bytes)}</span>` : ""}
+                                    ${files.sha256 ? `<span class="iso-version-sha">SHA256</span>` : ""}
+                                </div>
+                                <a
+                                    href="${files.iso}"
+                                    class="btn btn-secondary iso-version-btn"
+                                    ${files.sha256 ? `data-sha256="${files.sha256}"` : ""}
+                                    rel="noopener noreferrer"
+                                >Download ISO</a>
+                            </div>
+                        `);
+                    }
+                }
+                return `
+                    <div class="iso-version-card${isLatest ? " is-latest" : ""}">
+                        <div class="iso-version-head">
+                            <h4 class="iso-version-name">${version}</h4>
+                            ${isLatest ? '<span class="iso-version-badge">Latest</span>' : ""}
+                        </div>
+                        ${rows.join("")}
+                    </div>
+                `;
+            });
+
+            // Latest visible, older versions collapsed / Última visible, el resto plegado
+            if (cards.length > 1) {
+                const toggle = document.getElementById("iso-versions-toggle");
+                container.innerHTML = cards.slice(0, 1).join("");
+                if (toggle) {
+                    toggle.hidden = false;
+                    toggle.addEventListener("click", () => {
+                        const expanded = toggle.getAttribute("aria-expanded") === "true";
+                        if (expanded) {
+                            container.innerHTML = cards.slice(0, 1).join("");
+                            toggle.textContent = "Show older versions";
+                            toggle.setAttribute("aria-expanded", "false");
+                        } else {
+                            container.innerHTML = cards.join("");
+                            toggle.textContent = "Show fewer versions";
+                            toggle.setAttribute("aria-expanded", "true");
+                        }
+                    });
+                }
+            } else {
+                container.innerHTML = cards.join("");
+            }
+
+            // SHA256 copy buttons / Botones para copiar el SHA256
+            container.querySelectorAll(".iso-version-sha").forEach((el) => {
+                (el as HTMLElement).addEventListener("click", (event) => {
+                    const card = (event.currentTarget as HTMLElement).closest(".iso-version-row");
+                    const sha = card?.querySelector("[data-sha256]")?.getAttribute("data-sha256");
+                    if (!sha) return;
+                    navigator.clipboard.writeText(sha);
+                    (event.currentTarget as HTMLElement).textContent = "Copied!";
+                    setTimeout(() => {
+                        (event.currentTarget as HTMLElement).textContent = "SHA256";
+                    }, 1500);
+                });
+            });
+        } catch {
+            container.innerHTML =
+                '<p class="iso-versions-loading">Could not load the version list. Get the latest release from <a href="https://github.com/Inled-Pulsar-OS/ISO/releases/latest" target="_blank" rel="noopener noreferrer">GitHub</a> or <a href="https://pulsaros-releases.pages.dev/releases.json" target="_blank" rel="noopener noreferrer">the manifest</a>.</p>';
+        }
+    })();
+
+    // UEFI/BIOS AI helper / Asistente UEFI o BIOS
+    (() => {
+        const btn = document.getElementById("ai-model-btn");
+        const input = document.getElementById("ai-model-input") as HTMLInputElement | null;
+        if (!btn || !input) return;
+
+        const go = () => {
+            const model = input.value.trim();
+            if (!model) {
+                input.focus();
+                return;
+            }
+            const prompt =
+                `Does a ${model} computer use UEFI or legacy BIOS to boot? Answer briefly and tell me how to check it myself.`;
+            const url = `https://www.google.com/search?q=${encodeURIComponent(prompt)}&udm=50`;
+            window.open(url, "_blank", "noopener,noreferrer");
+        };
+
+        btn.addEventListener("click", go);
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") go();
+        });
+    })();
+</script>
 
 <style>
     .iso-page {
@@ -471,6 +653,81 @@ const DOWNLOADS = downloadAvailability();
         }
     }
 
+    /* Pick-your-download grid / Cuadrícula de elección */
+    .iso-pick-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto 32px auto;
+    }
+
+    /* AI helper card / Tarjeta del asistente IA */
+    .iso-ai-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 40px 36px;
+        max-width: 900px;
+        margin: 0 auto 56px auto;
+    }
+
+    .iso-ai-title {
+        font-family: var(--font-display);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+    }
+
+    .iso-ai-desc {
+        color: var(--text-secondary);
+        font-size: 0.98rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .iso-ai-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .iso-ai-input {
+        flex: 1;
+        min-width: 240px;
+        background-color: var(--bg-primary, #fff);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 1rem;
+        color: var(--text-primary);
+    }
+
+    .iso-ai-input:focus {
+        outline: none;
+        border-color: var(--border-focus);
+    }
+
+    .iso-ai-note {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-top: 12px;
+    }
+
+    /* Versions list styles live in the is:global block below:
+       runtime-injected cards do not get Astro scope hashes. */
+    @media (max-width: 700px) {
+        .iso-pick-grid {
+            grid-template-columns: 1fr;
+            max-width: 480px;
+        }
+
+        .iso-ai-card {
+            padding: 28px 22px;
+        }
+    }
+
     @media (max-width: 600px) {
         .iso-page {
             padding-top: 40px;
@@ -492,5 +749,137 @@ const DOWNLOADS = downloadAvailability();
         .iso-download-card {
             padding: 48px 24px;
         }
+    }
+</style>
+
+<!-- Global styles for JS-injected version cards: Astro scopes styles with
+     hash attributes, so runtime-generated elements would never match them. -->
+<style is:global>
+    .iso-versions-title {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        text-align: center;
+        margin: 0 0 20px 0;
+        color: var(--text-primary);
+    }
+
+    .iso-versions-toggle {
+        display: block;
+        margin: 24px auto 0 auto;
+        background: none;
+        border: 1px solid var(--border-color);
+        border-radius: 999px;
+        padding: 10px 22px;
+        font-family: var(--font-display);
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: border-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    }
+
+    .iso-versions-toggle:hover {
+        border-color: var(--border-focus);
+        color: var(--text-primary);
+    }
+
+    .iso-versions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .iso-versions-loading {
+        color: var(--text-secondary);
+    }
+
+    .iso-versions-loading a {
+        color: var(--accent-blue);
+        font-weight: 600;
+    }
+
+    .iso-version-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 32px 28px;
+    }
+
+    .iso-version-card.is-latest {
+        border-color: rgba(103, 111, 248, 0.4);
+    }
+
+    .iso-version-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .iso-version-name {
+        font-family: var(--font-display);
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+
+    .iso-version-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--accent-blue);
+        border: 1px solid rgba(103, 111, 248, 0.4);
+        border-radius: 999px;
+        padding: 3px 10px;
+    }
+
+    .iso-version-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 14px 0;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .iso-version-label {
+        flex: 1;
+        min-width: 180px;
+        font-size: 0.98rem;
+        color: var(--text-secondary);
+    }
+
+    .iso-version-label strong {
+        color: var(--text-primary);
+        text-transform: capitalize;
+    }
+
+    .iso-version-meta {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .iso-version-sha {
+        cursor: pointer;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 2px 8px;
+        user-select: none;
+    }
+
+    .iso-version-sha:hover {
+        border-color: var(--border-focus);
+    }
+
+    .iso-version-btn {
+        flex-shrink: 0;
     }
 </style>

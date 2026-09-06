@@ -1,0 +1,35 @@
+---
+// FeatureList: the icon + title + description rows used in the
+// "Not just a theme. The whole flow." section on the index and reused on
+// the Bitten Fruit feature page. Keep the markup identical in both places.
+interface Feature {
+    icon?: string; // image URL (logo) if provided, otherwise an inline svg is expected via slot-free usage of `iconSvg`
+    iconSvg?: string; // raw inline SVG markup
+    title: string;
+    desc: string;
+}
+
+interface Props {
+    items: Feature[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="home-innovation-list">
+    {items.map((item) => (
+        <div class="home-innovation-item">
+            <span class="home-innovation-icon" aria-hidden="true">
+                {item.icon ? (
+                    <img src={item.icon} alt="" width="22" height="22" loading="lazy" />
+                ) : (
+                    <Fragment set:html={item.iconSvg} />
+                )}
+            </span>
+            <div>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+            </div>
+        </div>
+    ))}
+</div>
