@@ -2969,6 +2969,31 @@ html.dark .community-status {
     padding: 0 0 120px 0;
 }
 
+.resources-embeds-section {
+    padding: 0 0 80px 0;
+}
+
+.resources-embed {
+    margin-bottom: 32px;
+}
+
+.resources-embed-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+    margin: 0 0 12px 0;
+}
+
+.resources-embed iframe {
+    display: block;
+    width: 100%;
+    max-width: 540px;
+    height: 540px;
+    background-color: var(--bg-card);
+}
+
 .resources-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

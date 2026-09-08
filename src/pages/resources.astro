@@ -24,6 +24,14 @@ const prettyName = (filename: string) =>
         .replace(/\b\w/g, (c) => c.toUpperCase());
 
 const fileUrl = (name: string) => `/resources/${name}`;
+
+// Embedded media (e.g. hosted videos) rendered full-width in their own section.
+const EMBEDS = [
+    {
+        src: "https://hosted.inled.es/asset/PulsarAdHorizontal.mp4?embed=true",
+        title: "Pulsar Ad Horizontal",
+    },
+];
 ---
 
 <Layout pageKey="resources">
@@ -52,6 +60,29 @@ const fileUrl = (name: string) => `/resources/${name}`;
             </div>
         </div>
     </section>
+
+    <!-- Embedded media -->
+    {
+        EMBEDS.length > 0 && (
+            <section class="resources-embeds-section">
+                <div class="container">
+                    {EMBEDS.map((embed) => (
+                        <div class="resources-embed">
+                            <h3 class="resources-embed-title">{embed.title}</h3>
+                            <iframe
+                                src={embed.src}
+                                width="540"
+                                height="540"
+                                style="border:none;border-radius:12px;max-width:100%;"
+                                title={embed.title}
+                                loading="lazy"
+                            ></iframe>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        )
+    }
 
     <!-- Resources grid -->
     <section class="resources-grid-section">
