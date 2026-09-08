@@ -36,7 +36,7 @@ community space and the documentation.
 
 ## Flavours
 
-- [Bitten Fruit](https://os.inled.es/bitten-fruit): The published flavour. Easy
+- [Bitten Fruit](https://bittenfruit.inled.es): The published flavour. Easy
   Linux for Mac users: a macOS-style desktop (top bar, dock, gestures, session
   restore, Finder-style file manager, Spotlight search, Sayri AI assistant, and
   an app store that bridges apt, pacman, AUR and Flathub) with the total freedom
@@ -48,7 +48,7 @@ community space and the documentation.
 ## Main pages
 
 - [Home](https://os.inled.es/index): Overview of the project and its flavours.
-- [Bitten Fruit (flavour page)](https://os.inled.es/bitten-fruit): The
+- [Bitten Fruit (flavour page)](https://bittenfruit.inled.es): The
   macOS-style edition: features, editions, downloads.
 - [New to Linux](https://os.inled.es/new-to-linux): Explainer for switchers
   from macOS or Windows: what changes under the hood, in plain language, and a
@@ -57,8 +57,8 @@ community space and the documentation.
   tasks, suggestions and the project roadmap.
 - [Help & Documentation](https://os.inled.es/help): Install guides, usage
   documentation, hardware notes and contributing docs.
-- [ISO download guide](https://os.inled.es/iso): Minimum requirements, editions,
-  boot variants, installers and flashing instructions.
+- [Downloads](https://downloads-os.inled.es): Downloads and install guides for the
+  editions.
 - [Resources](https://os.inled.es/resources): Logos, banners and media assets.
 
 ## Community and contact

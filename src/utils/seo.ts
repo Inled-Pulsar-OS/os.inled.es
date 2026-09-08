@@ -21,13 +21,13 @@ export const SEO = {
       title:
         "Pulsar OS - Easy Linux that works like the system you already know",
       description:
-        "Pulsar OS is easy Linux: each edition copies the flow of macOS, Windows or your TV, so you already know how to use it. Not just a theme: the whole flow, with new tools like session restore and Sayri. Free, with the total freedom of Linux.",
+        "Pulsar OS is easy Linux: each edition copies the flow of the system you already use. The published edition is Bitten Fruit, the macOS experience on Linux — free, with the total freedom of Linux. More editions are on their way.",
       keywords:
         "Pulsar OS, easy Linux, Linux for beginners, Linux that feels like Mac, Linux that feels like Windows, free operating system, Linux freedom, innovative Linux, session restore Linux, Sayri AI assistant, Bitten Fruit, open source",
       og: {
         title: "Pulsar OS - Easy Linux, total freedom",
         description:
-          "Linux so easy you already know how to use it: each edition copies the whole flow of the system you know — not just a theme — with new tools like session restore and Sayri. Free.",
+          "Linux so easy you already know how to use it: the published edition is Bitten Fruit, the macOS experience on Linux. More editions on the way. Free.",
       },
     },
     "bitten-fruit": {

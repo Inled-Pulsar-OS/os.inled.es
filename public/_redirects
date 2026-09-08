@@ -1,0 +1,6 @@
+/bitten-fruit/*  https://bittenfruit.inled.es/:splat  301
+/bitten-fruit    https://bittenfruit.inled.es  301
+/iso/*           https://downloads-os.inled.es/:splat  301
+/iso             https://downloads-os.inled.es  301
+/downloads/*     https://downloads-os.inled.es/:splat  301
+/downloads       https://downloads-os.inled.es  301
