@@ -495,56 +495,59 @@ article.home-flavour-card.is-soon {
   GLOBAL STYLES AND DESIGN SYSTEM FOR PULSAR OS
   ESTILOS GLOBALES Y SISTEMA DE DISEÑO PARA PULSAR OS
 
-  This stylesheet implements a premium warm light theme inspired by Star Labs/Novacustom
-  and a dark theme inspired by Pulsar OS logo colors. It avoids AI-slop gradients.
-  Este archivo implementa un tema claro cálido premium inspirado en Star Labs/Novacustom
-  y un tema oscuro inspirado en los colores del logo de Pulsar OS. Evita degradados tipo "AI-slop".
+  Apple-inspired design system: system font stack, airy grays,
+  one system blue for actions, flat white surfaces and quiet borders.
+  Sistema de diseño inspirado en Apple: tipografía del sistema, grises
+  aireados, un único azul del sistema para acciones, superficies blancas
+  planas y bordes discretos.
 */
 
 :root {
     /* Common variables / Variables comunes */
-    --font-display: "Space Grotesk", sans-serif;
-    --font-body: "Inter", sans-serif;
+    --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+        "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif;
     --max-width: 1200px;
     --transition-speed: 0.25s;
 
     /* Theme color mapping (Light Theme by default / Tema Claro por defecto) */
-    --bg-color: #f6f4ee; /* Warm cream background / Fondo crema cálido */
-    --bg-card: #ffffff; /* Pure white for cards / Blanco puro para tarjetas */
-    --bg-card-hover: #fcfbfa;
-    --text-primary: #111111; /* Elegant off-black / Negro elegante */
-    --text-secondary: #5b5952; /* Warm gray / Gris cálido */
-    --border-color: #e9e6dc; /* Subtle border / Borde sutil */
-    --border-focus: #c9c6bb;
-    --accent-purple: #966ce8;
-    --accent-blue: #676ff8;
-    --accent-btn-bg: #676ff8; /* Flat blue button / Botón azul plano */
+    --bg-color: #f5f5f7; /* Apple light gray / Gris claro de Apple */
+    --bg-card: #ffffff;
+    --bg-card-hover: #fafafc;
+    --text-primary: #1d1d1f; /* Apple near-black / Negro de Apple */
+    --text-secondary: #6e6e73; /* Apple secondary gray / Gris secundario */
+    --border-color: rgba(0, 0, 0, 0.08); /* Quiet hairline / Línea sutil */
+    --border-focus: rgba(0, 0, 0, 0.18);
+    --accent-purple: #0066cc;
+    --accent-blue: #0066cc; /* System blue / Azul del sistema */
+    --accent-btn-bg: #0066cc;
     --accent-btn-text: #ffffff;
     --accent-sec-bg: #ffffff;
-    --accent-sec-text: #111111;
-    --accent-sec-border: #e9e6dc;
+    --accent-sec-text: #1d1d1f;
+    --accent-sec-border: rgba(0, 0, 0, 0.15);
 
     /* Hero column right slot / Contenedor derecho del Hero */
-    --bg-hero-slot: #ebe9e0;
+    --bg-hero-slot: #e8e8ed;
 }
 
 /* Dark Theme overrides / Sobreescritura para el Tema Oscuro */
 html.dark {
-    --bg-color: #0d0b15; /* Deep purple-black / Negro morado profundo */
-    --bg-card: #171424; /* Dark purple card / Tarjeta morada oscura */
-    --bg-card-hover: #1e1b2e;
-    --text-primary: #f5f4f9; /* Off-white / Blanco claro */
-    --text-secondary: #9c99b5; /* Purple-gray / Gris morado */
-    --border-color: #25213b; /* Dark border / Borde oscuro */
-    --border-focus: #3b355a;
-    --accent-purple: #966ce8;
-    --accent-blue: #676ff8;
-    --accent-btn-bg: #966ce8; /* Flat purple button / Botón morado plano */
+    --bg-color: #000000; /* Apple pure black / Negro puro de Apple */
+    --bg-card: #1c1c1e; /* Apple dark surface / Superficie oscura */
+    --bg-card-hover: #2c2c2e;
+    --text-primary: #f5f5f7; /* Apple off-white / Blanco de Apple */
+    --text-secondary: #a1a1a6; /* Apple secondary gray / Gris secundario */
+    --border-color: rgba(255, 255, 255, 0.12);
+    --border-focus: rgba(255, 255, 255, 0.28);
+    --accent-purple: #0a84ff;
+    --accent-blue: #0a84ff; /* Apple dark-mode blue / Azul modo oscuro */
+    --accent-btn-bg: #0a84ff;
     --accent-btn-text: #ffffff;
-    --accent-sec-bg: #171424;
-    --accent-sec-text: #f5f4f9;
-    --accent-sec-border: #25213b;
-    --bg-hero-slot: #12101b;
+    --accent-sec-bg: #1c1c1e;
+    --accent-sec-text: #f5f5f7;
+    --accent-sec-border: rgba(255, 255, 255, 0.16);
+    --bg-hero-slot: #1c1c1e;
 }
 
 * {
@@ -633,18 +636,21 @@ a:hover {
     color: var(--accent-blue);
 }
 
-/* Buttons / Botones planos tipo píldora (pill-shaped flat buttons) */
+/* Buttons / Botones: píldora azul del sistema, sin elevarse */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-body);
     font-size: 0.95rem;
-    font-weight: 600;
-    padding: 14px 28px;
+    font-weight: 500;
+    padding: 12px 24px;
     border-radius: 100px; /* Pill shape / Forma de píldora */
     cursor: pointer;
-    transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+        background-color var(--transition-speed) ease,
+        border-color var(--transition-speed) ease,
+        color var(--transition-speed) ease;
     border: 1px solid transparent;
 }
 
@@ -654,8 +660,11 @@ a:hover {
 }
 
 .btn-primary:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
+    background-color: #0077ed; /* Apple hover blue / Azul hover de Apple */
+}
+
+html.dark .btn-primary:hover {
+    background-color: #3395ff;
 }
 
 .btn-secondary {
@@ -667,7 +676,6 @@ a:hover {
 .btn-secondary:hover {
     background-color: var(--bg-card-hover);
     border-color: var(--border-focus);
-    transform: translateY(-1px);
 }
 
 /* Disabled download button (availability system via src/config/downloads.json)
@@ -1873,44 +1881,8 @@ html.dark .notice-icon {
     line-height: 1.6;
 }
 
-/* --- Card watermark hover effect (site-wide)
-       Efecto de marca de agua al hacer hover en las cards de toda la web:
-       icono gigante casi invisible, recortado en la esquina inferior derecha --- */
-.card-has-watermark {
-    position: relative;
-    overflow: hidden;
-}
-
-.card-has-watermark > :not(.card-watermark) {
-    position: relative;
-    z-index: 1;
-}
-
-.card-watermark {
-    position: absolute;
-    right: -10%;
-    bottom: -14%;
-    width: min(260px, 85%);
-    aspect-ratio: 1;
-    color: var(--text-primary);
-    opacity: 0;
-    transform: translate(-24px, 24px) rotate(-10deg);
-    pointer-events: none;
-    z-index: 0;
-    transition:
-        opacity 0.4s ease,
-        transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.card-has-watermark:hover .card-watermark {
-    opacity: 0.07;
-    transform: translate(0, 0) rotate(0deg);
-}
-
-.card-watermark svg {
-    width: 100%;
-    height: 100%;
-}
+/* Card watermark effect removed in the Apple-like redesign
+   El efecto de marca de agua se retiró en el rediseño estilo Apple */
 
 @media (max-width: 1024px) {
     .pear-apps-grid {
@@ -3929,288 +3901,3 @@ html.dark .mermaid-chart {
     display: block;
 }
 
-/* ============================================================
-   LINKTREE-STYLE HOMEPAGE / INICIO TIPO LINKTREE
-   Centered column of cards pointing to Bitten Fruit and community.
-   ============================================================ */
-
-.lt-hero {
-    padding: 90px 0 20px 0;
-    text-align: center;
-}
-
-.lt-hero-inner {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.lt-logo {
-    width: 96px;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-.lt-title {
-    font-family: var(--font-display);
-    font-size: 2.6rem;
-    font-weight: 700;
-    letter-spacing: -1.5px;
-    margin-bottom: 14px;
-    color: var(--text-primary);
-}
-
-.lt-lead {
-    font-size: 1.05rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 520px;
-    margin-bottom: 8px;
-}
-
-.lt-lead strong {
-    color: var(--text-primary);
-}
-
-.lt-links {
-    padding: 24px 0 60px 0;
-}
-
-.lt-links-inner {
-    max-width: 640px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.lt-card {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 18px;
-    padding: 20px 22px;
-    text-decoration: none;
-    color: var(--text-primary);
-    transition:
-        border-color var(--transition-speed) ease,
-        background-color var(--transition-speed) ease,
-        transform var(--transition-speed) ease,
-        box-shadow var(--transition-speed) ease;
-}
-
-.lt-card:hover {
-    border-color: var(--border-focus);
-    background-color: var(--bg-card-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.06);
-}
-
-.lt-card.lt-featured {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 32px;
-    background: linear-gradient(
-        135deg,
-        var(--bg-card) 0%,
-        var(--bg-card-hover) 100%
-    );
-}
-
-.lt-featured-logo {
-    width: 72px;
-    height: auto;
-    margin-bottom: 4px;
-}
-
-.lt-featured-title {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    margin-bottom: 10px;
-    color: var(--text-primary);
-}
-
-.lt-featured-desc {
-    font-size: 0.98rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 22px;
-}
-
-.lt-featured-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.98rem;
-    font-weight: 600;
-    color: var(--accent-blue);
-}
-
-.lt-row {
-    justify-content: space-between;
-}
-
-.lt-row-icon {
-    flex-shrink: 0;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(103, 111, 248, 0.1);
-    border: 1px solid rgba(103, 111, 248, 0.18);
-    color: var(--accent-blue);
-}
-
-.lt-row-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.lt-row-title {
-    font-size: 1.02rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.lt-row-hint {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-.lt-row-arrow {
-    flex-shrink: 0;
-    color: var(--text-secondary);
-    transition: transform var(--transition-speed) ease;
-}
-
-.lt-card:hover .lt-row-arrow {
-    transform: translateX(3px);
-    color: var(--accent-blue);
-}
-
-.lt-soon {
-    padding: 20px 0 60px 0;
-    border-top: 1px solid var(--border-color);
-}
-
-.lt-soon-heading,
-.lt-community-heading {
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    text-align: center;
-    margin-bottom: 24px;
-    color: var(--text-primary);
-}
-
-.lt-soon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-    max-width: 640px;
-    margin: 0 auto;
-}
-
-.lt-soon-card {
-    background-color: var(--bg-card);
-    border: 1px dashed var(--border-focus);
-    border-radius: 16px;
-    padding: 24px;
-    text-align: center;
-}
-
-.lt-soon-name {
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text-primary);
-}
-
-.lt-soon-desc {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 14px;
-}
-
-.lt-soon-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--accent-blue);
-    background: rgba(103, 111, 248, 0.1);
-    border: 1px solid rgba(103, 111, 248, 0.18);
-    border-radius: 100px;
-    padding: 4px 12px;
-}
-
-.lt-community {
-    padding: 20px 0 90px 0;
-    border-top: 1px solid var(--border-color);
-}
-
-.lt-community-channels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    max-width: 640px;
-    margin: 0 auto;
-}
-
-.lt-social {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 100px;
-    padding: 10px 18px;
-    text-decoration: none;
-    transition:
-        border-color var(--transition-speed) ease,
-        background-color var(--transition-speed) ease,
-        transform var(--transition-speed) ease;
-}
-
-.lt-social:hover {
-    border-color: var(--border-focus);
-    background-color: var(--bg-card-hover);
-    transform: translateY(-2px);
-}
-
-.lt-social i {
-    font-size: 1.15rem;
-    color: var(--accent-blue);
-}
-
-@media (max-width: 600px) {
-    .lt-title {
-        font-size: 2.1rem;
-    }
-
-    .lt-card.lt-featured {
-        padding: 24px;
-    }
-
-    .lt-card {
-        padding: 16px 18px;
-    }
-}

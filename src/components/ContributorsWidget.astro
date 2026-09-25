@@ -61,7 +61,7 @@ const { limit = 20 } = Astro.props;
     }
 
     .contributors-footer a {
-        color: var(--accent-purple, #966ce8);
+        color: var(--accent-purple, #0066cc);
         text-decoration: none;
         font-size: 0.9rem;
         font-weight: 500;
@@ -92,13 +92,13 @@ const { limit = 20 } = Astro.props;
         gap: 8px;
         padding: 16px 8px;
         border-radius: 16px;
-        border: 1px solid var(--border-color, #e9e6dc);
+        border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
         background: var(--bg-card, #ffffff);
         transition: border-color 0.25s ease, transform 0.25s ease;
     }
 
     :global(.contributor-card a:hover) {
-        border-color: var(--accent-purple, #966ce8);
+        border-color: var(--accent-purple, #0066cc);
         transform: translateY(-2px);
     }
 
@@ -111,11 +111,11 @@ const { limit = 20 } = Astro.props;
     :global(.contributor-name) {
         font-size: 0.85rem;
         font-weight: 600;
-        color: var(--text-primary, #111111);
+        color: var(--text-primary, #1d1d1f);
     }
 
     :global(.contributor-count) {
         font-size: 0.75rem;
-        color: var(--text-secondary, #5b5952);
+        color: var(--text-secondary, #6e6e73);
     }
 </style>

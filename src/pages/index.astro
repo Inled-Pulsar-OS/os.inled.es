@@ -1,144 +1,431 @@
 ---
-// Linktree-style homepage / Página de inicio tipo linktree
-// The other Pulsar OS editions are not published yet, so the homepage
-// points visitors to Bitten Fruit (bittenfruit.inled.es), the one that ships
-// today, plus the usual community and documentation links.
+// Edition-picker homepage on the shared layout / Inicio selector de ediciones
+// sobre el layout compartido. Apple-style picker: title, the available
+// edition (Bitten Fruit) and a dimmed upcoming row. Hovering the available
+// card runs a 3s countdown ring, then opens its site.
+// Selector estilo Apple: título, la edición disponible (Bitten Fruit) y una
+// fila atenuada con las que llegan pronto. Al pasar el ratón por la tarjeta
+// disponible corre un anillo de 3s que abre su web.
 import Layout from "../layouts/Layout.astro";
 
 const BITTEN_FRUIT = "https://bittenfruit.inled.es";
 
-const DISCORD = "https://link.inled.es/discord";
-const MATRIX = "https://matrix.to/#/!POXBFohLnmrKwRBxTi:matrix.org?via=matrix.org";
-const TELEGRAM = "https://link.inled.es/telegram";
-const GITHUB = "https://github.com/Inled-Pulsar-OS";
-
-// Links shown on the linktree, in order / Enlaces mostrados en el linktree
-const LINKS = [
+// Available editions / Ediciones disponibles
+const AVAILABLE = [
     {
+        name: "Bitten Fruit",
+        desc: "The macOS experience on Linux.",
+        logo: "https://hosted.inled.es/pulsar-mac.png",
         href: BITTEN_FRUIT,
-        label: "Discover Bitten Fruit",
-        hint: "The macOS experience on Linux, available today",
-        icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>`,
-    },
-    {
-        href: "/new-to-linux",
-        label: "New to Linux? Start here",
-        hint: "What changes and how to use Bitten Fruit",
-        icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`,
-    },
-    {
-        href: "/help",
-        label: "Help & documentation",
-        hint: "Install, use and contribute",
-        icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>`,
-    },
-    {
-        href: "/community",
-        label: "Community",
-        hint: "Bugs, ideas, tasks and roadmap",
-        icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
     },
 ];
 
-// Upcoming editions, not links yet / Ediciones que están en camino
-const SOON = [
-    { name: "Wintux", desc: "The Windows flow you know, minus the nagging." },
-    { name: "Tube OS", desc: "Turn an old computer into the center of the living room." },
+// Upcoming editions: shown disabled / En camino: se muestran desactivadas
+const UPCOMING = [
+    {
+        name: "Wintux",
+        desc: "The Windows flow you know, minus the nagging.",
+        logo: "https://hosted.inled.es/cdn/pulsar-win11-nobg.png",
+    },
+    {
+        name: "Tube OS",
+        desc: "Turn an old computer into the center of the living room.",
+        logo: "https://hosted.inled.es/cdn/tube-os-simple-sf.png",
+    },
 ];
 ---
 
 <Layout pageKey="index">
-    <section class="lt-hero" aria-label="Pulsar OS">
-        <div class="lt-hero-inner">
-            <img
-                src="https://hosted.inled.es/pulsar-logo-simple-sf.png"
-                alt="Pulsar OS logo"
-                class="lt-logo"
-            />
-            <h1 class="lt-title">Pulsar OS</h1>
-            <p class="lt-lead">
-                Linux so easy you already know how to use it. Today the way in is
-                <strong>Bitten Fruit</strong>, the macOS experience on Linux.
-            </p>
-        </div>
-    </section>
+    <main class="picker">
+        <header class="picker-head">
+            <h1>Pulsar OS</h1>
+            <p>Choose your edition.</p>
+        </header>
 
-    <section class="lt-links" aria-label="Links">
-        <div class="container lt-links-inner">
-            <a href={BITTEN_FRUIT} class="lt-card lt-featured">
-                <img
-                    src="https://hosted.inled.es/pulsar-mac.png"
-                    alt="Bitten Fruit logo"
-                    class="lt-featured-logo"
-                />
-                <div class="lt-featured-body">
-                    <h2 class="lt-featured-title">Meet Bitten Fruit</h2>
-                    <p class="lt-featured-desc">
-                        The macOS experience on Linux
-                    </p>
-                    <span class="lt-featured-cta">
-                        Go to bittenfruit.inled.es
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </span>
-                </div>
-            </a>
+        <ul class="editions">
+            {AVAILABLE.map((edition) => (
+                <li class="edition">
+                    <a class="edition-card" href={edition.href} data-url={edition.href}>
+                        <img
+                            src={edition.logo}
+                            alt=""
+                            width="64"
+                            height="64"
+                            class="edition-logo"
+                            loading="eager"
+                        />
+                        <h2 class="edition-name">{edition.name}</h2>
+                        <p class="edition-desc">{edition.desc}</p>
+                        <span class="edition-cta">
+                            Go to bittenfruit.inled.es
+                            <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </span>
 
-            {LINKS.map((link) => (
-                <a href={link.href} class="lt-card lt-row">
-                    <span class="lt-row-icon" aria-hidden="true" set:html={link.icon} />
-                    <span class="lt-row-text">
-                        <span class="lt-row-title">{link.label}</span>
-                        {link.hint && <span class="lt-row-hint">{link.hint}</span>}
-                    </span>
-                    <svg class="lt-row-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                </a>
+                        <!-- Hover countdown ring / Anillo de cuenta atrás -->
+                        <span class="card-timer" aria-hidden="true">
+                            <svg width="52" height="52" viewBox="0 0 52 52">
+                                <circle class="timer-track" cx="26" cy="26" r="20" />
+                                <circle
+                                    class="timer-progress"
+                                    cx="26"
+                                    cy="26"
+                                    r="20"
+                                    stroke-dasharray="125.66"
+                                    stroke-dashoffset="125.66"
+                                />
+                            </svg>
+                        </span>
+                    </a>
+                </li>
             ))}
-        </div>
-    </section>
+        </ul>
 
-    <section class="lt-soon" aria-label="Upcoming editions">
-        <div class="container">
-            <h2 class="lt-soon-heading">More editions on their way</h2>
-            <div class="lt-soon-grid">
-                {SOON.map((edition) => (
-                    <div class="lt-soon-card">
-                        <h3 class="lt-soon-name">{edition.name}</h3>
-                        <p class="lt-soon-desc">{edition.desc}</p>
-                        <span class="lt-soon-badge">Soon</span>
-                    </div>
+        <section class="upcoming" aria-label="Upcoming editions">
+            <p class="upcoming-caption">Coming soon</p>
+            <ul class="editions">
+                {UPCOMING.map((edition) => (
+                    <li class="edition">
+                        <div class="edition-card edition-soon" aria-disabled="true">
+                            <img
+                                src={edition.logo}
+                                alt=""
+                                width="64"
+                                height="64"
+                                class="edition-logo"
+                                loading="lazy"
+                            />
+                            <h2 class="edition-name">{edition.name}</h2>
+                            <p class="edition-desc">{edition.desc}</p>
+                        </div>
+                    </li>
                 ))}
-            </div>
-        </div>
-    </section>
-
-    <section class="lt-community" aria-label="Community">
-        <div class="container">
-            <h2 class="lt-community-heading">Say hi to the humans behind it</h2>
-            <div class="lt-community-channels">
-                <a href={DISCORD} target="_blank" rel="noopener noreferrer" class="lt-social">
-                    <i class="fa-brands fa-discord" aria-hidden="true"></i>
-                    <span>Discord</span>
-                </a>
-                <a href={MATRIX} target="_blank" rel="noopener noreferrer" class="lt-social">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="18" height="18" aria-hidden="true">
-                        <path fill="currentColor" d="M61.6 27l-32.9 0 0 458 32.9 0 0 11-45.6 0 0-480 45.6 0 0 11zM496 496l-45.6 0 0-11 32.9 0 0-458-32.9 0 0-11 45.6 0 0 480zM324.1 167.6c9 0 17.4 1.1 25.2 3.3s14.3 5.7 19.8 10.6 9.8 11.2 12.9 19c3 7.8 4.6 17.3 4.6 28.3l0 114.5-47 0 0-97c0-5.7-.2-11.2-.6-16.3s-1.7-9.5-3.6-13.2c-2-3.8-4.9-6.8-8.7-9s-9.1-3.3-15.7-3.3c-6.6 0-12 1.3-16.1 3.8-4.1 2.6-7.3 5.8-9.6 10-2.3 4.1-3.9 8.7-4.6 13.9-.7 5.2-1.2 10.4-1.2 15.7l0 95.3-47 0 0-96c0-5.1-.1-10.1-.4-15-.2-5-1.2-9.5-2.9-13.8-1.7-4.1-4.4-7.6-8.3-10.1s-9.5-3.8-17.1-3.8c-2.2 0-5.2 .5-8.8 1.5s-7.2 2.9-10.6 5.6-6.4 6.7-8.8 11.9-3.6 12-3.6 20.4l0 99.3-47 0 0-171.3 44.3 0 0 23.2 .7 0c6.2-8.9 13.7-15.7 22.3-20.5 8.7-4.9 18.7-7.3 30-7.3 10.8 0 20.7 2.1 29.6 6.3s15.7 11.6 20.4 22.2c5.1-7.5 12-14.1 20.7-19.8s19-8.6 30.9-8.6z"></path>
-                    </svg>
-                    <span>Matrix</span>
-                </a>
-                <a href={TELEGRAM} target="_blank" rel="noopener noreferrer" class="lt-social">
-                    <i class="fa-brands fa-telegram" aria-hidden="true"></i>
-                    <span>Telegram</span>
-                </a>
-                <a href={GITHUB} target="_blank" rel="noopener noreferrer" class="lt-social">
-                    <i class="fa-brands fa-github" aria-hidden="true"></i>
-                    <span>GitHub</span>
-                </a>
-            </div>
-        </div>
-    </section>
+            </ul>
+        </section>
+    </main>
 </Layout>
+
+<script>
+    // Hover-to-open: after 3s hovering a linked card, go to its site.
+    // Abrir al pasar el ratón: tras 3s sobre una tarjeta con enlace,
+    // se navega a su web. Salir del hover cancela la cuenta atrás.
+    const COUNTDOWN_MS = 3000;
+    const RING_LENGTH = 2 * Math.PI * 20; // r=20, matches the SVG
+
+    document
+        .querySelectorAll<HTMLElement>(".edition-card[data-url]")
+        .forEach((card) => {
+            const url = card.dataset.url;
+            const ring = card.querySelector<SVGCircleElement>(
+                ".timer-progress",
+            );
+            if (!url || !ring) return;
+
+            // Base state: the ring starts completely empty / El anillo
+            // empieza totalmente vacío
+            ring.style.strokeDasharray = `${RING_LENGTH}`;
+            ring.style.strokeDashoffset = `${RING_LENGTH}`;
+            let timer: number | undefined;
+
+            const stop = () => {
+                window.clearTimeout(timer);
+                card.classList.remove("timer-running");
+                ring.style.transition = "none";
+                ring.style.strokeDashoffset = `${RING_LENGTH}`;
+            };
+
+            const start = () => {
+                stop();
+                card.classList.add("timer-running");
+                // Reset without animating, then force a reflow so the
+                // transition always runs from the empty state.
+                // Reinicio sin animar y reflow forzado para que la transición
+                // arranque siempre desde el estado vacío.
+                ring.style.transition = "none";
+                ring.style.strokeDashoffset = `${RING_LENGTH}`;
+                void ring.getBoundingClientRect();
+                ring.style.transition = `stroke-dashoffset ${COUNTDOWN_MS}ms linear`;
+                ring.style.strokeDashoffset = "0";
+                timer = window.setTimeout(() => {
+                    window.location.href = url;
+                }, COUNTDOWN_MS);
+            };
+
+            card.addEventListener("mouseenter", start);
+            card.addEventListener("mouseleave", stop);
+            // Leaving the window, or coming back via the back/forward cache,
+            // must never leave the ring stuck on screen / Ni al cambiar de
+            // pestaña ni al volver con la caché del navegador debe quedar el
+            // anillo visible
+            window.addEventListener("blur", stop);
+            window.addEventListener("pageshow", stop);
+        });
+</script>
+
+<style>
+    .picker {
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 24px 24px 48px;
+        text-align: center;
+    }
+
+    /* --- Head / Cabecera --- */
+    .picker-head {
+        animation: rise 0.8s var(--ap-ease) both;
+    }
+
+    .picker-head h1 {
+        margin: 24px 0 10px;
+        font-family: var(--font-display);
+        font-size: clamp(2.75rem, 7vw, 4.25rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        color: var(--text-primary);
+    }
+
+    .picker-head p {
+        margin: 0 0 56px;
+        font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+        font-weight: 500;
+        color: var(--text-secondary);
+    }
+
+    /* --- Horizontal card list / Lista horizontal de cards --- */
+    .editions {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        justify-content: safe center;
+        gap: 24px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .edition {
+        flex: none;
+        width: 300px;
+        display: flex;
+        animation: rise 0.8s var(--ap-ease) both;
+    }
+
+    .edition:nth-child(1) {
+        animation-delay: 0.08s;
+    }
+
+    .edition:nth-child(2) {
+        animation-delay: 0.18s;
+    }
+
+    .edition:nth-child(3) {
+        animation-delay: 0.28s;
+    }
+
+    .edition-card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        padding: 32px;
+        border-radius: 22px;
+        background: var(--bg-card);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+        text-align: left;
+        text-decoration: none;
+        color: var(--text-primary);
+        transition:
+            transform 0.4s var(--ap-ease),
+            box-shadow 0.4s var(--ap-ease);
+    }
+
+    a.edition-card:hover,
+    a.edition-card:focus-visible {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+    }
+
+    a.edition-card:focus-visible {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 3px;
+    }
+
+    .edition-logo {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+    }
+
+    .edition-name {
+        margin: 0 0 8px;
+        font-family: var(--font-display);
+        font-size: 1.35rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: var(--text-primary);
+    }
+
+    .edition-desc {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--text-secondary);
+    }
+
+    /* CTA only on the available edition / CTA solo en la edición disponible */
+    .edition-cta {
+        margin-top: auto;
+        padding-top: 24px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--accent-blue);
+    }
+
+    .edition-cta svg {
+        transition: transform 0.3s var(--ap-ease);
+    }
+
+    .edition-card:hover .edition-cta svg {
+        transform: translateX(3px);
+    }
+
+    /* --- Hover countdown ring / Anillo de cuenta atrás al hover --- */
+    .card-timer {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.2s ease,
+            visibility 0.2s ease;
+    }
+
+    .timer-running .card-timer {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .card-timer svg {
+        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.12));
+    }
+
+    .timer-track {
+        fill: rgba(255, 255, 255, 0.9);
+        stroke: rgba(0, 0, 0, 0.08);
+        stroke-width: 3;
+    }
+
+    .timer-progress {
+        fill: none;
+        stroke: var(--accent-blue);
+        stroke-width: 3;
+        stroke-linecap: round;
+        transform: rotate(-90deg);
+        transform-origin: center;
+    }
+
+    /* --- Upcoming row: dimmed and disabled / Fila en camino: atenuada --- */
+    .upcoming {
+        margin-top: 56px;
+        animation: rise 0.8s var(--ap-ease) both;
+        animation-delay: 0.2s;
+    }
+
+    .upcoming-caption {
+        margin: 0 0 18px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+        opacity: 0.8;
+    }
+
+    .upcoming .edition-card {
+        opacity: 0.55;
+        cursor: default;
+        box-shadow: none;
+        border: 1px solid var(--border-color);
+    }
+
+    .upcoming .edition-logo {
+        filter: grayscale(30%);
+    }
+
+    /* Apple ease / Curva de Apple */
+    .picker {
+        --ap-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* --- Entrance animation / Animación de entrada --- */
+    @keyframes rise {
+        from {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .picker-head,
+        .edition,
+        .upcoming {
+            animation: none;
+        }
+
+        .edition-card,
+        .edition-cta svg,
+        .card-timer {
+            transition: none;
+        }
+    }
+
+    /* --- Small screens: horizontal snap scroll / Móvil: carrusel horizontal --- */
+    @media (max-width: 820px) {
+        .editions {
+            justify-content: flex-start;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            margin: 0 -24px;
+            padding: 4px 24px 16px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .editions::-webkit-scrollbar {
+            display: none;
+        }
+
+        .edition {
+            scroll-snap-align: center;
+        }
+
+        .upcoming {
+            margin-top: 40px;
+        }
+    }
+</style>
