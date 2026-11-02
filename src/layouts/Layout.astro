@@ -2,6 +2,8 @@
 import "../styles/global.css";
 import { SEO, type PageKey } from "@/utils/seo";
 import { downloadAvailability } from "@/utils/downloads";
+import PulsarUpdateBanner from "@/components/PulsarUpdateBanner.astro";
+import VersionTwoPopup from "@/components/VersionTwoPopup.astro";
 
 interface Props {
     title?: string;
@@ -296,6 +298,8 @@ const DOWNLOADS = downloadAvailability();
                 <a href="https://link.inled.es/telegram" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Telegram</a>
             </nav>
         </header>
+
+        <PulsarUpdateBanner />
 
         <main id="main-content" class="main-content">
             <slot />
@@ -749,6 +753,8 @@ const DOWNLOADS = downloadAvailability();
 
             setupReveals();
         </script>
+
+        <VersionTwoPopup />
     </body>
 </html>
 
