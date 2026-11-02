@@ -3,44 +3,23 @@ interface Props {}
 ---
 
 <!-- Pulsar OS 2.0 Popup Overlay -->
-<div
-  id="v2-popup-overlay"
-  class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-md transition-opacity duration-300 opacity-0"
->
-  <div class="flex items-center justify-center min-h-full p-4 sm:p-6">
+<div id="v2-popup-overlay" class="v2-overlay">
+  <div class="v2-overlay-inner">
     <!-- Black rounded popup box -->
-    <div
-      id="v2-popup"
-      class="bg-[#121212] border border-white/10 rounded-[32px] p-8 sm:p-10 max-w-sm w-full text-center relative shadow-2xl scale-95 opacity-0 transition-all duration-500 ease-out"
-    >
+    <div id="v2-popup" class="v2-popup">
       <!-- Close X button -->
-      <button
-        id="close-v2-popup"
-        class="absolute top-4 right-4 text-white/50 hover:text-white transition-colors text-2xl font-bold leading-none"
-        aria-label="Close popup"
-      >
+      <button id="close-v2-popup" class="v2-close" aria-label="Close popup">
         &times;
       </button>
 
       <!-- "2.0" with dark gradient bottom -->
-      <h1
-        id="v2-title"
-        class="text-6xl sm:text-7xl font-bold mb-2 leading-none tracking-tight opacity-0 translate-y-4 transition-all duration-700 ease-out"
-        style="
-          background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        "
-      >
+      <h1 id="v2-title" class="v2-title">
         2.0
       </h1>
 
-      <h2 class="text-2xl sm:text-3xl font-semibold text-white mb-6 tracking-tight opacity-0 translate-y-2 transition-all duration-500 ease-out">
-        Coming soon
-      </h2>
+      <h2 class="v2-subtitle">Coming soon</h2>
 
-      <p class="text-sm sm:text-base text-white/80 mb-8 leading-relaxed opacity-0 translate-y-2 transition-all duration-300 ease-out">
+      <p class="v2-description">
         The biggest change in Pulsar OS. Nobody does what we do. No distro has achieved this. Stay tuned.
       </p>
 
@@ -49,7 +28,7 @@ interface Props {}
         href="https://link.inled.es/discord"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-block bg-accent-blue text-accent-btn-text px-6 py-3 rounded-full font-medium text-sm sm:text-base transition-colors hover:opacity-90 min-h-[44px] flex items-center justify-center mx-auto opacity-0 translate-y-2 transition-all duration-500 ease-out"
+        class="v2-btn"
       >
         Join Discord
       </a>
@@ -57,76 +36,171 @@ interface Props {}
   </div>
 </div>
 
+<style>
+  /* Repo usa CSS plano (sin Tailwind). Estados controlados por JS con clases .open / .show */
+  #v2-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #v2-popup-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .v2-overlay-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: 16px 24px;
+    box-sizing: border-box;
+  }
+  #v2-popup {
+    background: #121212;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    padding: 32px 40px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    transform: scale(0.95);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+  #v2-popup.open {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .v2-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 32px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 0;
+  }
+  .v2-close:hover {
+    color: #ffffff;
+  }
+  .v2-title {
+    font-size: 56px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    line-height: 1;
+    background: linear-gradient(to bottom, #ffffff 0%, #1a1a1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: all 0.7s ease;
+  }
+  #v2-popup.open .v2-title.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .v2-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 24px 0;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease;
+    transition-delay: 150ms;
+  }
+  #v2-popup.open .v2-subtitle.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .v2-description {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 32px 0;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s ease;
+    transition-delay: 300ms;
+  }
+  #v2-popup.open .v2-description.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .v2-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-blue, #0066cc);
+    color: var(--accent-btn-text, #ffffff);
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 16px;
+    min-height: 44px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.5s ease;
+    transition-delay: 450ms;
+  }
+  #v2-popup.open .v2-btn.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .v2-btn:hover {
+    opacity: 0.9;
+  }
+</style>
+
 <script>
   const overlay = document.getElementById('v2-popup-overlay');
   const closeBtn = document.getElementById('close-v2-popup');
 
   const popup = document.getElementById('v2-popup');
   const title = document.getElementById('v2-title');
-  const subtitle = popup?.querySelector('h2');
-  const description = popup?.querySelector('p');
-  const discordBtn = popup?.querySelector('a');
+  const subtitle = popup?.querySelector('.v2-subtitle');
+  const description = popup?.querySelector('.v2-description');
+  const discordBtn = popup?.querySelector('.v2-btn');
 
   function openPopup() {
     if (!overlay || !popup) return;
-    overlay.classList.remove('hidden');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => {
-      overlay.classList.remove('opacity-0');
-      popup.classList.remove('scale-95', 'opacity-0');
-      popup.classList.add('scale-100', 'opacity-100');
-
-      if (title) {
-        title.classList.remove('opacity-0', 'translate-y-4');
-        title.classList.add('opacity-100', 'translate-y-0');
-      }
+      popup.classList.add('open');
+      if (title) title.classList.add('show');
       if (subtitle) {
-        setTimeout(() => {
-          subtitle.classList.remove('opacity-0', 'translate-y-2');
-          subtitle.classList.add('opacity-100', 'translate-y-0');
-        }, 150);
+        setTimeout(() => subtitle.classList.add('show'), 150);
       }
       if (description) {
-        setTimeout(() => {
-          description.classList.remove('opacity-0', 'translate-y-2');
-          description.classList.add('opacity-100', 'translate-y-0');
-        }, 300);
+        setTimeout(() => description.classList.add('show'), 300);
       }
       if (discordBtn) {
-        setTimeout(() => {
-          discordBtn.classList.remove('opacity-0', 'translate-y-2');
-          discordBtn.classList.add('opacity-100', 'translate-y-0');
-        }, 450);
+        setTimeout(() => discordBtn.classList.add('show'), 450);
       }
     });
-    document.body.style.overflow = 'hidden';
   }
 
   function closePopup() {
     if (!overlay || !popup) return;
-    overlay.classList.add('opacity-0');
-    popup.classList.remove('scale-100', 'opacity-100');
-    popup.classList.add('scale-95', 'opacity-0');
-
-    if (title) {
-      title.classList.remove('opacity-100', 'translate-y-0');
-      title.classList.add('opacity-0', 'translate-y-4');
-    }
-    if (subtitle) {
-      subtitle.classList.remove('opacity-100', 'translate-y-0');
-      subtitle.classList.add('opacity-0', 'translate-y-2');
-    }
-    if (description) {
-      description.classList.remove('opacity-100', 'translate-y-0');
-      description.classList.add('opacity-0', 'translate-y-2');
-    }
-    if (discordBtn) {
-      discordBtn.classList.remove('opacity-100', 'translate-y-0');
-      discordBtn.classList.add('opacity-0', 'translate-y-2');
-    }
-
-    setTimeout(() => {
-      overlay.classList.add('hidden');
-    }, 500);
+    popup.classList.remove('open');
+    [title, subtitle, description, discordBtn].forEach((el) => el?.classList.remove('show'));
+    overlay.classList.remove('open');
     document.body.style.overflow = '';
   }
 
@@ -141,7 +215,7 @@ interface Props {}
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay && !overlay.classList.contains('hidden')) {
+    if (e.key === 'Escape' && overlay && overlay.classList.contains('open')) {
       closePopup();
     }
   });
@@ -149,10 +223,3 @@ interface Props {}
   setTimeout(() => openPopup(), 800);
 </script>
 
-<style>
-  /* Token fallbacks for the popup (repo uses plain CSS variables) */
-  #v2-popup a {
-    background: var(--accent-blue, #0066cc);
-    color: var(--accent-btn-text, #ffffff);
-  }
-</style>

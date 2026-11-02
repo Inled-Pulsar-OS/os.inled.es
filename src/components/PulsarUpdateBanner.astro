@@ -3,11 +3,8 @@ interface Props {}
 ---
 
 <!-- Pulsar OS 2.0 Announcement Banner (Apple Blue) -->
-<section
-  id="pulsar-update-banner"
-  class="bg-accent-blue text-accent-btn-text py-3 text-center text-sm font-medium select-none"
->
-  <div class="max-w-7xl mx-auto px-4 flex items-center justify-center gap-3">
+<section id="pulsar-update-banner" class="pulsar-banner">
+  <div class="max-w-7xl mx-auto px-4 pulsar-banner-inner">
     <span>
       We&rsquo;re preparing the biggest update for Pulsar OS: version 2.0. We&rsquo;ll update this website soon.
     </span>
@@ -15,7 +12,7 @@ interface Props {}
       href="https://link.inled.es/discord"
       target="_blank"
       rel="noopener noreferrer"
-      class="underline underline-offset-4 hover:opacity-90 transition-opacity cursor-pointer inline-block"
+      class="pulsar-banner-link"
     >
       Join Discord to stay up to date &rarr;
     </a>
@@ -23,12 +20,38 @@ interface Props {}
 </section>
 
 <style>
-  /* Token fallbacks for the banner (repo uses plain CSS variables) */
+  /* Repo usa CSS plano (sin Tailwind). Token fallbacks incluidos. */
   #pulsar-update-banner {
     background: var(--accent-blue, #0066cc);
     color: var(--accent-btn-text, #ffffff);
+    /* Desplaza el banner debajo del header fijo de 52px */
+    margin-top: 52px;
   }
   #pulsar-update-banner a {
     color: var(--accent-btn-text, #ffffff);
   }
+  .pulsar-banner-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+  .pulsar-banner-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .pulsar-banner-link:hover {
+    opacity: 0.9;
+  }
+  /* Desktop: texto y enlace en una fila */
+  @media (min-width: 640px) {
+    .pulsar-banner-inner {
+      flex-direction: row;
+    }
+  }
 </style>
+
