@@ -140,50 +140,8 @@ const DOWNLOADS = downloadAvailability();
                     <span class="logo-text">Pulsar OS</span>
                 </a>
 
-                <nav class="nav-links">
-                    <a href="https://bittenfruit.inled.es" class="nav-link">Bitten Fruit</a>
-                    <a href="/community" class="nav-link">Community</a>
-                    <a href="/help" class="nav-link">Help &amp; docs</a>
-                    <a href="/resources" class="nav-link">Resources</a>
-                    <a href="https://store-os.inled.es" class="nav-link">App Store</a>
 
-                    <div class="nav-dropdown" data-nav-dropdown>
-                        <button
-                            type="button"
-                            class="nav-link nav-more-btn"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            More
-                            <svg
-                                class="nav-more-chevron"
-                                width="10"
-                                height="10"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                aria-hidden="true"
-                            >
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-
-                        <div class="nav-dropdown-panel">
-                            <a href="/new-to-linux" class="nav-dropdown-link"
-                                >New to Linux?</a
-                            >
-                            <a
-                                href="https://github.com/Inled-Pulsar-OS"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="nav-dropdown-link">GitHub</a
-                            >
-                        </div>
-                    </div>
-                </nav>
+            
 
                 <div class="header-actions">
                     <button
@@ -232,72 +190,16 @@ const DOWNLOADS = downloadAvailability();
                             ></path>
                         </svg>
                     </button>
-                    {DOWNLOADS.enabled ? (
+
                         <a
-                            href="https://downloads-os.inled.es"
+                            href="https://link.inled.es/discord"
                             class="btn btn-primary btn-nav-download"
-                            >Download</a
+                            >Join Discord!</a
                         >
-                    ) : (
-                        <span
-                            class="btn btn-primary btn-nav-download btn-disabled"
-                            aria-disabled="true"
-                            >{DOWNLOADS.message}</span
-                        >
-                    )}
-
-                    <button
-                        id="menu-toggle"
-                        class="menu-toggle-btn"
-                        aria-label="Toggle navigation menu"
-                    >
-                        <svg
-                            class="menu-icon"
-                            width="22"
-                            height="22"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>
-                        <svg
-                            class="close-icon"
-                            width="22"
-                            height="22"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div>
+          
+                    </div>
             </div>
-
-            <nav id="mobile-nav" class="mobile-nav">
-                <a href="/" class="mobile-nav-link" onclick="closeMobileMenu()">Home</a>
-                <a href="https://bittenfruit.inled.es" class="mobile-nav-link" onclick="closeMobileMenu()">Bitten Fruit</a>
-                <a href="/new-to-linux" class="mobile-nav-link" onclick="closeMobileMenu()">New to Linux?</a>
-                <a href="/community" class="mobile-nav-link" onclick="closeMobileMenu()">Community</a>
-                <a href="/resources" class="mobile-nav-link" onclick="closeMobileMenu()">Resources</a>
-                <a href="/help" class="mobile-nav-link" onclick="closeMobileMenu()">Help & Docs</a>
-                <a href="https://store-os.inled.es" class="mobile-nav-link" onclick="closeMobileMenu()">App Store</a>
-                <a href="https://github.com/Inled-Pulsar-OS" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">GitHub</a>
-                <a href="https://link.inled.es/discord" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Discord</a>
-                <a href="https://matrix.to/#/!POXBFohLnmrKwRBxTi:matrix.org?via=matrix.org" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Matrix</a>
-                <a href="https://link.inled.es/telegram" target="_blank" rel="noopener noreferrer" class="mobile-nav-link" onclick="closeMobileMenu()">Telegram</a>
-            </nav>
-        </header>
+    </header>
 
         <PulsarUpdateBanner />
 
@@ -318,18 +220,7 @@ const DOWNLOADS = downloadAvailability();
                     </a>
                 </div>
                 <nav class="footer-right" aria-label="Footer navigation">
-                    <a
-                        href="https://bittenfruit.inled.es"
-                        class="footer-link">Bitten Fruit</a
-                    >
-                    <a href="/community" class="footer-link">Community</a>
-                    <a href="/help" class="footer-link">Help &amp; docs</a>
-                    <a href="/resources" class="footer-link">Resources</a>
-                    <a
-                        href="https://store-os.inled.es"
-                        class="footer-link">App Store</a
-                    >
-                    <a href="/new-to-linux" class="footer-link">New to Linux?</a>
+
                     <a
                         href="https://github.com/Inled-Pulsar-OS"
                         target="_blank"
@@ -407,46 +298,10 @@ const DOWNLOADS = downloadAvailability();
                 </nav>
             </div>
             <div class="container">
-                <p class="footer-disclaimer">
-                    Images shown are for illustration purposes only and may not
-                    reflect the final product. Non-contractual visuals.
-                </p>
             </div>
         </footer>
 
-        <!-- Alpha download warning dialog / Diálogo de aviso de descarga alpha -->
-        <dialog id="alpha-dialog" class="alpha-dialog">
-            <div class="alpha-dialog-content">
-                <h3 class="alpha-dialog-title">Bitten Fruit is in alpha</h3>
-                <p class="alpha-dialog-text">
-                    We are starting to offer it openly, but it is still in testing.
-                    We recommend trying it in a virtual machine and checking the
-                    GitHub project for known errors before using it on real hardware.
-                </p>
-                <div class="alpha-dialog-actions">
-                    <a
-                        href="https://github.com/orgs/Inled-Pulsar-OS/projects/1"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="btn btn-secondary"
-                    >
-                        View GitHub project
-                    </a>
-                    <a
-                        href="https://downloads-os.inled.es"
-                        class="btn btn-primary"
-                        >Continue to download</a
-                    >
-                </div>
-                <button
-                    type="button"
-                    class="alpha-dialog-cancel"
-                    data-close-dialog
-                >
-                    Cancel
-                </button>
-            </div>
-        </dialog>
+
 
         <!-- Theme handler + mobile menu logic + site motion / Lógica de temas, menú móvil y movimiento global -->
         <script>

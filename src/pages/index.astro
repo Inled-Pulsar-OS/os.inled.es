@@ -8,7 +8,6 @@
 // disponible corre un anillo de 3s que abre su web.
 import Layout from "../layouts/Layout.astro";
 
-const BITTEN_FRUIT = "https://bittenfruit.inled.es";
 
 // Available editions / Ediciones disponibles
 const AVAILABLE = [
@@ -16,7 +15,25 @@ const AVAILABLE = [
         name: "Bitten Fruit",
         desc: "The macOS experience on Linux.",
         logo: "https://hosted.inled.es/pulsar-mac.png",
-        href: BITTEN_FRUIT,
+        href: "https://bittenfruit.inled.es",
+    },
+];
+
+// Available editions / Ediciones disponibles
+const APPS = [
+    {
+        name: "Sayri",
+        desc: "The AI agent with security in mind",
+        logo: "https://hosted.inled.es/cdn/sayri.png",
+        href: "https://sayri.inled.es/",
+        cta: "Discover now!",
+    },
+    {
+        name: "Pulsar Phone",
+        desc: "Your phone ❤️ your PC",
+        logo: "https://hosted.inled.es/cdn/pulsar-phone-logo-pulsarphone.png",
+        href: "https://github.com/Inled-Pulsar-OS/pulsar-phone",
+        cta: "Go to repo (website coming soon)",
     },
 ];
 
@@ -39,7 +56,7 @@ const UPCOMING = [
     <main class="picker">
         <header class="picker-head">
             <h1>Pulsar OS</h1>
-            <p>Choose your edition.</p>
+            <p>This page only lists the different versions. Please select a website to discover more.</p>
         </header>
 
         <ul class="editions">
@@ -57,7 +74,7 @@ const UPCOMING = [
                         <h2 class="edition-name">{edition.name}</h2>
                         <p class="edition-desc">{edition.desc}</p>
                         <span class="edition-cta">
-                            Go to bittenfruit.inled.es
+                            Go now!
                             <svg
                                 width="14"
                                 height="14"
@@ -92,7 +109,62 @@ const UPCOMING = [
                 </li>
             ))}
         </ul>
+     <section class="ecosystem" aria-label="Upcoming editions">
+            <p class="ecosystem-caption">Ecosystem</p>
 
+        <ul class="editions">
+            {APPS.map((edition) => (
+                <li class="edition">
+                    <a class="edition-card" href={edition.href} data-url={edition.href}>
+                        <img
+                            src={edition.logo}
+                            alt=""
+                            width="64"
+                            height="64"
+                            class="edition-logo"
+                            loading="eager"
+                        />
+                        <h2 class="edition-name">{edition.name}</h2>
+                        <p class="edition-desc">{edition.desc}</p>
+                        <span class="edition-cta">
+                           {edition.cta}
+                            <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </span>
+
+                        <!-- Hover countdown ring / Anillo de cuenta atrás -->
+                        <span class="card-timer" aria-hidden="true">
+                            <svg width="52" height="52" viewBox="0 0 52 52">
+                                <circle class="timer-track" cx="26" cy="26" r="20" />
+                                <circle
+                                    class="timer-progress"
+                                    cx="26"
+                                    cy="26"
+                                    r="20"
+                                    stroke-dasharray="125.66"
+                                    stroke-dashoffset="125.66"
+                                />
+                            </svg>
+                        </span>
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </section>
+
+    
         <section class="upcoming" aria-label="Upcoming editions">
             <p class="upcoming-caption">Coming soon</p>
             <ul class="editions">
@@ -346,13 +418,13 @@ const UPCOMING = [
     }
 
     /* --- Upcoming row: dimmed and disabled / Fila en camino: atenuada --- */
-    .upcoming {
+    .upcoming, .ecosystem {
         margin-top: 56px;
         animation: rise 0.8s var(--ap-ease) both;
         animation-delay: 0.2s;
     }
 
-    .upcoming-caption {
+    .upcoming-caption, .ecosystem-caption {
         margin: 0 0 18px;
         font-size: 0.8rem;
         font-weight: 600;
@@ -369,7 +441,7 @@ const UPCOMING = [
         border: 1px solid var(--border-color);
     }
 
-    .upcoming .edition-logo {
+    .upcoming .edition-logo, .ecosystem .edition-logo {
         filter: grayscale(30%);
     }
 
