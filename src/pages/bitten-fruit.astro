@@ -1,33 +1,299 @@
 ---
-// Bitten Fruit content moved to its own site: bittenfruit.inled.es
-// Everything from here redirects there. / Todo lo de Bitten Fruit redirige a su web.
+// Bitten Fruit overview on os.inled.es / Resumen de Bitten Fruit en el sitio
+// oficial. The edition's own site is bittenfruit.inled.es; this page gives
+// people (and Google) an on-site answer before they leave, instead of a bare
+// meta-refresh. / La web de la edición es bittenfruit.inled.es; esta página
+// da una respuesta real en el dominio oficial antes de salir, en vez de un
+// simple meta-refresh.
 import Layout from "../layouts/Layout.astro";
 
 const BITTEN_FRUIT_URL = "https://bittenfruit.inled.es";
 
-const segments = Astro.url.pathname
-    .split("/")
-    .filter(Boolean)
-    .slice(1)
-    .join("/");
-
-const redirectUrl = segments
-    ? `${BITTEN_FRUIT_URL}/${segments}`
-    : BITTEN_FRUIT_URL;
+const FEATURES = [
+    {
+        title: "The whole macOS flow",
+        text: "Top bar, dock, gestures, Finder-style file manager, Spotlight search and window management, rebuilt and not skinned.",
+    },
+    {
+        title: "Session restore",
+        text: "Choose “save session” when you shut down and your windows come back exactly as they were, even after a power loss.",
+    },
+    {
+        title: "Sayri AI assistant",
+        text: "A local-first assistant built into the desktop: connect any provider, run local models, sandboxed execution.",
+    },
+    {
+        title: "One app store",
+        text: "Pulsar Store bridges apt, pacman, AUR and Flathub, so you install what you want without touching a terminal.",
+    },
+];
 ---
 
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Bitten Fruit — moved to bittenfruit.inled.es</title>
-        <meta http-equiv="refresh" content={`0; url=${redirectUrl}`} />
-        <link rel="canonical" href={redirectUrl} />
-    </head>
-    <body>
-        <p>
-            Bitten Fruit now lives at
-            <a href={redirectUrl}>{redirectUrl}</a>. Redirecting…
-        </p>
-    </body>
-</html>
+<Layout pageKey="bitten-fruit">
+    <article class="edition-page">
+        <header class="edition-hero">
+            <img
+                src="/pulsar-logo.png"
+                alt=""
+                width="72"
+                height="72"
+                class="edition-hero-logo"
+            />
+            <p class="edition-eyebrow">Pulsar OS · Published edition</p>
+            <h1>Bitten Fruit</h1>
+            <p class="edition-lead">
+                The macOS experience on Linux. Same desktop, same flow you
+                already know, the whole flow and not just a theme, with the
+                full freedom of Linux.
+            </p>
+            <div class="edition-actions">
+                <a class="btn btn-primary" href={BITTEN_FRUIT_URL}>
+                    Visit the official Bitten Fruit site
+                </a>
+                <a class="btn btn-secondary" href="https://downloads-os.inled.es">
+                    Download the ISO
+                </a>
+            </div>
+        </header>
+
+        <figure class="edition-shot">
+            <img
+                src="/assets/bitten-fruit/desktop.png"
+                alt="Bitten Fruit desktop: macOS-style top bar, dock and desktop widgets"
+                width="1280"
+                height="800"
+                loading="eager"
+            />
+        </figure>
+
+        <section class="edition-features" aria-labelledby="features-title">
+            <h2 id="features-title">What you actually get</h2>
+            <ul>
+                {FEATURES.map((feature) => (
+                    <li>
+                        <h3>{feature.title}</h3>
+                        <p>{feature.text}</p>
+                    </li>
+                ))}
+            </ul>
+        </section>
+
+        <section class="edition-more" aria-labelledby="more-title">
+            <h2 id="more-title">Keep going</h2>
+            <ul class="edition-links">
+                <li>
+                    <a href={BITTEN_FRUIT_URL}>
+                        Features, screenshots and editions on
+                        bittenfruit.inled.es
+                    </a>
+                </li>
+                <li>
+                    <a href="https://help.inled.es/docs/pulsar-os/">
+                        Documentation: install guides, hardware notes and
+                        contributing docs
+                    </a>
+                </li>
+                <li>
+                    <a href="https://downloads-os.inled.es">
+                        Downloads: ISOs and install guides
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/Inled-Pulsar-OS">
+                        Source code and builds on GitHub
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <div class="edition-cta">
+            <p>The edition's full website lives at bittenfruit.inled.es.</p>
+            <a class="btn btn-primary" href={BITTEN_FRUIT_URL}>
+                Open bittenfruit.inled.es
+            </a>
+        </div>
+    </article>
+</Layout>
+
+<style>
+    .edition-page {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 8px 24px 24px;
+    }
+
+    .edition-hero {
+        text-align: center;
+        max-width: 720px;
+        margin: 0 auto;
+    }
+
+    .edition-hero-logo {
+        width: 72px;
+        height: 72px;
+        margin-bottom: 18px;
+    }
+
+    .edition-eyebrow {
+        margin: 0 0 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-secondary);
+    }
+
+    .edition-hero h1 {
+        margin: 0 0 16px;
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 6vw, 3.75rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
+        color: var(--text-primary);
+    }
+
+    .edition-lead {
+        margin: 0 auto 28px;
+        font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+        line-height: 1.6;
+        color: var(--text-secondary);
+    }
+
+    .edition-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .btn-secondary {
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        background: transparent;
+    }
+
+    .btn-secondary:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-focus);
+    }
+
+    .edition-shot {
+        margin: 56px 0 0;
+    }
+
+    .edition-shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 18px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .edition-features {
+        margin-top: 64px;
+    }
+
+    .edition-features h2,
+    .edition-more h2 {
+        margin: 0 0 24px;
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 3.2vw, 1.9rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        text-align: center;
+    }
+
+    .edition-features ul {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .edition-features li {
+        padding: 24px;
+        border: 1px solid var(--border-color);
+        border-radius: 18px;
+        background: var(--bg-card);
+    }
+
+    .edition-features h3 {
+        margin: 0 0 8px;
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .edition-features p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: var(--text-secondary);
+    }
+
+    .edition-more {
+        margin-top: 64px;
+    }
+
+    .edition-links {
+        list-style: none;
+        margin: 0 auto;
+        padding: 0;
+        max-width: 640px;
+        display: grid;
+        gap: 10px;
+    }
+
+    .edition-links li {
+        display: flex;
+    }
+
+    /* White cards, like the edition cards / Cards blancas como las demás */
+    .edition-links a {
+        display: block;
+        width: 100%;
+        padding: 22px 26px;
+        border-radius: 22px;
+        background: var(--bg-card);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--text-primary);
+        text-decoration: none;
+        transition:
+            transform 0.4s var(--ap-ease),
+            box-shadow 0.4s var(--ap-ease);
+    }
+
+    .edition-links a:hover,
+    .edition-links a:focus-visible {
+        transform: translateY(-4px);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+    }
+
+    .edition-links a:focus-visible {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 3px;
+    }
+
+    .edition-cta {
+        margin-top: 64px;
+        padding: 36px 24px;
+        border-radius: 22px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    .edition-cta p {
+        margin: 0 0 18px;
+        font-size: 1rem;
+        color: var(--text-secondary);
+    }
+</style>

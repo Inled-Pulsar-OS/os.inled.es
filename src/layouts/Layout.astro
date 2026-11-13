@@ -3,7 +3,6 @@ import "../styles/global.css";
 import { SEO, type PageKey } from "@/utils/seo";
 import { downloadAvailability } from "@/utils/downloads";
 import PulsarUpdateBanner from "@/components/PulsarUpdateBanner.astro";
-import VersionTwoPopup from "@/components/VersionTwoPopup.astro";
 
 interface Props {
     title?: string;
@@ -61,12 +60,13 @@ const DOWNLOADS = downloadAvailability();
         <meta name="twitter:description" content={pageOg.description} />
         <meta name="twitter:image" content={SEO.site.image} />
 
-        <!-- Favicon -->
-        <link
-            rel="icon"
-            type="image/svg+xml"
-            href="https://hosted.inled.es/pulsar-logo-simple-sf.png"
-        />
+        <!-- Favicon: local, stable URLs (Google reads these, not a CDN copy) -->
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#fbfbfd" />
 
         <!-- Sitemap -->
         <link rel="sitemap" href="/sitemap-index.xml" />
@@ -133,15 +133,27 @@ const DOWNLOADS = downloadAvailability();
             <div class="container header-container">
                 <a href="/" class="logo-container">
                     <img
-                        src="https://hosted.inled.es/pulsar-logo-simple-sf.png"
+                        src="/pulsar-logo.png"
                         alt="Pulsar OS Logo"
+                        width="26"
+                        height="26"
                         class="logo-img"
                     />
                     <span class="logo-text">Pulsar OS</span>
                 </a>
 
-
-            
+                <nav class="nav-links" aria-label="Primary">
+                    <a class="nav-link" href="/bitten-fruit">Bitten Fruit</a>
+                    <a
+                        class="nav-link"
+                        href="https://help.inled.es/docs/pulsar-os/"
+                        >Documentation</a
+                    >
+                    <a class="nav-link" href="https://downloads-os.inled.es"
+                        >Downloads</a
+                    >
+                    <a class="nav-link" href="/resources">Resources</a>
+                </nav>
 
                 <div class="header-actions">
                     <button
@@ -212,15 +224,26 @@ const DOWNLOADS = downloadAvailability();
                 <div class="footer-left">
                     <a href="/" class="footer-logo">
                         <img
-                            src="https://hosted.inled.es/pulsar-logo-simple-sf.png"
+                            src="/pulsar-logo.png"
                             alt="Pulsar OS Logo"
+                            width="20"
+                            height="20"
                             class="logo-img-small"
                         />
                         <span>Pulsar OS</span>
                     </a>
                 </div>
                 <nav class="footer-right" aria-label="Footer navigation">
-
+                    <a href="/bitten-fruit" class="footer-link">Bitten Fruit</a>
+                    <a
+                        href="https://help.inled.es/docs/pulsar-os/"
+                        class="footer-link">Documentation</a
+                    >
+                    <a
+                        href="https://downloads-os.inled.es"
+                        class="footer-link">Downloads</a
+                    >
+                    <a href="/resources" class="footer-link">Resources</a>
                     <a
                         href="https://github.com/Inled-Pulsar-OS"
                         target="_blank"
@@ -609,7 +632,6 @@ const DOWNLOADS = downloadAvailability();
             setupReveals();
         </script>
 
-        <VersionTwoPopup />
     </body>
 </html>
 

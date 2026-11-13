@@ -1,6 +1,12 @@
-/bitten-fruit/*  https://bittenfruit.inled.es/:splat  301
-/bitten-fruit    https://bittenfruit.inled.es  301
 /iso/*           https://downloads-os.inled.es/:splat  301
 /iso             https://downloads-os.inled.es  301
 /downloads/*     https://downloads-os.inled.es/:splat  301
 /downloads       https://downloads-os.inled.es  301
+
+# Documentation moved to help.inled.es under /docs/pulsar-os
+/help/*          https://help.inled.es/docs/pulsar-os/:splat  301
+/help            https://help.inled.es/docs/pulsar-os/  301
+
+# Community pages removed: project board and chat live off-site
+/community/*     https://link.inled.es/discord  301
+/community       https://link.inled.es/discord  301

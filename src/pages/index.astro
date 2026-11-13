@@ -1,25 +1,25 @@
 ---
-// Edition-picker homepage on the shared layout / Inicio selector de ediciones
+// Edition picker homepage on the shared layout / Inicio selector de ediciones
 // sobre el layout compartido. Apple-style picker: title, the available
-// edition (Bitten Fruit) and a dimmed upcoming row. Hovering the available
-// card runs a 3s countdown ring, then opens its site.
-// Selector estilo Apple: título, la edición disponible (Bitten Fruit) y una
-// fila atenuada con las que llegan pronto. Al pasar el ratón por la tarjeta
-// disponible corre un anillo de 3s que abre su web.
+// edition (Bitten Fruit), the ecosystem row and a dimmed upcoming row.
+// Cards open on click, with no hover countdown and no surprise navigation.
+// Selector estilo Apple: título, la edición disponible (Bitten Fruit), la
+// fila de ecosistema y una fila atenuada con las que llegan pronto.
+// Las tarjetas se abren al hacer clic: sin cuenta atrás al pasar el ratón.
 import Layout from "../layouts/Layout.astro";
-
 
 // Available editions / Ediciones disponibles
 const AVAILABLE = [
     {
         name: "Bitten Fruit",
         desc: "The macOS experience on Linux.",
-        logo: "https://hosted.inled.es/pulsar-mac.png",
+        logo: "/assets/bitten-fruit/desktop.png",
         href: "https://bittenfruit.inled.es",
+        cta: "Visit the official site",
     },
 ];
 
-// Available editions / Ediciones disponibles
+// Ecosystem apps / Aplicaciones del ecosistema
 const APPS = [
     {
         name: "Sayri",
@@ -50,19 +50,52 @@ const UPCOMING = [
         logo: "https://hosted.inled.es/cdn/tube-os-simple-sf.png",
     },
 ];
+
+// Site sections / Secciones del sitio
+const SECTIONS = [
+    {
+        name: "Bitten Fruit",
+        desc: "What the published edition includes, and how to get it.",
+        href: "/bitten-fruit",
+    },
+    {
+        name: "Documentation",
+        desc: "Install guides, hardware notes and contributing docs.",
+        href: "https://help.inled.es/docs/pulsar-os/",
+    },
+    {
+        name: "Downloads",
+        desc: "ISOs, editions and install guides.",
+        href: "https://downloads-os.inled.es",
+    },
+    {
+        name: "Resources",
+        desc: "Logos, banners and media assets.",
+        href: "/resources",
+    },
+];
 ---
 
 <Layout pageKey="index">
-    <main class="picker">
+    <div class="picker">
         <header class="picker-head">
             <h1>Pulsar OS</h1>
-            <p>This page only lists the different versions. Please select a website to discover more.</p>
+            <p class="picker-lead">
+                Easy Linux you already know. Every edition copies the flow of
+                the system you use today, the whole flow and not just a skin, so
+                switching costs you nothing.
+            </p>
+            <p class="picker-note">
+                The published edition is <strong>Bitten Fruit</strong>, the
+                macOS experience on Linux. Free, open source, with the full
+                freedom of Linux.
+            </p>
         </header>
 
         <ul class="editions">
             {AVAILABLE.map((edition) => (
                 <li class="edition">
-                    <a class="edition-card" href={edition.href} data-url={edition.href}>
+                    <a class="edition-card" href={edition.href}>
                         <img
                             src={edition.logo}
                             alt=""
@@ -74,7 +107,7 @@ const UPCOMING = [
                         <h2 class="edition-name">{edition.name}</h2>
                         <p class="edition-desc">{edition.desc}</p>
                         <span class="edition-cta">
-                            Go now!
+                            {edition.cta}
                             <svg
                                 width="14"
                                 height="14"
@@ -90,83 +123,53 @@ const UPCOMING = [
                                 <polyline points="12 5 19 12 12 19" />
                             </svg>
                         </span>
-
-                        <!-- Hover countdown ring / Anillo de cuenta atrás -->
-                        <span class="card-timer" aria-hidden="true">
-                            <svg width="52" height="52" viewBox="0 0 52 52">
-                                <circle class="timer-track" cx="26" cy="26" r="20" />
-                                <circle
-                                    class="timer-progress"
-                                    cx="26"
-                                    cy="26"
-                                    r="20"
-                                    stroke-dasharray="125.66"
-                                    stroke-dashoffset="125.66"
-                                />
-                            </svg>
-                        </span>
                     </a>
                 </li>
             ))}
         </ul>
-     <section class="ecosystem" aria-label="Upcoming editions">
-            <p class="ecosystem-caption">Ecosystem</p>
 
-        <ul class="editions">
-            {APPS.map((edition) => (
-                <li class="edition">
-                    <a class="edition-card" href={edition.href} data-url={edition.href}>
-                        <img
-                            src={edition.logo}
-                            alt=""
-                            width="64"
-                            height="64"
-                            class="edition-logo"
-                            loading="eager"
-                        />
-                        <h2 class="edition-name">{edition.name}</h2>
-                        <p class="edition-desc">{edition.desc}</p>
-                        <span class="edition-cta">
-                           {edition.cta}
-                            <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                aria-hidden="true"
-                            >
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                                <polyline points="12 5 19 12 12 19" />
-                            </svg>
-                        </span>
+        <section class="ecosystem" aria-labelledby="ecosystem-caption">
+            <p class="ecosystem-caption" id="ecosystem-caption">Ecosystem</p>
 
-                        <!-- Hover countdown ring / Anillo de cuenta atrás -->
-                        <span class="card-timer" aria-hidden="true">
-                            <svg width="52" height="52" viewBox="0 0 52 52">
-                                <circle class="timer-track" cx="26" cy="26" r="20" />
-                                <circle
-                                    class="timer-progress"
-                                    cx="26"
-                                    cy="26"
-                                    r="20"
-                                    stroke-dasharray="125.66"
-                                    stroke-dashoffset="125.66"
-                                />
-                            </svg>
-                        </span>
-                    </a>
-                </li>
-            ))}
-        </ul>
-    </section>
+            <ul class="editions">
+                {APPS.map((edition) => (
+                    <li class="edition">
+                        <a class="edition-card" href={edition.href}>
+                            <img
+                                src={edition.logo}
+                                alt=""
+                                width="64"
+                                height="64"
+                                class="edition-logo"
+                                loading="eager"
+                            />
+                            <h2 class="edition-name">{edition.name}</h2>
+                            <p class="edition-desc">{edition.desc}</p>
+                            <span class="edition-cta">
+                                {edition.cta}
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </section>
 
-    
-        <section class="upcoming" aria-label="Upcoming editions">
-            <p class="upcoming-caption">Coming soon</p>
+        <section class="upcoming" aria-labelledby="upcoming-caption">
+            <p class="upcoming-caption" id="upcoming-caption">Coming soon</p>
             <ul class="editions">
                 {UPCOMING.map((edition) => (
                     <li class="edition">
@@ -186,65 +189,32 @@ const UPCOMING = [
                 ))}
             </ul>
         </section>
-    </main>
+
+        <section class="about" aria-labelledby="about-title">
+            <h2 class="about-title" id="about-title">
+                One project, several editions
+            </h2>
+            <p class="about-text">
+                Pulsar OS is not a theme pack or a repackaged desktop. Each
+                edition ports the whole workflow of the system it mirrors,
+                including window management, gestures, search and backups, and
+                adds native tools built for it, like session restore and the
+                Sayri AI assistant. All of it free, open source and auditable.
+            </p>
+
+            <ul class="site-links">
+                {SECTIONS.map((section) => (
+                    <li>
+                        <a class="site-link" href={section.href}>
+                            <span class="site-link-name">{section.name}</span>
+                            <span class="site-link-desc">{section.desc}</span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </section>
+    </div>
 </Layout>
-
-<script>
-    // Hover-to-open: after 3s hovering a linked card, go to its site.
-    // Abrir al pasar el ratón: tras 3s sobre una tarjeta con enlace,
-    // se navega a su web. Salir del hover cancela la cuenta atrás.
-    const COUNTDOWN_MS = 3000;
-    const RING_LENGTH = 2 * Math.PI * 20; // r=20, matches the SVG
-
-    document
-        .querySelectorAll<HTMLElement>(".edition-card[data-url]")
-        .forEach((card) => {
-            const url = card.dataset.url;
-            const ring = card.querySelector<SVGCircleElement>(
-                ".timer-progress",
-            );
-            if (!url || !ring) return;
-
-            // Base state: the ring starts completely empty / El anillo
-            // empieza totalmente vacío
-            ring.style.strokeDasharray = `${RING_LENGTH}`;
-            ring.style.strokeDashoffset = `${RING_LENGTH}`;
-            let timer: number | undefined;
-
-            const stop = () => {
-                window.clearTimeout(timer);
-                card.classList.remove("timer-running");
-                ring.style.transition = "none";
-                ring.style.strokeDashoffset = `${RING_LENGTH}`;
-            };
-
-            const start = () => {
-                stop();
-                card.classList.add("timer-running");
-                // Reset without animating, then force a reflow so the
-                // transition always runs from the empty state.
-                // Reinicio sin animar y reflow forzado para que la transición
-                // arranque siempre desde el estado vacío.
-                ring.style.transition = "none";
-                ring.style.strokeDashoffset = `${RING_LENGTH}`;
-                void ring.getBoundingClientRect();
-                ring.style.transition = `stroke-dashoffset ${COUNTDOWN_MS}ms linear`;
-                ring.style.strokeDashoffset = "0";
-                timer = window.setTimeout(() => {
-                    window.location.href = url;
-                }, COUNTDOWN_MS);
-            };
-
-            card.addEventListener("mouseenter", start);
-            card.addEventListener("mouseleave", stop);
-            // Leaving the window, or coming back via the back/forward cache,
-            // must never leave the ring stuck on screen / Ni al cambiar de
-            // pestaña ni al volver con la caché del navegador debe quedar el
-            // anillo visible
-            window.addEventListener("blur", stop);
-            window.addEventListener("pageshow", stop);
-        });
-</script>
 
 <style>
     .picker {
@@ -270,11 +240,21 @@ const UPCOMING = [
         color: var(--text-primary);
     }
 
-    .picker-head p {
-        margin: 0 0 56px;
-        font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    .picker-lead {
+        margin: 0 auto 12px;
+        max-width: 700px;
+        font-size: clamp(1.1rem, 2.4vw, 1.35rem);
         font-weight: 500;
         color: var(--text-secondary);
+    }
+
+    .picker-note {
+        margin: 0 auto 56px;
+        max-width: 640px;
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: var(--text-secondary);
+        opacity: 0.85;
     }
 
     /* --- Horizontal card list / Lista horizontal de cards --- */
@@ -341,6 +321,7 @@ const UPCOMING = [
         height: 64px;
         border-radius: 16px;
         margin-bottom: 20px;
+        object-fit: contain;
     }
 
     .edition-name {
@@ -359,7 +340,7 @@ const UPCOMING = [
         color: var(--text-secondary);
     }
 
-    /* CTA only on the available edition / CTA solo en la edición disponible */
+    /* CTA only on linked cards / CTA solo en las tarjetas con enlace */
     .edition-cta {
         margin-top: auto;
         padding-top: 24px;
@@ -379,52 +360,16 @@ const UPCOMING = [
         transform: translateX(3px);
     }
 
-    /* --- Hover countdown ring / Anillo de cuenta atrás al hover --- */
-    .card-timer {
-        position: absolute;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        pointer-events: none;
-        opacity: 0;
-        visibility: hidden;
-        transition:
-            opacity 0.2s ease,
-            visibility 0.2s ease;
-    }
-
-    .timer-running .card-timer {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .card-timer svg {
-        filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.12));
-    }
-
-    .timer-track {
-        fill: rgba(255, 255, 255, 0.9);
-        stroke: rgba(0, 0, 0, 0.08);
-        stroke-width: 3;
-    }
-
-    .timer-progress {
-        fill: none;
-        stroke: var(--accent-blue);
-        stroke-width: 3;
-        stroke-linecap: round;
-        transform: rotate(-90deg);
-        transform-origin: center;
-    }
-
     /* --- Upcoming row: dimmed and disabled / Fila en camino: atenuada --- */
-    .upcoming, .ecosystem {
+    .upcoming,
+    .ecosystem {
         margin-top: 56px;
         animation: rise 0.8s var(--ap-ease) both;
         animation-delay: 0.2s;
     }
 
-    .upcoming-caption, .ecosystem-caption {
+    .upcoming-caption,
+    .ecosystem-caption {
         margin: 0 0 18px;
         font-size: 0.8rem;
         font-weight: 600;
@@ -441,8 +386,88 @@ const UPCOMING = [
         border: 1px solid var(--border-color);
     }
 
-    .upcoming .edition-logo, .ecosystem .edition-logo {
+    .upcoming .edition-logo,
+    .ecosystem .edition-logo {
         filter: grayscale(30%);
+    }
+
+    /* --- About + section links / Sobre el proyecto y enlaces --- */
+    .about {
+        margin-top: 72px;
+        padding-top: 48px;
+        border-top: 1px solid var(--border-color);
+        text-align: left;
+        animation: rise 0.8s var(--ap-ease) both;
+        animation-delay: 0.25s;
+    }
+
+    .about-title {
+        margin: 0 0 14px;
+        font-family: var(--font-display);
+        font-size: clamp(1.5rem, 3.4vw, 1.9rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        text-align: center;
+    }
+
+    .about-text {
+        margin: 0 auto;
+        max-width: 720px;
+        font-size: 1rem;
+        line-height: 1.65;
+        color: var(--text-secondary);
+        text-align: center;
+    }
+
+    .site-links {
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 24px;
+        max-width: 900px;
+        margin: 36px auto 0;
+        padding: 0;
+    }
+
+    /* Same look as the edition cards / Mismo aspecto que las cards */
+    .site-link {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        height: 100%;
+        padding: 32px;
+        border-radius: 22px;
+        background: var(--bg-card);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+        text-decoration: none;
+        transition:
+            transform 0.4s var(--ap-ease),
+            box-shadow 0.4s var(--ap-ease);
+    }
+
+    .site-link:hover,
+    .site-link:focus-visible {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.1);
+    }
+
+    .site-link:focus-visible {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 3px;
+    }
+
+    .site-link-name {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .site-link-desc {
+        font-size: 0.85rem;
+        line-height: 1.45;
+        color: var(--text-secondary);
     }
 
     /* Apple ease / Curva de Apple */
@@ -465,13 +490,14 @@ const UPCOMING = [
     @media (prefers-reduced-motion: reduce) {
         .picker-head,
         .edition,
-        .upcoming {
+        .upcoming,
+        .ecosystem,
+        .about {
             animation: none;
         }
 
         .edition-card,
-        .edition-cta svg,
-        .card-timer {
+        .edition-cta svg {
             transition: none;
         }
     }

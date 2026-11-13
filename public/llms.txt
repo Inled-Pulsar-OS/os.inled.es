@@ -5,7 +5,7 @@
 > system people already use (macOS, Windows, TV), so switching to Linux requires
 > no relearning. It combines that ease of use with the total freedom only Linux
 > gives. Pulsar OS is not a theme or a repackaged desktop: it ports the whole
-> workflow of each system and builds new native tools for it — session restore
+> workflow of each system and builds new native tools for it: session restore
 > (choose "save session" on shutdown and the session comes back exactly as it
 > was), the Sayri local AI assistant (connect any AI provider, works fully with
 > local models, sandboxed like OpenClaw but secure), macOS-style window
@@ -18,8 +18,8 @@
 
 Pulsar OS is developed by the Inled community (Spain). The flavours are
 independent editions: each one has its own website, its own ISO and its own
-focus. This site is the umbrella project: it lists the flavours, hosts the
-community space and the documentation.
+focus. This site is the umbrella project: it lists the flavours and hosts the
+official resources. Documentation lives at https://help.inled.es/docs/pulsar-os/.
 
 ## What makes it different
 
@@ -27,12 +27,12 @@ community space and the documentation.
   desktop flow are rebuilt per flavour.
 - Session restore: windows and apps come back exactly as they were after
   shutdown or power loss (see
-  [hibernation and session restore](https://os.inled.es/help/hardware/hibernation-and-session-restore)).
+  [hibernation and session restore](https://help.inled.es/docs/pulsar-os/hardware/hibernation-and-session-restore/)).
 - Sayri: a local-first AI assistant integrated into the desktop, with skills,
   gateways and sandboxed execution (see
-  [Sayri architecture](https://os.inled.es/help/architecture/sayri)).
+  [Sayri architecture](https://help.inled.es/docs/pulsar-os/architecture/sayri/)).
 - Pulsar Store: one app store bridging Flatpak, GNOME Extensions, apt, pacman
-  and AUR (see [store architecture](https://os.inled.es/help/architecture/store)).
+  and AUR (see [store architecture](https://help.inled.es/docs/pulsar-os/architecture/store/)).
 
 ## Flavours
 
@@ -47,15 +47,12 @@ community space and the documentation.
 
 ## Main pages
 
-- [Home](https://os.inled.es/index): Overview of the project and its flavours.
-- [Bitten Fruit (flavour page)](https://bittenfruit.inled.es): The
-  macOS-style edition: features, editions, downloads.
-- [New to Linux](https://os.inled.es/new-to-linux): Explainer for switchers
-  from macOS or Windows: what changes under the hood, in plain language, and a
-  short guide to using Pulsar OS (apps, updates, files, keyboard, recovery).
-- [Community](https://os.inled.es/community): Reported errors, ideas, community
-  tasks, suggestions and the project roadmap.
-- [Help & Documentation](https://os.inled.es/help): Install guides, usage
+- [Home](https://os.inled.es): Overview of the project and its flavours.
+- [Bitten Fruit](https://os.inled.es/bitten-fruit): On-site overview of the
+  published edition; its full website is https://bittenfruit.inled.es.
+- [Bitten Fruit full website](https://bittenfruit.inled.es): The macOS-style
+  edition: features, editions, downloads.
+- [Documentation](https://help.inled.es/docs/pulsar-os/): Install guides, usage
   documentation, hardware notes and contributing docs.
 - [Downloads](https://downloads-os.inled.es): Downloads and install guides for the
   editions.
@@ -76,6 +73,6 @@ community space and the documentation.
 - Contributions from beginners are welcome, including non-code work
   (docs, translations, design, testing). AI-assisted contributions are allowed
   if tested before submitting; see
-  [the AI policy](https://os.inled.es/help/contributing/use-ai).
-- Developer setup guide:
-  [developer setup](https://os.inled.es/help/contributing/developer-setup).
+  [the AI policy](https://help.inled.es/docs/pulsar-os/contributing/use-ai/).
+- Contributing guide:
+  [how to contribute](https://help.inled.es/docs/pulsar-os/contributing/).
