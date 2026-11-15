@@ -1,0 +1,10 @@
+---
+import Page from '../bitten-fruit.astro';
+import { LOCALES } from '@/i18n/config';
+
+export function getStaticPaths() {
+  return LOCALES.filter((lang) => lang !== 'en').map((lang) => ({ params: { lang } }));
+}
+---
+
+<Page />

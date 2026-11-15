@@ -1,0 +1,62 @@
+---
+import { LOCALES, LOCALE_LABELS, localizePath, type Locale } from '@/i18n/config';
+
+interface Props {
+  locale: Locale;
+  label: string;
+  pathname: string;
+}
+
+const { locale, label, pathname } = Astro.props;
+---
+
+<div class="nav-dropdown lang-dropdown" data-nav-dropdown>
+  <button
+    type="button"
+    class="nav-link lang-toggle"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label={label}
+    title={label}
+  >
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M3 12h18"></path>
+      <path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"></path>
+    </svg>
+    <span class="lang-code">{locale.toUpperCase()}</span>
+    <svg class="nav-more-chevron" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
+
+  <div class="nav-dropdown-panel lang-panel">
+    {LOCALES.map((item) => (
+      <a
+        href={localizePath(pathname, item)}
+        hreflang={item}
+        lang={item}
+        data-set-locale={item}
+        aria-current={item === locale ? 'true' : undefined}
+        class:list={['nav-dropdown-link lang-option', item === locale && 'is-current']}
+      >
+        <span>{LOCALE_LABELS[item]}</span>
+        {item === locale && <span aria-hidden="true">✓</span>}
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'pulsar-locale';
+
+  document.addEventListener('click', (event) => {
+    const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('[data-set-locale]');
+    if (!link) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, link.dataset.setLocale || 'en');
+    } catch {
+      /* storage blocked: the URL choice still works */
+    }
+  });
+</script>

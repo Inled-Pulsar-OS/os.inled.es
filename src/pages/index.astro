@@ -7,15 +7,20 @@
 // fila de ecosistema y una fila atenuada con las que llegan pronto.
 // Las tarjetas se abren al hacer clic: sin cuenta atrás al pasar el ratón.
 import Layout from "../layouts/Layout.astro";
+import { getLocale, localizePath } from "../i18n/config";
+import { getContent } from "../i18n";
+
+const locale = getLocale(Astro.url.pathname);
+const t = getContent(locale);
 
 // Available editions / Ediciones disponibles
 const AVAILABLE = [
     {
         name: "Bitten Fruit",
-        desc: "The macOS experience on Linux.",
+        desc: t.index.editions.bitten.desc,
         logo: "/assets/bitten-fruit/desktop.png",
         href: "https://bittenfruit.inled.es",
-        cta: "Visit the official site",
+        cta: t.index.visitSite,
     },
 ];
 
@@ -23,17 +28,17 @@ const AVAILABLE = [
 const APPS = [
     {
         name: "Sayri",
-        desc: "The AI agent with security in mind",
+        desc: t.index.editions.sayri.desc,
         logo: "https://hosted.inled.es/cdn/sayri.png",
         href: "https://sayri.inled.es/",
-        cta: "Discover now!",
+        cta: t.index.discover,
     },
     {
         name: "Pulsar Phone",
-        desc: "Your phone ❤️ your PC",
+        desc: t.index.editions.phone.desc,
         logo: "https://hosted.inled.es/cdn/pulsar-phone-logo-pulsarphone.png",
         href: "https://github.com/Inled-Pulsar-OS/pulsar-phone",
-        cta: "Go to repo (website coming soon)",
+        cta: t.index.repo,
     },
 ];
 
@@ -41,12 +46,12 @@ const APPS = [
 const UPCOMING = [
     {
         name: "Wintux",
-        desc: "The Windows flow you know, minus the nagging.",
+        desc: t.index.editions.wintux.desc,
         logo: "https://hosted.inled.es/cdn/pulsar-win11-nobg.png",
     },
     {
         name: "Tube OS",
-        desc: "Turn an old computer into the center of the living room.",
+        desc: t.index.editions.tube.desc,
         logo: "https://hosted.inled.es/cdn/tube-os-simple-sf.png",
     },
 ];
@@ -54,24 +59,24 @@ const UPCOMING = [
 // Site sections / Secciones del sitio
 const SECTIONS = [
     {
-        name: "Bitten Fruit",
-        desc: "What the published edition includes, and how to get it.",
-        href: "/bitten-fruit",
+        name: t.chrome.nav.bittenFruit,
+        desc: t.index.sections.bitten,
+        href: localizePath("/bitten-fruit", locale),
     },
     {
-        name: "Documentation",
-        desc: "Install guides, hardware notes and contributing docs.",
+        name: t.chrome.nav.docs,
+        desc: t.index.sections.docs,
         href: "https://help.inled.es/docs/pulsar-os/",
     },
     {
-        name: "Downloads",
-        desc: "ISOs, editions and install guides.",
+        name: t.chrome.nav.downloads,
+        desc: t.index.sections.downloads,
         href: "https://downloads-os.inled.es",
     },
     {
-        name: "Resources",
-        desc: "Logos, banners and media assets.",
-        href: "/resources",
+        name: t.chrome.nav.resources,
+        desc: t.index.sections.resources,
+        href: localizePath("/resources", locale),
     },
 ];
 ---
@@ -80,16 +85,8 @@ const SECTIONS = [
     <div class="picker">
         <header class="picker-head">
             <h1>Pulsar OS</h1>
-            <p class="picker-lead">
-                Easy Linux you already know. Every edition copies the flow of
-                the system you use today, the whole flow and not just a skin, so
-                switching costs you nothing.
-            </p>
-            <p class="picker-note">
-                The published edition is <strong>Bitten Fruit</strong>, the
-                macOS experience on Linux. Free, open source, with the full
-                freedom of Linux.
-            </p>
+            <p class="picker-lead">{t.index.lead}</p>
+            <p class="picker-note" set:html={t.index.noteHtml} />
         </header>
 
         <ul class="editions">
@@ -129,7 +126,7 @@ const SECTIONS = [
         </ul>
 
         <section class="ecosystem" aria-labelledby="ecosystem-caption">
-            <p class="ecosystem-caption" id="ecosystem-caption">Ecosystem</p>
+            <p class="ecosystem-caption" id="ecosystem-caption">{t.index.ecosystem}</p>
 
             <ul class="editions">
                 {APPS.map((edition) => (
@@ -169,7 +166,7 @@ const SECTIONS = [
         </section>
 
         <section class="upcoming" aria-labelledby="upcoming-caption">
-            <p class="upcoming-caption" id="upcoming-caption">Coming soon</p>
+            <p class="upcoming-caption" id="upcoming-caption">{t.index.comingSoon}</p>
             <ul class="editions">
                 {UPCOMING.map((edition) => (
                     <li class="edition">
@@ -192,15 +189,9 @@ const SECTIONS = [
 
         <section class="about" aria-labelledby="about-title">
             <h2 class="about-title" id="about-title">
-                One project, several editions
+                {t.index.aboutTitle}
             </h2>
-            <p class="about-text">
-                Pulsar OS is not a theme pack or a repackaged desktop. Each
-                edition ports the whole workflow of the system it mirrors,
-                including window management, gestures, search and backups, and
-                adds native tools built for it, like session restore and the
-                Sayri AI assistant. All of it free, open source and auditable.
-            </p>
+            <p class="about-text">{t.index.aboutText}</p>
 
             <ul class="site-links">
                 {SECTIONS.map((section) => (

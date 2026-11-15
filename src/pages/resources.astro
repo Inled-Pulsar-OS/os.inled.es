@@ -3,6 +3,11 @@
 // Recursos: logos y demos alojados en hosted.inled.es. Cada tarjeta enlaza a
 // la ficha del asset (previsualización + descarga), sin iframes incrustados.
 import Layout from "../layouts/Layout.astro";
+import { getLocale } from "../i18n/config";
+import { getContent } from "../i18n";
+
+const locale = getLocale(Astro.url.pathname);
+const t = getContent(locale);
 
 const HOSTED = "https://hosted.inled.es";
 const assetPage = (file: string) => `${HOSTED}/asset/${file}`;
@@ -34,61 +39,61 @@ const LOGOS = [
 
 const DEMOS = [
     {
-        title: "Touch ID & Face ID",
+        title: t.resources.demos.touch,
         file: "pulsar-demo-touch-face-id.mp4",
         thumb: "/resources/demos/touch-face-id.webp",
         meta: "MP4 · 8.3 MB",
     },
     {
-        title: "Liquid Glass",
+        title: t.resources.demos.liquid,
         file: "pulsar-liquid-glass-pulsar-demos.mp4",
         thumb: "/resources/demos/liquid-glass.webp",
         meta: "MP4 · 600 KB",
     },
     {
-        title: "Live wallpapers",
+        title: t.resources.demos.live,
         file: "pulsar-live-wallpaper-supra-demo.mp4",
         thumb: "/resources/demos/live-wallpaper.webp",
         meta: "MP4 · 4.3 MB",
     },
     {
-        title: "Notch",
+        title: t.resources.demos.notch,
         file: "pulsaros-notch-pulsar-demos.mp4",
         thumb: "/resources/demos/notch.webp",
         meta: "MP4 · 288 KB",
     },
     {
-        title: "Spotlight search",
+        title: t.resources.demos.spotlight,
         file: "pulsar-spotlight-pulsaros-demos.mp4",
         thumb: "/resources/demos/spotlight.webp",
         meta: "MP4 · 4.7 MB",
     },
     {
-        title: "Global menu",
+        title: t.resources.demos.globalMenu,
         file: "pulsar-global-menu-pulsar-demos.mp4",
         thumb: "/resources/demos/global-menu.webp",
         meta: "MP4 · 89 KB",
     },
     {
-        title: "Window management",
+        title: t.resources.demos.window,
         file: "pulsar-windows-pulsar-demos.mp4",
         thumb: "/resources/demos/windows-apps.webp",
         meta: "MP4 · 758 KB",
     },
     {
-        title: "Firewall",
+        title: t.resources.demos.firewall,
         file: "pulsar-firewall-pulsar-demos.mp4",
         thumb: "/resources/demos/firewall.webp",
         meta: "MP4 · 398 KB",
     },
     {
-        title: "Encryption",
+        title: t.resources.demos.encryption,
         file: "pulsar-demo-encryption-pulsaros.mp4",
         thumb: "/resources/demos/encryption.webp",
         meta: "MP4 · 33 KB",
     },
     {
-        title: "Install apps from the Store",
+        title: t.resources.demos.appInstall,
         file: "appinstall-pulsar-pulsaros-demo-OK.mp4",
         thumb: "/resources/demos/app-install.webp",
         meta: "MP4 · 3.3 MB",
@@ -99,12 +104,8 @@ const DEMOS = [
 <Layout pageKey="resources">
     <section class="resources-hero">
         <div class="container resources-heading">
-            <h1 class="section-title">Resources</h1>
-            <p class="section-subtitle">
-                Logos and product demos to share Pulsar OS on social media.
-                Every file opens on hosted.inled.es, where you can preview it
-                and download it.
-            </p>
+            <h1 class="section-title">{t.resources.title}</h1>
+            <p class="section-subtitle">{t.resources.subtitle}</p>
         </div>
     </section>
 
@@ -112,17 +113,14 @@ const DEMOS = [
         <div class="container">
             <div class="resources-share-card">
                 <div class="resources-share-content">
-                    <h2 class="resources-share-title">Help us grow</h2>
-                    <p class="resources-share-desc">
-                        If you share about Pulsar OS on social networks, we will
-                        find a way to reward your help to the project.
-                    </p>
+                    <h2 class="resources-share-title">{t.resources.shareTitle}</h2>
+                    <p class="resources-share-desc">{t.resources.shareDesc}</p>
                 </div>
                 <a
                     href="https://link.inled.es/discord"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btn btn-primary resources-share-btn">Share on social media</a
+                    class="btn btn-primary resources-share-btn">{t.resources.shareBtn}</a
                 >
             </div>
         </div>
@@ -131,10 +129,8 @@ const DEMOS = [
     <section class="res-section" aria-labelledby="logos-title">
         <div class="container">
             <div class="res-section-head">
-                <h2 class="res-section-title" id="logos-title">Logos</h2>
-                <p class="res-section-desc">
-                    Transparent PNGs for covers, posts and articles.
-                </p>
+                <h2 class="res-section-title" id="logos-title">{t.resources.logosTitle}</h2>
+                <p class="res-section-desc">{t.resources.logosDesc}</p>
             </div>
 
             <ul class="logo-grid">
@@ -148,7 +144,7 @@ const DEMOS = [
                         >
                             <img
                                 src={logo.thumb}
-                                alt={`${logo.name} logo`}
+                                alt={`${logo.name} ${t.resources.logoAlt}`}
                                 width="200"
                                 height="200"
                                 loading="lazy"
@@ -162,14 +158,14 @@ const DEMOS = [
                                     class="btn btn-primary res-btn"
                                     href={assetPage(logo.file)}
                                     target="_blank"
-                                    rel="noopener noreferrer">Open</a
+                                    rel="noopener noreferrer">{t.resources.open}</a
                                 >
                                 <a
                                     class="res-btn res-btn-ghost"
                                     href={assetFile(logo.file)}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    >Download</a
+                                    >{t.resources.download}</a
                                 >
                             </div>
                         </div>
@@ -182,11 +178,8 @@ const DEMOS = [
     <section class="res-section" aria-labelledby="demos-title">
         <div class="container">
             <div class="res-section-head">
-                <h2 class="res-section-title" id="demos-title">Demos</h2>
-                <p class="res-section-desc">
-                    Short clips of the features in action. Click one to preview
-                    it and grab the MP4.
-                </p>
+                <h2 class="res-section-title" id="demos-title">{t.resources.demosTitle}</h2>
+                <p class="res-section-desc">{t.resources.demosDesc}</p>
             </div>
 
             <ul class="demo-grid">
@@ -200,7 +193,7 @@ const DEMOS = [
                         >
                             <img
                                 src={demo.thumb}
-                                alt={`${demo.title} demo`}
+                                alt={`${demo.title} ${t.resources.demoAlt}`}
                                 width="720"
                                 height="405"
                                 loading="lazy"
@@ -226,7 +219,7 @@ const DEMOS = [
                                 href={assetFile(demo.file)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                >MP4</a
+                                >{t.resources.mp4}</a
                             >
                         </div>
                     </li>
@@ -238,11 +231,11 @@ const DEMOS = [
     <section class="res-more">
         <div class="container">
             <p>
-                Looking for something else? Browse
+                {t.resources.moreBefore}
                 <a href="https://hosted.inled.es/" target="_blank" rel="noopener noreferrer"
                     >hosted.inled.es</a
                 >
-                or ask us on Discord.
+                {t.resources.moreAfter}
             </p>
         </div>
     </section>

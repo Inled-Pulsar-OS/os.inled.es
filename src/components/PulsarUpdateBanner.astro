@@ -1,12 +1,16 @@
 ---
-interface Props {}
+import { getLocale } from '@/i18n/config';
+import { getContent } from '@/i18n';
+
+const locale = getLocale(Astro.url.pathname);
+const t = getContent(locale);
 ---
 
 <!-- Pulsar OS 2.0 Announcement Banner (Apple Blue) -->
 <section id="pulsar-update-banner" class="pulsar-banner">
   <div class="max-w-7xl mx-auto px-4 pulsar-banner-inner">
     <span>
-      We&rsquo;re preparing the biggest update for Pulsar OS: version 2.0. We&rsquo;ll update this website soon.
+      {t.chrome.banner.text}
     </span>
     <a
       href="https://link.inled.es/discord"
@@ -14,7 +18,7 @@ interface Props {}
       rel="noopener noreferrer"
       class="pulsar-banner-link"
     >
-      Join Discord to stay up to date &rarr;
+      {t.chrome.banner.link}
     </a>
   </div>
 </section>
@@ -56,4 +60,3 @@ interface Props {}
     }
   }
 </style>
-

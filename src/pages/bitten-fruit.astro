@@ -6,27 +6,14 @@
 // da una respuesta real en el dominio oficial antes de salir, en vez de un
 // simple meta-refresh.
 import Layout from "../layouts/Layout.astro";
+import { getLocale } from "../i18n/config";
+import { getContent } from "../i18n";
+
+const locale = getLocale(Astro.url.pathname);
+const t = getContent(locale);
 
 const BITTEN_FRUIT_URL = "https://bittenfruit.inled.es";
-
-const FEATURES = [
-    {
-        title: "The whole macOS flow",
-        text: "Top bar, dock, gestures, Finder-style file manager, Spotlight search and window management, rebuilt and not skinned.",
-    },
-    {
-        title: "Session restore",
-        text: "Choose “save session” when you shut down and your windows come back exactly as they were, even after a power loss.",
-    },
-    {
-        title: "Sayri AI assistant",
-        text: "A local-first assistant built into the desktop: connect any provider, run local models, sandboxed execution.",
-    },
-    {
-        title: "One app store",
-        text: "Pulsar Store bridges apt, pacman, AUR and Flathub, so you install what you want without touching a terminal.",
-    },
-];
+const FEATURES = t.bittenFruit.features;
 ---
 
 <Layout pageKey="bitten-fruit">
@@ -39,19 +26,15 @@ const FEATURES = [
                 height="72"
                 class="edition-hero-logo"
             />
-            <p class="edition-eyebrow">Pulsar OS · Published edition</p>
+            <p class="edition-eyebrow">{t.bittenFruit.eyebrow}</p>
             <h1>Bitten Fruit</h1>
-            <p class="edition-lead">
-                The macOS experience on Linux. Same desktop, same flow you
-                already know, the whole flow and not just a theme, with the
-                full freedom of Linux.
-            </p>
+            <p class="edition-lead">{t.bittenFruit.lead}</p>
             <div class="edition-actions">
                 <a class="btn btn-primary" href={BITTEN_FRUIT_URL}>
-                    Visit the official Bitten Fruit site
+                    {t.bittenFruit.primary}
                 </a>
                 <a class="btn btn-secondary" href="https://downloads-os.inled.es">
-                    Download the ISO
+                    {t.bittenFruit.secondary}
                 </a>
             </div>
         </header>
@@ -59,7 +42,7 @@ const FEATURES = [
         <figure class="edition-shot">
             <img
                 src="/assets/bitten-fruit/desktop.png"
-                alt="Bitten Fruit desktop: macOS-style top bar, dock and desktop widgets"
+                alt={t.bittenFruit.imageAlt}
                 width="1280"
                 height="800"
                 loading="eager"
@@ -67,7 +50,7 @@ const FEATURES = [
         </figure>
 
         <section class="edition-features" aria-labelledby="features-title">
-            <h2 id="features-title">What you actually get</h2>
+            <h2 id="features-title">{t.bittenFruit.featuresTitle}</h2>
             <ul>
                 {FEATURES.map((feature) => (
                     <li>
@@ -79,37 +62,35 @@ const FEATURES = [
         </section>
 
         <section class="edition-more" aria-labelledby="more-title">
-            <h2 id="more-title">Keep going</h2>
+            <h2 id="more-title">{t.bittenFruit.moreTitle}</h2>
             <ul class="edition-links">
                 <li>
                     <a href={BITTEN_FRUIT_URL}>
-                        Features, screenshots and editions on
-                        bittenfruit.inled.es
+                        {t.bittenFruit.links.site}
                     </a>
                 </li>
                 <li>
                     <a href="https://help.inled.es/docs/pulsar-os/">
-                        Documentation: install guides, hardware notes and
-                        contributing docs
+                        {t.bittenFruit.links.docs}
                     </a>
                 </li>
                 <li>
                     <a href="https://downloads-os.inled.es">
-                        Downloads: ISOs and install guides
+                        {t.bittenFruit.links.downloads}
                     </a>
                 </li>
                 <li>
                     <a href="https://github.com/Inled-Pulsar-OS">
-                        Source code and builds on GitHub
+                        {t.bittenFruit.links.github}
                     </a>
                 </li>
             </ul>
         </section>
 
         <div class="edition-cta">
-            <p>The edition's full website lives at bittenfruit.inled.es.</p>
+            <p>{t.bittenFruit.ctaBody}</p>
             <a class="btn btn-primary" href={BITTEN_FRUIT_URL}>
-                Open bittenfruit.inled.es
+                {t.bittenFruit.ctaButton}
             </a>
         </div>
     </article>
